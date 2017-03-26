@@ -20,5 +20,5 @@ Route::group(['prefix' => 'api/v1/authentication', 'middleware' => ['api']], fun
 
 
     Route::get('getUserByToken', '\LaravelIssueTracker\Authentication\Controllers\DatabaseAuthController@getUserByToken')->middleware('jwt.auth');
-
+    Route::get('logout', '\LaravelIssueTracker\Authentication\Controllers\DatabaseAuthController@logout');
 });

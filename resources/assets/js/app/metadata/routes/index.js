@@ -6,7 +6,6 @@ export default [
         component: Metadata,
         name: 'metadata',
         meta: {
-            guest: false,
             needsAuth: true
         }
     }

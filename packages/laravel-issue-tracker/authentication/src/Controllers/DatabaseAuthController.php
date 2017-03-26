@@ -2,11 +2,12 @@
 namespace LaravelIssueTracker\Authentication\Controllers;
 
 use Illuminate\Http\Request;
-use LaravelIssueTracker\Authentication\Acme\Services\DatabaseAuthService;
-use LaravelIssueTracker\Authentication\Acme\Transformers\DatabaseAuthTransformer;
-use LaravelIssueTracker\Authentication\Acme\Validators\DatabaseAuthValidator;
-use LaravelIssueTracker\Authentication\Controllers\AbstractControllers\AuthenticationController;
 use LaravelIssueTracker\Core\Acme\Validators\ValidationException;
+use LaravelIssueTracker\Authentication\Acme\Services\DatabaseAuthService;
+use LaravelIssueTracker\Authentication\Acme\Validators\DatabaseAuthValidator;
+use LaravelIssueTracker\Authentication\Acme\Transformers\DatabaseAuthTransformer;
+use LaravelIssueTracker\Authentication\Controllers\AbstractControllers\AuthenticationController;
+
 
 /**
  * Class DatabaseAuthController
@@ -62,6 +63,13 @@ class DatabaseAuthController extends AuthenticationController
         {
             return $this->respondUnprocessable(['message' => $e->getMessage()]);
         }
+    }
+
+    public function logout()
+    {
+        $this->databaseAuthService->logout();
+
+        return response(null, 200);
     }
 
 }

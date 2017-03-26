@@ -3,8 +3,8 @@ namespace LaravelIssueTracker\Authentication\Acme\Services;
 
 use App\User;
 use Carbon\Carbon;
-use LaravelIssueTracker\Core\Acme\Validators\ValidationException;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use LaravelIssueTracker\Core\Acme\Validators\ValidationException;
 use LaravelIssueTracker\Authentication\Acme\Repositories\UserRepository;
 use LaravelIssueTracker\Authentication\Listeners\AuthenticateUserListener;
 use LaravelIssueTracker\Authentication\Acme\Validators\DatabaseAuthValidator;
@@ -24,18 +24,24 @@ class DatabaseAuthService
      * @var AuthenticationValidator
      */
     private $databaseAuthValidator;
+    /**
+     * @var JWTAuth
+     */
+    private $auth;
 
 
     /**
      * DatabaseService constructor.
      * @param UserRepository $user
      * @param DatabaseAuthValidator $databaseAuthValidator
+     * @param JWTAuth $auth
      * @internal param AuthenticationValidator $authenticationValidator
      */
-    public function __construct(UserRepository $user, DatabaseAuthValidator $databaseAuthValidator)
+    public function __construct(UserRepository $user, DatabaseAuthValidator $databaseAuthValidator, \Tymon\JWTAuth\JWTAuth $auth)
     {
         $this->user = $user;
         $this->databaseAuthValidator = $databaseAuthValidator;
+        $this->auth = $auth;
     }
 
     /**
@@ -75,6 +81,14 @@ class DatabaseAuthService
         return response()->json([
             'data' => User::where('email', $request->user()->email)->with('profiles')->first(),
         ]);
+    }
+
+    /**
+     *
+     */
+    public function logout()
+    {
+        $this->auth->invalidate($this->auth->getToken());
     }
 
 }
