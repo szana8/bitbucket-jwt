@@ -27,6 +27,13 @@ class UserValidator extends Validator {
     ];
 
     /**
+     * @var array
+     */
+    protected static $messages = [
+        'profile.name.required' => 'The name field is required.'
+    ];
+
+    /**
      * @param $email
      * @return mixed
      */

@@ -19,7 +19,7 @@ class DatabaseAuthValidator extends Validator
         ],
 
         'make' => [
-            'email' => 'required|unique',
+            'email' => 'required',
             'password' => 'required'
         ],
 

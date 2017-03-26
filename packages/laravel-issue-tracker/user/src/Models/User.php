@@ -13,6 +13,6 @@ trait User
      */
     public function profiles()
     {
-        return $this->hasMany('\LaravelIssueTracker\User\Models\Profile');
+        return $this->hasMany('\LaravelIssueTracker\User\Models\Profile', 'user_id', 'id');
     }
 }

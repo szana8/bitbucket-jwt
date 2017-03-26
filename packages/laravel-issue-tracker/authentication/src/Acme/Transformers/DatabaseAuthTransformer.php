@@ -15,7 +15,7 @@ class DatabaseAuthTransformer implements SocialiteTransformerInterface
         return [
             'email' => $user->email,
             'profile' => [
-                'name' => $user->name,
+                'name' => $user->profile->name,
                 'type' => 'database'
             ]
         ];

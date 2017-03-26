@@ -26,12 +26,9 @@ class Profile extends Model
         'id'
     ];
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function user()
-    {
-        return $this->belongsTo('User');
-    }
+    protected $hidden = [
+        'id',
+        'user_id'
+    ];
 
 }

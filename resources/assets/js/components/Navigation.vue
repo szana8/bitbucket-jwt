@@ -34,7 +34,7 @@
                     <li><router-link :to="{ name: 'metadata' }">Metadata</router-link></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                            {{ user.data.name }} <span class="caret"></span>
+                            {{ user.data.email }} <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu" role="menu">
                             <li><a href="#">Logout</a></li>

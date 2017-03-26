@@ -8,36 +8,36 @@
 
 
                     <div class="panel-body">
-                        <form class="form-horizontal" role="form" @submit.prevent="submit">
+                        <form class="form-horizontal" role="form" @submit.prevent="submit" @keydown="form.errors.clear($event.target.name)">
 
-                            <div class="form-group">
+                            <div class="form-group" v-bind:class="{ 'has-error': form.errors.has('profile.name') }">
                                 <label for="email" class="col-md-4 control-label">Name</label>
                                 <div class="col-md-6">
-                                    <input id="name" type="text" class="form-control" autofocus v-model="form.profile.name">
+                                    <input id="name" type="text" class="form-control" name="profile.name" autofocus v-model="form.profile.name">
                                     <span class="error text-danger" v-if="form.errors.has('profile.name')" v-text="form.errors.get('profile.name')"></span>
                                 </div>
                             </div>
 
-                            <div class="form-group">
+                            <div class="form-group" v-bind:class="{ 'has-error': form.errors.has('email') }">
                                 <label for="email" class="col-md-4 control-label">E-Mail Address</label>
                                 <div class="col-md-6">
-                                    <input id="email" type="text" class="form-control" v-model="form.email">
+                                    <input id="email" type="text" class="form-control" name="email" v-model="form.email">
                                     <span class="error text-danger" v-if="form.errors.has('email')" v-text="form.errors.get('email')"></span>
                                 </div>
                             </div>
 
-                            <div class="form-group">
+                            <div class="form-group" v-bind:class="{ 'has-error': form.errors.has('password') }">
                                 <label for="password" class="col-md-4 control-label">Password</label>
 
                                 <div class="col-md-6">
-                                    <input id="password" type="password" class="form-control" v-model="form.password">
+                                    <input id="password" type="password" class="form-control" name="password" v-model="form.password">
                                     <span class="error text-danger" v-if="form.errors.has('password')" v-text="form.errors.get('password')"></span>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <div class="col-md-6 col-md-offset-4">
-                                    <button type="submit" class="btn btn-primary">
+                                    <button type="submit" class="btn btn-primary" :disabled="form.errors.any()">
                                         Register
                                     </button>
                                 </div>
@@ -71,11 +71,12 @@
                 register: 'auth/register'
             }),
             submit() {
-                this.form.post('/api/v1/users').then(data => {
-                    console.log(data)
-                }).catch(error => {
-                    console.log(error)
-                });
+                this.register({
+                    payload: {
+                        form: this.form
+                    },
+                    context: this
+                })
             }
         }
     }

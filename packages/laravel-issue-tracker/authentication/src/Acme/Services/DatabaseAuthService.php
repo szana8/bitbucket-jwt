@@ -1,7 +1,9 @@
 <?php
 namespace LaravelIssueTracker\Authentication\Acme\Services;
 
+use App\User;
 use Carbon\Carbon;
+use LaravelIssueTracker\Core\Acme\Validators\ValidationException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use LaravelIssueTracker\Authentication\Acme\Repositories\UserRepository;
 use LaravelIssueTracker\Authentication\Listeners\AuthenticateUserListener;
@@ -43,11 +45,36 @@ class DatabaseAuthService
      */
     public function authenticate($request)
     {
+        if( $this->databaseAuthValidator->isValidForInsert($request->toArray()) )
+        {
+            $token = JWTAuth::attempt($request->only('email', 'password'), [
+                'exp' => Carbon::now()->addWeek()->timestamp,
+            ]);
 
-        return JWTAuth::attempt($request->only('email', 'password'), [
-            'exp' => Carbon::now()->addWeek()->timestamp,
+            if (!$token) {
+                throw new ValidationException('Check your credentials');
+            }
+
+            return [
+                'data' => User::where('email', $request->email)->with('profiles')->first(),
+                'meta' => [
+                    'token' => $token
+                ]
+            ];
+        }
+
+        throw new ValidationException('User validation failed', $this->databaseAuthValidator->getErrors());
+    }
+
+    /**
+     * @param $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getUserByToken($request)
+    {
+        return response()->json([
+            'data' => User::where('email', $request->user()->email)->with('profiles')->first(),
         ]);
-
     }
 
 }

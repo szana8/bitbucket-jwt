@@ -18,4 +18,7 @@ Route::group(['prefix' => 'api/v1/authentication', 'middleware' => ['api']], fun
     Route::get('bitbucket/login', '\LaravelIssueTracker\Authentication\Controllers\BitbucketAuthController@login');
     Route::get('google/login', '\LaravelIssueTracker\Authentication\Controllers\GoogleAuthController@login');
 
+
+    Route::get('getUserByToken', '\LaravelIssueTracker\Authentication\Controllers\DatabaseAuthController@getUserByToken')->middleware('jwt.auth');
+
 });
