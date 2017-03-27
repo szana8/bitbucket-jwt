@@ -1,71 +1,61 @@
 <template>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2">
-                <div class="panel panel-default">
-                    <div class="panel-heading">Login</div>
-                    <div class="panel-body">
-                        <div class="alert alert-danger" v-if="form.errors.any()">
-                            Could not sign you in with those details.
-                        </div>
+    <md-layout :md-gutter="24">
+        <md-layout md-align="center">
+        </md-layout>
 
-                        <form class="form-horizontal" role="form" @submit.prevent="submit">
+        <md-layout md-align="center">
 
-                            <div class="form-group">
-                                <label for="email" class="col-md-4 control-label">E-Mail Address</label>
+            <md-layout md-align="center">
+                <md-card style="width: 100%;">
 
-                                <div class="col-md-6">
-                                    <input id="email" type="email" class="form-control" name="email" v-model="form.email" autofocus>
-                                    <span class="error text-danger" v-if="form.errors.has('email')" v-text="form.errors.get('email')"></span>
-                                </div>
-                            </div>
+                    <md-card-header>
+                        <div class="md-title">Login with your credentials</div>
+                    </md-card-header>
 
-                            <div class="form-group">
-                                <label for="password" class="col-md-4 control-label">Password</label>
+                    <md-card-content>
+                        <form @submit.stop.prevent="submit" @keydown="form.errors.clear($event.target.name)">
 
-                                <div class="col-md-6">
-                                    <input id="password" type="password" class="form-control" name="password" v-model="form.password">
-                                    <span class="error text-danger" v-if="form.errors.has('password')" v-text="form.errors.get('password')"></span>
-                                </div>
-                            </div>
+                            <md-input-container v-bind:class="{ 'md-input-invalid': this.form.errors.has('password') }">
+                                <label>Email</label>
+                                <md-input name="email" v-model="form.email"></md-input>
+                                <span class="md-error" v-if="this.form.errors.has('email')" v-text="this.form.errors.get('email')"></span>
+                            </md-input-container>
 
-                            <div class="form-group">
-                                <div class="col-md-6 col-md-offset-4">
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox" name="remember"> Remember Me
-                                    </label>
-                                    </div>
-                                </div>
-                            </div>
+                            <md-input-container v-bind:class="{ 'md-input-invalid': this.form.errors.has('password') }">
+                                <label>Password</label>
+                                <md-input type="password" name="password" required v-model="form.password"></md-input>
+                                <span class="md-error" v-if="this.form.errors.has('password')" v-text="this.form.errors.get('password')"></span>
+                            </md-input-container>
 
-                            <div class="form-group">
-                                <div class="col-md-8 col-md-offset-4">
-                                    <button type="submit" class="btn btn-primary">Login</button>
-
-                                    <a class="btn btn-link" href="#">
-                                        Forgot Your Password?
-                                    </a>
-                                </div>
-                            </div>
                         </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+                    </md-card-content>
+
+                    <md-card-actions>
+                        <md-button class="md-raised md-primary" :disabled="this.form.errors.any()" @click.native="submit" @keydown="this.form.errors.clear($event.target.name)">
+                            Login
+                        </md-button>
+                    </md-card-actions>
+
+                </md-card>
+            </md-layout>
+
+        </md-layout>
+
+        <md-layout md-align="center">
+        </md-layout>
+    </md-layout>
 </template>
 
 <script>
-    import { mapActions } from 'vuex'
+    import {mapActions} from 'vuex'
     import localforage from 'localforage'
-    import { isEmpty } from 'lodash'
+    import {isEmpty} from 'lodash'
 
     export default {
         data() {
             return {
                 form: new Form({
-                    email: null,
+                    email   : null,
                     password: null
                 })
             }
@@ -77,21 +67,25 @@
             submit() {
                 this.login({
                     payload: {
-                        form: this.form
+                        form  : this.form,
+                        errors: []
                     },
                     context: this
-                }).then(() => {
-                    this.$router.replace({ name: 'home' })
-                    /*
-                    localforage.getItem('intended').then((name) => {
-                        if ( isEmpty(name) ) {
-                            this.$router.replace({ name: 'home' })
-                            return
-                        }
+                }).then(() =>
+                {
+                    /*localforage.getItem('intended').then((name) => {
+                     if ( isEmpty(name) ) {
+                     this.$router.replace({ name: 'home' })
+                     return
+                     }
 
-                        this.$router.replace({ name: name })
-                    })
-                    */
+                     this.$router.replace({ name: name })
+                     })*/
+
+                    this.$router.replace({name: 'home'})
+                }).catch(error =>
+                {
+                    console.log(error)
                 })
             }
         }

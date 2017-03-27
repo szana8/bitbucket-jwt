@@ -57,7 +57,7 @@ class DatabaseAuthController extends AuthenticationController
     {
         try
         {
-            return $this->databaseAuthService->getUserByToken($request);
+            return $this->respond(['data' => $this->databaseAuthService->getUserByToken($request)]);
         }
         catch(Exception $e)
         {

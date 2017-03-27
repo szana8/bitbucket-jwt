@@ -1,9 +1,14 @@
 import localforage from 'localforage'
-import { isEmpty } from 'lodash'
+import {isEmpty} from 'lodash'
 
-export const setToken = (state, token) => {
-    if (isEmpty(token))
-    {
+/**
+ *
+ * @param state
+ * @param token
+ */
+export const setToken = (state, token) =>
+{
+    if (isEmpty(token)) {
         localforage.removeItem('authtoken', token)
         return
     }
@@ -11,10 +16,22 @@ export const setToken = (state, token) => {
     localforage.setItem('authtoken', token)
 }
 
-export const setAuthenticated = (state, trueOrFalse) => {
-    state.user.authenticated = trueOrFalse
+/**
+ *
+ * @param state
+ * @param isAuthenticated
+ */
+export const setAuthenticated = (state, isAuthenticated) =>
+{
+    state.user.authenticated = isAuthenticated
 }
 
-export const setUserData = (state, data) => {
+/**
+ *
+ * @param state
+ * @param data
+ */
+export const setUserData = (state, data) =>
+{
     state.user.data = data
 }

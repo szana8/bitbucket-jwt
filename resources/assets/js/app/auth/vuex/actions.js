@@ -1,57 +1,111 @@
-import { isEmpty } from 'lodash'
+import {isEmpty} from 'lodash'
 import {setHttpToken} from '../../../helpers'
 import localforage from 'localforage'
 import reouter from '../../../router'
 
-export const register = ({ dispatch }, { payload }) => {
-    payload.form.post('/api/v1/users').then(data => {
+/**
+ * Register the user than login with the given credentials and redirect to the home page
+ * @param dispatch
+ * @param payload
+ */
+export const register = ({dispatch}, {payload}) =>
+{
+    payload.form.post('/api/v1/users').then(data =>
+    {
         console.log(data)
-    }).catch(error => {
+    }).catch(error =>
+    {
         console.log(error)
     });
 }
 
-export const login = ({ dispatch }, { payload }) => {
-    payload.form.post('/api/v1/authentication/database/login').then(data => {
-        dispatch('setToken', data.meta.token).then(() => {
-            dispatch('fetchUser')
+
+/**
+ * Login the user with the given credentials
+ * @param dispatch
+ * @param payload
+ */
+export const login = ({dispatch}, {payload, context, error}) =>
+{
+    return new Promise((resolve, reject) => {
+        payload.form.post('/api/v1/authentication/database/login').then(data =>
+        {
+            dispatch('setToken', data.meta.token).then(() =>
+            {
+                dispatch('fetchUser')
+            })
+
+            resolve()
+
+        }).catch(error => {
+            reject(error)
         })
-
-    }).catch(error => {
-        console.log(error)
     });
+
 }
 
-export const fetchUser = ({ commit }) => {
+
+/**
+ * Fetch the user data by the token
+ * @param commit
+ */
+export const fetchUser = ({commit}) =>
+{
     var form = new Form()
 
-    return form.get('/api/v1/authentication/getUserByToken').then(response => {
+    return form.get('/api/v1/authentication/getUserByToken').then(response =>
+    {
         commit('setAuthenticated', true)
         commit('setUserData', response.data)
     })
 }
 
-export const logout = ({ dispatch }) => {
+
+/**
+ * Logout the user
+ * @param dispatch
+ */
+export const logout = ({dispatch}) =>
+{
     var form = new Form()
 
-    return form.get('/api/v1/authentication/logout').then(response => {
+    return form.get('/api/v1/authentication/logout').then(response =>
+    {
         dispatch('clearAuth')
     })
 }
 
-export const setToken = ({ commit, dispatch }, token) => {
-    if (isEmpty(token))
-    {
-        return dispatch('checkTokenExists').then((token) => {
+
+/**
+ * Set the token to the localforge
+ * @param commit
+ * @param dispatch
+ * @param token
+ */
+export const setToken = ({commit, dispatch}, token) =>
+{
+    if (isEmpty(token)) {
+        return dispatch('checkTokenExists').then((token) =>
+        {
             setHttpToken(token)
         })
     }
+
     commit('setToken', token);
     setHttpToken(token)
 }
 
-export const checkTokenExists = ({ commit, dispatch }, token) => {
-    return localforage.getItem('authtoken').then((token) => {
+
+/**
+ *
+ * @param commit
+ * @param dispatch
+ * @param token
+ */
+export const checkTokenExists = ({commit, dispatch}, token) =>
+{
+    return localforage.getItem('authtoken').then((token) =>
+    {
         if (isEmpty(token)) {
             return Promise.reject('NO_STORAGE_TOKEN');
         }
@@ -60,7 +114,14 @@ export const checkTokenExists = ({ commit, dispatch }, token) => {
     })
 }
 
-export const clearAuth = ({ commit }, token) => {
+
+/**
+ *
+ * @param commit
+ * @param token
+ */
+export const clearAuth = ({commit}, token) =>
+{
     commit('setAuthenticated', false)
     commit('setUserData', null)
     commit('setToken', null)

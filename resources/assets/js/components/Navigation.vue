@@ -1,49 +1,16 @@
 <template>
-    <nav class="navbar navbar-default navbar-static-top">
-        <div class="container">
-            <div class="navbar-header">
+    <md-toolbar color="primary">
+        <md-button class="md-icon-button" v-on:click.native="navBarRedirect('home')">
+            <md-icon>menu</md-icon>
+        </md-button>
+        <h2 class="md-title" style="flex: 1">Laravel Issue Tracker</h2>
 
-                <!-- Collapsed Hamburger -->
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                        data-target="#app-navbar-collapse">
-                    <span class="sr-only">Toggle Navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
+        <md-button v-on:click.native="navBarRedirect('login')">Login</md-button>
+        <md-button v-on:click.native="navBarRedirect('register')">Register</md-button>
 
-                <!-- Branding Image -->
-                <router-link :to="{ name: 'home' }" class="navbar-brand">Laravel Issue Tracker</router-link>
-            </div>
+        <md-button v-on:click.native="signout">Logout</md-button>
 
-            <div class="collapse navbar-collapse" id="app-navbar-collapse">
-                <!-- Left Side Of Navbar -->
-                <ul class="nav navbar-nav">
-                    &nbsp;
-                </ul>
-
-                <ul class="nav navbar-nav navbar-right" v-if="!user.authenticated">
-                    <!-- Authentication Links -->
-                    <li><router-link :to="{ name: 'login' }">Login</router-link></li>
-                    <li><router-link :to="{ name: 'register' }">Register</router-link></li>
-                </ul>
-
-                <!-- Right Side Of Navbar -->
-                <ul class="nav navbar-nav navbar-right" v-if="user.authenticated">
-                    <!-- Authentication Links -->
-                    <li><router-link :to="{ name: 'metadata' }">Metadata</router-link></li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                            {{ user.data.email }} <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu" role="menu">
-                            <li><a href="#" @click.prevent="signout">Logout</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+    </md-toolbar>
 </template>
 
 <script>
@@ -59,8 +26,11 @@
             }),
             signout () {
                 this.logout().then(() => {
-                    this.router.replace({ name: 'home' })
+                    this.$router.replace({ name: 'login' })
                 })
+            },
+            navBarRedirect (page) {
+                this.$router.replace({ name: page })
             }
         }
     }

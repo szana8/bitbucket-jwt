@@ -78,9 +78,7 @@ class DatabaseAuthService
      */
     public function getUserByToken($request)
     {
-        return response()->json([
-            'data' => User::where('email', $request->user()->email)->with('profiles')->first(),
-        ]);
+        return User::where('email', $request->user()->email)->with('profiles')->first();
     }
 
     /**
