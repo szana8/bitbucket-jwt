@@ -8,5 +8,13 @@ export default [
         meta: {
             needsAuth: true
         }
+    },
+    {
+        path: '/metadata/:page',
+        component: Metadata,
+        name: 'metadataPage',
+        meta: {
+            needsAuth: true
+        }
     }
 ]

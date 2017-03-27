@@ -13,7 +13,14 @@ class MetadataTransformer extends Transformer {
      */
     public function transform($item)
     {
-        return $item;
+        return [
+            'id' => $item['id'],
+            'type' => $item['type'],
+            'key' => $item['key'],
+            'value' => $item['value'],
+            'description' => $item['description'],
+            'enabled' => $item['enabled']
+        ];
     }
 
 }

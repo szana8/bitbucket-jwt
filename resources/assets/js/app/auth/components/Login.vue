@@ -54,11 +54,13 @@
         },
 
         computed: {
+            cache: false,
             passwordValidationError: function() {
-                if(this.form.errors.has('password'))
+                if(this.form.errors.has('password')) {
                     return this.form.errors.get('password')
+                }
 
-                return false;
+                return;
             }
         },
 
