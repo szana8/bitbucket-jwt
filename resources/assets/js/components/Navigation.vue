@@ -1,16 +1,19 @@
 <template>
-    <md-toolbar color="primary">
-        <md-button class="md-icon-button" v-on:click.native="navBarRedirect('home')">
-            <md-icon>menu</md-icon>
-        </md-button>
-        <h2 class="md-title" style="flex: 1">Laravel Issue Tracker</h2>
+    <v-toolbar class="primary">
+        <v-toolbar-side-icon v-on:click.native="navBarRedirect('home')" />
 
-        <md-button v-on:click.native="navBarRedirect('login')">Login</md-button>
-        <md-button v-on:click.native="navBarRedirect('register')">Register</md-button>
+        <v-toolbar-title>Laravel Issue Tracker</v-toolbar-title>
 
-        <md-button v-on:click.native="signout">Logout</md-button>
+        <v-toolbar-items v-if="user.authenticated">
+            <v-toolbar-item v-on:click.native="navBarRedirect('metadata')" v-if="user.authenticated">Metadata</v-toolbar-item>
+            <v-toolbar-item v-on:click.native="signout" v-if="user.authenticated">Logout</v-toolbar-item>
+        </v-toolbar-items>
 
-    </md-toolbar>
+        <v-toolbar-items v-if="!user.authenticated">
+                <v-toolbar-item v-on:click.native="navBarRedirect('login')">Login</v-toolbar-item>
+                <v-toolbar-item v-on:click.native="navBarRedirect('register')">Register</v-toolbar-item>
+        </v-toolbar-items>
+    </v-toolbar>
 </template>
 
 <script>

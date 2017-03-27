@@ -1,10 +1,10 @@
 <template>
-    <div>
+    <v-app top-toolbar>
         <navigation></navigation>
 
-        <div class="container">
+        <div>
             <router-view></router-view>
         </div>
-    </div>
+    </v-app>
 </template>
 

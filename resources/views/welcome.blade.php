@@ -6,8 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
-        <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+        <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet" type="text/css">
 
         <!-- Scripts -->
         <script>
@@ -17,7 +16,7 @@
         </script>
 
         <title>Laravel</title>
-        <link rel="stylesheet" href="css/app.css" />
+
     </head>
     <body>
         <div id="app">

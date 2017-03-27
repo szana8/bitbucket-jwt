@@ -1,49 +1,41 @@
 <template>
-    <md-layout :md-gutter="24">
-        <md-layout md-align="center">
-        </md-layout>
+    <v-container fluid="fluid">
+        <v-row class="mt-5">
+            <v-col xs4="xs4"></v-col>
+            <v-col xs4="xs4">
 
-        <md-layout md-align="center">
+                <v-card>
+                    <v-card-row class="blue">
+                        <v-card-title>
+                            <span class="white--text">Login with your credentials</span>
+                            <v-spacer></v-spacer>
+                        </v-card-title>
+                    </v-card-row>
 
-            <md-layout md-align="center">
-                <md-card style="width: 100%;">
-
-                    <md-card-header>
-                        <div class="md-title">Login with your credentials</div>
-                    </md-card-header>
-
-                    <md-card-content>
+                    <v-card-text>
                         <form @submit.stop.prevent="submit" @keydown="form.errors.clear($event.target.name)">
-
-                            <md-input-container v-bind:class="{ 'md-input-invalid': this.form.errors.has('password') }">
-                                <label>Email</label>
-                                <md-input name="email" v-model="form.email"></md-input>
-                                <span class="md-error" v-if="this.form.errors.has('email')" v-text="this.form.errors.get('email')"></span>
-                            </md-input-container>
-
-                            <md-input-container v-bind:class="{ 'md-input-invalid': this.form.errors.has('password') }">
-                                <label>Password</label>
-                                <md-input type="password" name="password" required v-model="form.password"></md-input>
-                                <span class="md-error" v-if="this.form.errors.has('password')" v-text="this.form.errors.get('password')"></span>
-                            </md-input-container>
-
+                            <v-row>
+                                <v-col xs12>
+                                    <v-text-field label="Email" v-model="form.email" name="email"></v-text-field>
+                                </v-col>
+                            </v-row>
+                            <v-row>
+                                <v-col xs12>
+                                    <v-text-field type="password" label="Password" v-model="form.password" name="password"></v-text-field>
+                                </v-col>
+                            </v-row>
                         </form>
-                    </md-card-content>
+                    </v-card-text>
 
-                    <md-card-actions>
-                        <md-button class="md-raised md-primary" :disabled="this.form.errors.any()" @click.native="submit" @keydown="this.form.errors.clear($event.target.name)">
-                            Login
-                        </md-button>
-                    </md-card-actions>
+                    <v-card-row actions>
+                        <v-btn info v-on:click.native="submit">Login</v-btn>
+                    </v-card-row>
+                </v-card>
 
-                </md-card>
-            </md-layout>
-
-        </md-layout>
-
-        <md-layout md-align="center">
-        </md-layout>
-    </md-layout>
+            </v-col>
+            <v-col xs4="xs4"></v-col>
+        </v-row>
+    </v-container>
 </template>
 
 <script>
