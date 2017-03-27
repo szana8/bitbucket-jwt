@@ -21,7 +21,7 @@
                             </v-row>
                             <v-row>
                                 <v-col xs12>
-                                    <v-text-field type="password" label="Password" v-model="form.password" name="password"></v-text-field>
+                                    <v-text-field type="password" label="Password" :rules="[passwordValidationError]" v-model="form.password" name="password"></v-text-field>
                                 </v-col>
                             </v-row>
                         </form>
@@ -52,6 +52,16 @@
                 })
             }
         },
+
+        computed: {
+            passwordValidationError: function() {
+                if(this.form.errors.has('password'))
+                    return this.form.errors.get('password')
+
+                return false;
+            }
+        },
+
         methods: {
             ...mapActions({
                 login: 'auth/login'

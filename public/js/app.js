@@ -42144,11 +42144,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
-//
-//
-//
-//
-//
 
 
 
@@ -42164,6 +42159,13 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
                 }
             })
         };
+    },
+
+
+    computed: {
+        passwordValidationError: function passwordValidationError() {
+            return this.form.errors.get('email');
+        }
     },
 
     methods: _extends({}, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_vuex__["a" /* mapActions */])({
@@ -42246,6 +42248,15 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
                 password: null
             })
         };
+    },
+
+
+    computed: {
+        passwordValidationError: function passwordValidationError() {
+            if (this.form.errors.has('password')) return this.form.errors.get('password');
+
+            return false;
+        }
     },
 
     methods: _extends({}, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_vuex__["a" /* mapActions */])({
@@ -45885,25 +45896,28 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "container"
-  }, [_c('div', {
-    staticClass: "row"
-  }, [_c('div', {
-    staticClass: "col-md-8 col-md-offset-2"
-  }, [_c('div', {
-    staticClass: "panel panel-default"
-  }, [_c('div', {
-    staticClass: "panel-heading"
-  }, [_vm._v("Register")]), _vm._v(" "), _c('div', {
-    staticClass: "panel-body"
-  }, [_c('form', {
-    staticClass: "form-horizontal",
+  return _c('v-container', {
     attrs: {
-      "role": "form"
-    },
+      "fluid": "fluid"
+    }
+  }, [_c('v-row', {
+    staticClass: "mt-5"
+  }, [_c('v-col', {
+    attrs: {
+      "xs4": "xs4"
+    }
+  }), _vm._v(" "), _c('v-col', {
+    attrs: {
+      "xs4": "xs4"
+    }
+  }, [_c('v-card', [_c('v-card-row', {
+    staticClass: "blue"
+  }, [_c('v-card-title', [_c('span', {
+    staticClass: "white--text"
+  }, [_vm._v("Register")]), _vm._v(" "), _c('v-spacer')], 1)], 1), _vm._v(" "), _c('v-card-text', [_c('form', {
     on: {
       "submit": function($event) {
+        $event.stopPropagation();
         $event.preventDefault();
         _vm.submit($event)
       },
@@ -45911,135 +45925,76 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.form.errors.clear($event.target.name)
       }
     }
-  }, [_c('div', {
-    staticClass: "form-group",
-    class: {
-      'has-error': _vm.form.errors.has('profile.name')
-    }
-  }, [_c('label', {
-    staticClass: "col-md-4 control-label",
+  }, [_c('v-row', [_c('v-col', {
     attrs: {
-      "for": "email"
+      "xs12": ""
     }
-  }, [_vm._v("Name")]), _vm._v(" "), _c('div', {
-    staticClass: "col-md-6"
-  }, [_c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
+  }, [_c('v-text-field', {
+    attrs: {
+      "label": "Name",
+      "autofocus": "",
+      "name": "profile.name"
+    },
+    model: {
       value: (_vm.form.profile.name),
+      callback: function($$v) {
+        _vm.form.profile.name = $$v
+      },
       expression: "form.profile.name"
-    }],
-    staticClass: "form-control",
+    }
+  })], 1)], 1), _vm._v(" "), _c('v-row', [_c('v-col', {
     attrs: {
-      "id": "name",
-      "type": "text",
-      "name": "profile.name",
-      "autofocus": ""
-    },
-    domProps: {
-      "value": (_vm.form.profile.name)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.form.profile.name = $event.target.value
-      }
+      "xs12": ""
     }
-  }), _vm._v(" "), (_vm.form.errors.has('profile.name')) ? _c('span', {
-    staticClass: "error text-danger",
-    domProps: {
-      "textContent": _vm._s(_vm.form.errors.get('profile.name'))
-    }
-  }) : _vm._e()])]), _vm._v(" "), _c('div', {
-    staticClass: "form-group",
-    class: {
-      'has-error': _vm.form.errors.has('email')
-    }
-  }, [_c('label', {
-    staticClass: "col-md-4 control-label",
+  }, [_c('v-text-field', {
     attrs: {
-      "for": "email"
-    }
-  }, [_vm._v("E-Mail Address")]), _vm._v(" "), _c('div', {
-    staticClass: "col-md-6"
-  }, [_c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.form.email),
-      expression: "form.email"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      "id": "email",
-      "type": "text",
+      "label": "Email",
       "name": "email"
     },
-    domProps: {
-      "value": (_vm.form.email)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.form.email = $event.target.value
-      }
+    model: {
+      value: (_vm.form.email),
+      callback: function($$v) {
+        _vm.form.email = $$v
+      },
+      expression: "form.email"
     }
-  }), _vm._v(" "), (_vm.form.errors.has('email')) ? _c('span', {
-    staticClass: "error text-danger",
-    domProps: {
-      "textContent": _vm._s(_vm.form.errors.get('email'))
-    }
-  }) : _vm._e()])]), _vm._v(" "), _c('div', {
-    staticClass: "form-group",
-    class: {
-      'has-error': _vm.form.errors.has('password')
-    }
-  }, [_c('label', {
-    staticClass: "col-md-4 control-label",
+  })], 1)], 1), _vm._v(" "), _c('v-row', [_c('v-col', {
     attrs: {
-      "for": "password"
+      "xs12": ""
     }
-  }, [_vm._v("Password")]), _vm._v(" "), _c('div', {
-    staticClass: "col-md-6"
-  }, [_c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.form.password),
-      expression: "form.password"
-    }],
-    staticClass: "form-control",
+  }, [_c('v-text-field', {
     attrs: {
-      "id": "password",
+      "label": "Password",
       "type": "password",
       "name": "password"
     },
-    domProps: {
-      "value": (_vm.form.password)
+    model: {
+      value: (_vm.form.password),
+      callback: function($$v) {
+        _vm.form.password = $$v
+      },
+      expression: "form.password"
+    }
+  })], 1)], 1)], 1)]), _vm._v(" "), _c('v-card-row', {
+    attrs: {
+      "actions": ""
+    }
+  }, [_c('v-btn', {
+    staticClass: "blue--text",
+    attrs: {
+      "flat": "",
+      "disabled": _vm.form.errors.any()
     },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.form.password = $event.target.value
+    nativeOn: {
+      "click": function($event) {
+        _vm.submit($event)
       }
     }
-  }), _vm._v(" "), (_vm.form.errors.has('password')) ? _c('span', {
-    staticClass: "error text-danger",
-    domProps: {
-      "textContent": _vm._s(_vm.form.errors.get('password'))
-    }
-  }) : _vm._e()])]), _vm._v(" "), _c('div', {
-    staticClass: "form-group"
-  }, [_c('div', {
-    staticClass: "col-md-6 col-md-offset-4"
-  }, [_c('button', {
-    staticClass: "btn btn-primary",
+  }, [_vm._v("Register")])], 1)], 1)], 1), _vm._v(" "), _c('v-col', {
     attrs: {
-      "type": "submit",
-      "disabled": _vm.form.errors.any()
+      "xs4": "xs4"
     }
-  }, [_vm._v("\n                                    Register\n                                ")])])])])])])])])])
+  })], 1)], 1)
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -46141,6 +46096,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "type": "password",
       "label": "Password",
+      "rules": [_vm.passwordValidationError],
       "name": "password"
     },
     model: {

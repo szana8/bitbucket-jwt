@@ -1,53 +1,48 @@
 <template>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2">
-                <div class="panel panel-default">
-                    <div class="panel-heading">Register</div>
+    <v-container fluid="fluid">
+        <v-row class="mt-5">
+            <v-col xs4="xs4"></v-col>
+            <v-col xs4="xs4">
+                <v-card>
+                    <v-card-row class="blue">
+                        <v-card-title>
+                            <span class="white--text">Register</span>
+                            <v-spacer></v-spacer>
+                        </v-card-title>
+                    </v-card-row>
 
+                    <v-card-text>
+                        <form @submit.stop.prevent="submit" @keydown="form.errors.clear($event.target.name)">
+                            <v-row>
+                                <v-col xs12>
+                                    <v-text-field label="Name" v-model="form.profile.name" autofocus name="profile.name"></v-text-field>
+                                </v-col>
+                            </v-row>
 
+                            <v-row>
+                                <v-col xs12>
+                                    <v-text-field label="Email" v-model="form.email" name="email"></v-text-field>
+                                </v-col>
+                            </v-row>
 
-                    <div class="panel-body">
-                        <form class="form-horizontal" role="form" @submit.prevent="submit" @keydown="form.errors.clear($event.target.name)">
+                            <v-row>
+                                <v-col xs12>
+                                    <v-text-field label="Password" type="password" v-model="form.password" name="password"></v-text-field>
+                                </v-col>
+                            </v-row>
 
-                            <div class="form-group" v-bind:class="{ 'has-error': form.errors.has('profile.name') }">
-                                <label for="email" class="col-md-4 control-label">Name</label>
-                                <div class="col-md-6">
-                                    <input id="name" type="text" class="form-control" name="profile.name" autofocus v-model="form.profile.name">
-                                    <span class="error text-danger" v-if="form.errors.has('profile.name')" v-text="form.errors.get('profile.name')"></span>
-                                </div>
-                            </div>
-
-                            <div class="form-group" v-bind:class="{ 'has-error': form.errors.has('email') }">
-                                <label for="email" class="col-md-4 control-label">E-Mail Address</label>
-                                <div class="col-md-6">
-                                    <input id="email" type="text" class="form-control" name="email" v-model="form.email">
-                                    <span class="error text-danger" v-if="form.errors.has('email')" v-text="form.errors.get('email')"></span>
-                                </div>
-                            </div>
-
-                            <div class="form-group" v-bind:class="{ 'has-error': form.errors.has('password') }">
-                                <label for="password" class="col-md-4 control-label">Password</label>
-
-                                <div class="col-md-6">
-                                    <input id="password" type="password" class="form-control" name="password" v-model="form.password">
-                                    <span class="error text-danger" v-if="form.errors.has('password')" v-text="form.errors.get('password')"></span>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <div class="col-md-6 col-md-offset-4">
-                                    <button type="submit" class="btn btn-primary" :disabled="form.errors.any()">
-                                        Register
-                                    </button>
-                                </div>
-                            </div>
                         </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+                    </v-card-text>
+
+                    <v-card-row actions>
+                        <v-btn flat class="blue--text" v-on:click.native="submit" :disabled="form.errors.any()">Register</v-btn>
+                    </v-card-row>
+
+                </v-card>
+            </v-col>
+            <v-col xs4="xs4"></v-col>
+        </v-row>
+    </v-container>
 </template>
 
 <script>
@@ -66,6 +61,13 @@
                 })
             }
         },
+
+        computed: {
+            passwordValidationError: function() {
+                return this.form.errors.get('email')
+            }
+        },
+
         methods: {
             ...mapActions({
                 register: 'auth/register'
