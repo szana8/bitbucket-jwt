@@ -16,7 +16,7 @@
         </script>
 
         <title>Laravel</title>
-
+        <link href="css/app.css" />
     </head>
     <body>
         <div id="app">

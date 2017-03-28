@@ -1,7 +1,7 @@
 import {isEmpty} from 'lodash'
 import {setHttpToken} from '../../../helpers'
 import localforage from 'localforage'
-import reouter from '../../../router'
+import router from '../../../router'
 
 /**
  * Register the user than login with the given credentials and redirect to the home page

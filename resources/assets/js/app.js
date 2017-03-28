@@ -29,6 +29,7 @@ window.Form = Form;
 
 Vue.component('app', require('./components/App.vue'));
 Vue.component('navigation', require('./components/Navigation.vue'));
+Vue.component('sidebar', require('./components/Sidebar.vue'));
 
 store.dispatch('auth/setToken').then(() => {
     store.dispatch('auth/fetchUser').catch(() => {
@@ -42,5 +43,8 @@ store.dispatch('auth/setToken').then(() => {
 const app = new Vue({
     router: router,
     store: store,
-    el: '#app'
+    el: '#app',
+    data: {
+        globalSearchVariable: 'searchdata'
+    }
 });
