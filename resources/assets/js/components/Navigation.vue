@@ -4,12 +4,6 @@
 
         <v-toolbar-title>Laravel Issue Tracker</v-toolbar-title>
 
-
-        <v-toolbar-items v-if="user.authenticated">
-            <v-toolbar-item v-on:click.native="navBarRedirect('metadata')" v-if="user.authenticated">Metadata</v-toolbar-item>
-            <v-toolbar-item v-on:click.native="signout" v-if="user.authenticated">Logout</v-toolbar-item>
-        </v-toolbar-items>
-
         <v-toolbar-items v-if="!user.authenticated">
                 <v-toolbar-item v-on:click.native="navBarRedirect('login')">Login</v-toolbar-item>
                 <v-toolbar-item v-on:click.native="navBarRedirect('register')">Register</v-toolbar-item>
@@ -23,6 +17,11 @@
                 <v-list-item>
                     <v-list-tile>
                         <v-list-tile-title>Help</v-list-tile-title>
+                    </v-list-tile>
+                </v-list-item>
+                <v-list-item>
+                    <v-list-tile v-on:click.native="signout">
+                        <v-list-tile-title>Logout</v-list-tile-title>
                     </v-list-tile>
                 </v-list-item>
             </v-list>

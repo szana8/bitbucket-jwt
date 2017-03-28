@@ -1,45 +1,27 @@
 <template>
-    <v-sidebar height="auto">
+    <v-sidebar>
         <v-list dense>
             <template>
-
+                <v-list-group>
+                    <v-list-item slot="item">
+                        <v-list-tile v-on:click.native="navBarRedirect('metadata')">
+                            <v-list-tile-title>Metadata</v-list-tile-title>
+                        </v-list-tile>
+                    </v-list-item>
+                </v-list-group>
             </template>
         </v-list>
     </v-sidebar>
 </template>
 
 <script>
-    import { mapActions, mapGetters } from 'vuex'
+
 
     export default {
-        computed: mapGetters({
-            sidebar: 'sidebar',
-        }),
-
-        data() {
-            return {
-                showSearchClosed: false,
-                searchText: null
-            }
-        },
-
         methods: {
-            clearSearchText: function() {
-                this.searchText = ''
-                //this.showSearchClosed = false
-            }
-        },
-
-        watch: {
-            searchText: function(value) {
-                if ( value != '') {
-                    this.globalSearchValue = value;
-                    this.showSearchClosed = true
-                }
-                else {
-                    this.globalSearchValue = ''
-                    this.showSearchClosed = false
-                }
+            navBarRedirect (page) {
+                console.log(page)
+                this.$router.replace({ name: page })
             }
         }
     }

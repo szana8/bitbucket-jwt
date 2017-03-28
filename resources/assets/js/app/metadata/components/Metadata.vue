@@ -2,14 +2,15 @@
     <v-container fluid>
         <v-row class="">
             <v-col xs12="xs12">
-                <v-toolbar class="transparent">
-                    <v-btn icon="icon"><v-icon>search</v-icon></v-btn>
-                    <v-text-field class="grey--text" v-model="searchText" single-line></v-text-field>
-                    <v-btn icon="icon" v-if="showSearchClosed" v-on:click.native="clearSearchText"><v-icon>close</v-icon></v-btn>
+
+                <v-toolbar class="transparent z-depth-0">
+                    <v-btn icon="icon"><v-icon class="grey--text">search</v-icon></v-btn>
+                    <v-text-field class="grey--text" v-model="searchText" single-line v-on:keyup.native.enter="getList"></v-text-field>
+                    <v-btn icon="icon" v-if="showSearchClosed" v-on:click.native="clearSearchText"><v-icon class="grey--text">close</v-icon></v-btn>
                 </v-toolbar>
+
             </v-col>
             <v-col xs12="xs12">
-                <v-table-overflow>
                 <table>
                     <thead>
                         <tr>
@@ -41,7 +42,6 @@
                     </template>
                     </tbody>
                 </table>
-                </v-table-overflow>
             </v-col>
         </v-row>
         <v-row>
@@ -60,13 +60,7 @@
 </template>
 
 <script>
-    import { mapActions, mapGetters } from 'vuex'
-    import {isEmpty} from 'lodash'
-
     export default {
-        computed: mapGetters({
-            sidebar: 'sidebar',
-        }),
 
         data() {
             return {
@@ -74,16 +68,12 @@
                 pagination: null,
                 total_pages: null,
                 current_page: null,
-                search: '',
+                showSearchClosed: false,
+                searchText: '',
                 axiosPagination: {
+                    search: null,
                     page  : null
                 }
-            }
-        },
-
-        computed: {
-            searchValue: function() {
-
             }
         },
 
@@ -98,32 +88,36 @@
 
         watch: {
             current_page: function (newIndex) {
+                console.log(newIndex)
                 this.current_page = newIndex
                 this.axiosPagination.page = newIndex
                 this.getList()
                 // get next page data...
             },
-            search: function(value) {
-                console.log(value)
+            searchText: function(value) {
+                this.axiosPagination.search = value;
+                value != '' ? this.showSearchClosed = true : this.showSearchClosed = false
             }
         },
 
         methods: {
-            ...mapActions({
-                register: 'metadata'
-            }),
             getList: function() {
                 axios.get('/api/v1/metadata', {
-                    params: {
-                        page: this.axiosPagination.page,
-                        search: this.sidebar.search
-                    }
+                    params: this.axiosPagination
                 }).then(response => {
                     this.metadata = response.data.data
                     this.pagination = response.data.pagination
                     this.total_pages = response.data.pagination.total_pages
                     this.current_page = response.data.pagination.current_page
+                }).catch(error => {
+                    console.log(error)
                 })
+            },
+            clearSearchText: function() {
+                // clear the search field
+                this.searchText = ''
+                // than reload the list
+                this.getList()
             }
         }
     }

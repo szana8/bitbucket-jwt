@@ -43,7 +43,7 @@ class MetadataController extends ApiController {
      */
     public function index()
     {
-        $metadata = Metadata::searchInDefaultColumns(Request::get('search'))->paginate(2);
+        $metadata = Metadata::searchInDefaultColumns(Request::get('search'))->paginate($this->limit);
 
         return $this->responsWithPaginaton($metadata, [
             'data' => $this->metadataTransformer->transformCollection($metadata->all()),
