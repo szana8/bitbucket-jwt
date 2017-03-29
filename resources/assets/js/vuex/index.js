@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import auth from '../app/auth/vuex'
-
+import metadata from '../app/metadata/vuex'
 
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
@@ -12,6 +12,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     modules: {
-        auth: auth
+        auth: auth,
+        metadata: metadata
     }
 })

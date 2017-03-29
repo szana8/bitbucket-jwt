@@ -54,7 +54,7 @@
                                             <v-switch input-value="true" v-bind:value="item.enabled == 'Y' ? 'true' : 'false' " primary light />
                                         </td>
                                         <td>
-                                            <v-btn primary floating small dark>
+                                            <v-btn primary floating small dark v-on:click.native="edit(item.id)">
                                                 <v-icon class="white--text">edit</v-icon>
                                             </v-btn>
                                             <v-btn error floating small dark>
@@ -162,6 +162,10 @@
             createMetadata: function()
             {
                 this.$router.replace({ name: 'CreateMetadata' })
+            },
+
+            edit: function(metadata) {
+                this.$router.replace({ name: 'EditMetadata', params: { id: metadata } })
             }
         }
     }

@@ -9,6 +9,10 @@
                 <v-toolbar-item v-on:click.native="navBarRedirect('register')">Register</v-toolbar-item>
         </v-toolbar-items>
 
+        <v-btn icon dark v-if="user.authenticated">
+            <v-icon>account_circle</v-icon>
+        </v-btn>
+
         <v-menu bottom left offset-y origin="top right" transition="v-slide-y-transition">
             <v-btn icon dark slot="activator">
                 <v-icon>more_vert</v-icon>

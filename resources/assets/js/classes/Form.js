@@ -50,7 +50,7 @@ class Form {
         return new Promise((resolve, reject) => {
             axios.post(url, this.data())
                 .then(response => {
-                    this.onSuccess(response.data);
+                    this.onSuccess(response.data, true);
 
                     resolve(response.data);
                 })
@@ -72,7 +72,7 @@ class Form {
         return new Promise((resolve, reject) => {
             axios.patch(url, this.data())
                 .then(response => {
-                    this.onSuccess(response.data);
+                    this.onSuccess(response.data, false);
 
                     resolve(response.data);
                 })
@@ -96,7 +96,7 @@ class Form {
                 params: this.data()
             })
                 .then(response => {
-                    this.onSuccess(response.data);
+                    this.onSuccess(response.data, true);
 
                     resolve(response.data);
                 })
@@ -120,7 +120,7 @@ class Form {
                 params: this.data()
             })
                 .then(response => {
-                    this.onSuccess(response.data);
+                    this.onSuccess(response.data, false);
 
                     resolve(response.data);
                 })
@@ -138,10 +138,11 @@ class Form {
      *
      * @param {object} data
      */
-    onSuccess(data) {
+    onSuccess(data, needReset) {
         console.log('Success: ' + data);
 
-        this.reset();
+        if(needReset == true)
+            this.reset();
     }
 
 

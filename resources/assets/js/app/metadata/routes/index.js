@@ -17,5 +17,14 @@ export default [
         meta: {
             needsAuth: true
         }
+    },
+
+    {
+        path: '/metadata/:id/edit',
+        component: Create,
+        name: 'EditMetadata',
+        meta: {
+            needsAuth: true
+        }
     }
 ]
