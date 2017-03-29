@@ -133,7 +133,8 @@
         },
 
         mounted: function () {
-            if (this.$route.params.id) {
+            if (this.$route.params.id)
+            {
                 this.id = this.$route.params.id
                 axios.get('api/v1/metadata/' + this.$route.params.id).then(response => {
                     this.action = 'Edit'
@@ -177,9 +178,9 @@
 
                     this.update({
                         payload: {
-                            id: this.$route.params.id,
+                            errors: [],
                             form: this.form,
-                            errors: []
+                            id: this.$route.params.id
                         },
                         context: this
                     }).then(response => {
@@ -196,8 +197,8 @@
 
                     this.create({
                         payload: {
-                            form: this.form,
-                            errors: []
+                            errors: [],
+                            form: this.form
                         },
                         context: this
                     }).then(response => {
@@ -220,18 +221,6 @@
                 this.form.value = null
                 this.form.description = null
                 this.form.enabled = true*/
-            },
-
-            edit: function () {
-                this.edit({
-                    payload: {
-                        id: this.id
-                    }
-                }).then(response => {
-                    console.log(response)
-                }).catch(error => {
-                    console.log(error)
-                })
             }
         }
     }

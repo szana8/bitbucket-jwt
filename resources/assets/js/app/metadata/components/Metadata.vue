@@ -95,16 +95,16 @@
         data() {
             return {
                 metadata        : null,
+                searchText      : '',
                 pagination      : null,
                 total_pages     : null,
                 current_page    : null,
-                showSearchClosed: false,
-                searchText      : '',
                 showSearchInput : false,
+                showSearchClosed: false,
                 axiosPagination : {
                     search: null,
                     page  : null
-                }
+                },
             }
         },
 
@@ -121,7 +121,6 @@
         watch: {
             current_page: function (newIndex)
             {
-                console.log(newIndex)
                 this.current_page = newIndex
                 this.axiosPagination.page = newIndex
                 this.getList()
