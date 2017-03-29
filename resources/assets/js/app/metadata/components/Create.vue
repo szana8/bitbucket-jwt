@@ -121,9 +121,6 @@
 
         computed: {
             keyValidationError: function() {
-                if (this.form.errors.has('key'))
-                    return this.form.errors.get('key')
-
                 return true;
             }
         },
@@ -169,6 +166,13 @@
                 this.form.value = null
                 this.form.description = null
                 this.form.enabled = true
+            },
+
+            keyValidationError: function() {
+                if (this.form.errors.has('key'))
+                    return this.form.errors.get('key')
+
+                return true;
             }
         }
     }
