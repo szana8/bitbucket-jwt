@@ -4,7 +4,7 @@
             <v-col xs12="xs12">
                 <v-container>
                     <v-row class="mb-3">
-                        <v-col xl12="xl12">
+                        <v-col xs12="xs12">
                             <v-card>
                                 <v-card-row>
                                     <v-card-title>
@@ -31,7 +31,7 @@
                     </v-row>
 
                     <v-row>
-                        <v-col xl12="xl12">
+                        <v-col xs12="xs12">
                             <table>
                                 <thead>
                                 <tr>
@@ -77,7 +77,7 @@
         </v-row>
         <v-row>
             <v-col xs12="xs12" class="pt-5 text-xs-right">
-                <v-btn floating="floating" error>
+                <v-btn floating="floating" error v-on:click.native="createMetadata">
                     <v-icon>add</v-icon>
                 </v-btn>
             </v-col>
@@ -86,6 +86,10 @@
 </template>
 
 <script>
+
+    // TODO az oldalváltáskor elrakni az oldal számot egy localforge-ba majd ha vissza navigálunk
+    // TODO akkor az oldalszámot betölteni
+
     export default {
 
         data() {
@@ -133,27 +137,31 @@
         },
 
         methods: {
-            getList        : function ()
+
+            getList: function ()
             {
                 axios.get('/api/v1/metadata', {
                     params: this.axiosPagination
-                }).then(response =>
-                {
+                }).then(response => {
                     this.metadata = response.data.data
                     this.pagination = response.data.pagination
                     this.total_pages = response.data.pagination.total_pages
-                    //this.current_page = response.data.pagination.current_page
-                }).catch(error =>
-                {
+                }).catch(error => {
                     console.log(error)
                 })
             },
+
             clearSearchText: function ()
             {
                 // clear the search field
                 this.searchText = ''
                 // than reload the list
                 this.getList()
+            },
+
+            createMetadata: function()
+            {
+                this.$router.replace({ name: 'CreateMetadata' })
             }
         }
     }
