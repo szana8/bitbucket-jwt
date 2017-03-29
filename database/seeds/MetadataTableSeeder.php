@@ -1,5 +1,5 @@
 <?php
-
+use Faker\Factory;
 use Illuminate\Database\Seeder;
 
 class MetadataTableSeeder extends Seeder
@@ -46,5 +46,19 @@ class MetadataTableSeeder extends Seeder
 
 
         DB::table('metadata')->insert($metadata);
+
+        // Test data
+        $faker = Factory::create();
+
+        for ( $i = 0; $i <= 10000; $i++ )
+        {
+            DB::table('metadata')->insert([
+                'type' => $faker->randomElement($array = array ('label','setting')),
+                'key' => $faker->word,
+                'value' => $faker->word,
+                'description' => $faker->sentence(6, true),
+                'enabled' => $faker->randomElement($array = array ('Y','N')),
+            ]);
+        }
     }
 }

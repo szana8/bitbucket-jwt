@@ -24,6 +24,11 @@ class MetadataController extends ApiController {
     protected $metadataTransformer;
 
     /**
+     * Reqrite the default limit
+     */
+    protected $limit = 8;
+
+    /**
      * MetadataController constructor.
      *
      * @param $metadataTransformer
@@ -43,7 +48,7 @@ class MetadataController extends ApiController {
      */
     public function index()
     {
-        $metadata = Metadata::searchInDefaultColumns(Request::get('search'))->paginate($this->limit);
+        $metadata = Metadata::searchInDefaultColumns(Request::get('search'))->orderBy('key', 'asc')->paginate($this->limit);
 
         return $this->responsWithPaginaton($metadata, [
             'data' => $this->metadataTransformer->transformCollection($metadata->all()),
