@@ -59,7 +59,7 @@
 
                                 <v-row>
                                     <v-col xs12>
-                                        <v-switch label="Enabled" primary v-model="form.enabled" light/>
+                                        <v-switch label="Enabled" primary v-model="form.enableSwitch" light/>
                                     </v-col>
                                 </v-row>
 
@@ -123,10 +123,11 @@
                         name: 'Please select one...',
                         value: null
                     },
+                    enableSwitch: true,
                     type: null,
                     key: null,
                     value: null,
-                    enabled: true,
+                    enabled: 'Y',
                     description: null
                 })
             }
@@ -146,7 +147,7 @@
                     this.form.key = response.data.data.key
                     this.form.value = response.data.data.value
                     this.form.description = response.data.data.description
-                    this.form.enabled = response.data.data.enabled == 'Y' ? true : false
+                    this.form.enableSwitch = response.data.data.enabled == 'Y' ? true : false
 
                     this.loader = true
                 }).catch(error => {
@@ -174,7 +175,7 @@
                 if (this.$route.params.id != null)
                 {
                     this.form.type = (typeof this.form.typeList.value != "undefined") ? this.form.typeList.value : ''
-                    this.form.enabled = this.form.enabled == true ? 'Y' : 'N'
+                    this.form.enabled = this.form.enableSwitch == true ? 'Y' : 'N'
 
                     this.update({
                         payload: {
@@ -193,7 +194,7 @@
                 else
                 {
                     this.form.type = (typeof this.form.typeList.value != "undefined") ? this.form.typeList.value : ''
-                    this.form.enabled = this.form.enabled == true ? 'Y' : 'N'
+                    this.form.enabled = this.form.enableSwitch == true ? 'Y' : 'N'
 
                     this.create({
                         payload: {
@@ -220,7 +221,7 @@
                 this.form.key = null
                 this.form.value = null
                 this.form.description = null
-                this.form.enabled = true*/
+                this.form.enable = true*/
             }
         }
     }

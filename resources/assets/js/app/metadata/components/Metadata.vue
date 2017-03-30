@@ -1,6 +1,11 @@
 <template>
     <v-container fluid>
-        <v-row>
+        <v-row v-if="! isLoaded">
+            <v-col xs12="xs12" class="text-xs-center mt-5">
+                <v-progress-circular indeterminate class="primary--text"/>
+            </v-col>
+        </v-row>
+        <v-row v-if="isLoaded">
             <v-col xs12="xs12">
                 <v-container>
                     <v-row class="mb-3">
@@ -75,7 +80,7 @@
                 </v-container>
             </v-col>
         </v-row>
-        <v-row>
+        <v-row v-if="isLoaded">
             <v-col xs12="xs12" class="pt-5 text-xs-right">
                 <v-btn floating="floating" error v-on:click.native="createMetadata">
                     <v-icon>add</v-icon>
@@ -94,6 +99,7 @@
 
         data() {
             return {
+                isLoaded        : false,
                 metadata        : null,
                 searchText      : '',
                 pagination      : null,
@@ -145,6 +151,7 @@
                     this.metadata = response.data.data
                     this.pagination = response.data.pagination
                     this.total_pages = response.data.pagination.total_pages
+                    this.isLoaded = true
                 }).catch(error => {
                     console.log(error)
                 })
