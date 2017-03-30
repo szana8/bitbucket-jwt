@@ -12,8 +12,8 @@
                         </v-list-tile>
                     </v-list-item>
                     <v-list-item v-for="subItem in item.items">
-                        <v-list-tile v-on:click.native="navBarRedirect(subItem.name)">
-                            <v-list-tile-title v-text="subItem.title"  />
+                        <v-list-tile v-model="subItem.active" v-on:click.native="navBarRedirect(subItem.name)">
+                            <v-list-tile-title v-text="subItem.title"   />
                         </v-list-tile>
                     </v-list-item>
                 </v-list-group>
@@ -64,7 +64,7 @@
                         icon: 'settings applications',
                         group: '/system',
                         items: [
-                            { title: 'Metadata', name: 'metadata', icon: 'list' },
+                            { title: 'Metadata', name: 'metadata', icon: 'list', active: true },
                         ]
                     },
                     //{ title: 'Link' },

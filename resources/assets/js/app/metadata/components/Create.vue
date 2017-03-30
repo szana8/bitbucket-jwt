@@ -1,15 +1,20 @@
 <template>
 
     <v-container>
+        <!-- Load animation -->
         <v-row v-if="! loader">
             <v-col xs12="xs12" class="text-xs-center mt-5">
                 <v-progress-circular indeterminate class="primary--text"/>
             </v-col>
         </v-row>
+        <!-- End load animation -->
+
 
         <v-row v-if="loader">
             <v-col xs12="xs12">
                 <v-card>
+
+                    <!-- Header -->
                     <v-card-row>
                         <v-card-title>
                             <v-btn icon class="grey--text text--darken-2" v-on:click.native="backToMetadataMain">
@@ -31,10 +36,12 @@
                             </v-menu>
                         </v-card-title>
                     </v-card-row>
+                    <!-- End Header -->
+
+
                     <v-card-row>
                         <v-card-text>
                             <form @submit.stop.prevent="submit" @keydown="form.errors.clear($event.target.name)">
-
                                 <v-row>
                                     <v-col xs12>
                                         <v-select v-bind:items="metadata_types" item-text="type" v-model="type" label="Select" />
@@ -45,7 +52,6 @@
                                         </div>
                                     </v-col>
                                 </v-row>
-
                                 <v-row>
                                     <v-col xs12>
                                         <v-text-field v-bind:class="{ 'input-group--error input-group--dirty': form.errors.has('key') }" label="Key" v-model="form.key" single-line name="key"/>
@@ -56,7 +62,6 @@
                                         </div>
                                     </v-col>
                                 </v-row>
-
                                 <v-row>
                                     <v-col xs12>
                                         <v-text-field v-bind:class="{ 'input-group--error input-group--dirty': form.errors.has('value') }" label="Value" v-model="form.value" single-line name="value"/>
@@ -67,7 +72,6 @@
                                         </div>
                                     </v-col>
                                 </v-row>
-
                                 <v-row>
                                     <v-col xs12>
                                         <v-text-field v-bind:class="{ 'input-group--error input-group--dirty': form.errors.has('description') }" label="Description" v-model="form.description" multi-line name="description"/>
@@ -78,25 +82,23 @@
                                         </div>
                                     </v-col>
                                 </v-row>
-
                                 <v-row>
                                     <v-col xs12>
                                         <v-switch label="Enabled" primary v-model="form.enableSwitch" light/>
                                     </v-col>
                                 </v-row>
-
                             </form>
                         </v-card-text>
                     </v-card-row>
-
                     <v-card-row actions>
                         <v-btn v-bind:loading="loading"  flat class="primary--text darken-1" v-on:click.native="submit">Save</v-btn>
                     </v-card-row>
-
                 </v-card>
             </v-col>
         </v-row>
 
+
+        <!-- Reponse -->
         <v-modal v-model="isSuccess" bottom>
             <v-card class="secondary white--text">
                 <v-card-text class="subheading white--text">
@@ -109,13 +111,14 @@
                 </v-card-text>
             </v-card>
         </v-modal>
+        <!-- End Response -->
 
     </v-container>
 </template>
 
 <script>
-    import {mapActions} from 'vuex'
-    import {isEmpty} from 'lodash'
+    import { mapActions } from 'vuex'
+    import { isEmpty } from 'lodash'
 
     export default {
         data() {
@@ -153,7 +156,7 @@
                 this.id = this.$route.params.id
                 axios.get('api/v1/metadata/' + this.$route.params.id).then(response => {
                     this.action = 'Edit'
-                    this.type = {'type': response.data.data.type, 'value': response.data.data.type}
+                    this.type = { 'type': response.data.data.type, 'value': response.data.data.type }
                     this.form.type = response.data.data.type
                     this.form.key = response.data.data.key
                     this.form.value = response.data.data.value
@@ -172,16 +175,18 @@
         },
 
         watch: {
+
             type: function(newValue) {
                 if(newValue)
                     this.form.errors.clear('type')
             }
+
         },
 
         methods: {
+
             ...mapActions({
                 create: 'metadata/create',
-                edit: 'metadata/edit',
                 update: 'metadata/update'
             }),
 
@@ -189,9 +194,14 @@
                 this.$router.replace({name: 'metadata'})
             },
 
-            updateForm: function() {
+            checkType: function()
+            {
                 this.form.type = (typeof this.type.value != "undefined") ? this.type.value : ''
                 this.form.enabled = this.form.enableSwitch == true ? 'Y' : 'N'
+            },
+
+            updateMetadata: function() {
+               this.checkType()
 
                 this.update({
                     payload: {
@@ -210,9 +220,8 @@
                 })
             },
 
-            createForm: function() {
-                this.form.type = (typeof this.type.value != "undefined") ? this.type.value : ''
-                this.form.enabled = this.form.enableSwitch == true ? 'Y' : 'N'
+            createMetadata: function() {
+                this.checkType()
 
                 this.create({
                     payload: {
@@ -231,25 +240,14 @@
                 })
             },
 
+
             submit: function () {
                 this.loading = true
 
                 if (this.$route.params.id != null)
-                    this.updateForm()
+                    this.updateMetadata()
                 else
-                    this.createForm()
-            },
-
-            setToDefault: function () {
-                // Set to default
-                /*this.form.type = {
-                    value: null,
-                    name: 'Please select one...'
-                }
-                this.form.key = null
-                this.form.value = null
-                this.form.description = null
-                this.form.enable = true*/
+                    this.createMetadata()
             }
         }
     }

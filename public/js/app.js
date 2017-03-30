@@ -431,7 +431,7 @@ module.exports = function normalizeComponent (
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(process, global) {/*!
- * Vue.js v2.2.6
+ * Vue.js v2.2.5
  * (c) 2014-2017 Evan You
  * Released under the MIT License.
  */
@@ -2523,9 +2523,6 @@ function lifecycleMixin (Vue) {
     }
     // call the last hook...
     vm._isDestroyed = true;
-    // invoke destroy hooks on current rendered tree
-    vm.__patch__(vm._vnode, null);
-    // fire destroyed hook
     callHook(vm, 'destroyed');
     // turn off all instance listeners.
     vm.$off();
@@ -2533,8 +2530,8 @@ function lifecycleMixin (Vue) {
     if (vm.$el) {
       vm.$el.__vue__ = null;
     }
-    // remove reference to DOM nodes (prevents leak)
-    vm.$options._parentElm = vm.$options._refElm = null;
+    // invoke destroy hooks on current rendered tree
+    vm.__patch__(vm._vnode, null);
   };
 }
 
@@ -3199,15 +3196,6 @@ function initComputed (vm, computed) {
   for (var key in computed) {
     var userDef = computed[key];
     var getter = typeof userDef === 'function' ? userDef : userDef.get;
-    if (process.env.NODE_ENV !== 'production') {
-      if (getter === undefined) {
-        warn(
-          ("No getter function has been defined for computed property \"" + key + "\"."),
-          vm
-        );
-        getter = noop;
-      }
-    }
     // create internal watcher for the computed property.
     watchers[key] = new Watcher(vm, getter, noop, computedWatcherOptions);
 
@@ -3620,7 +3608,7 @@ function extractProps (data, Ctor, tag) {
         ) {
           tip(
             "Prop \"" + keyInLowerCase + "\" is passed to component " +
-            (formatComponentName(tag || Ctor)) + ", but the declared prop name is" +
+            (formatComponentName(tag || Ctor)) + ", but the delared prop name is" +
             " \"" + key + "\". " +
             "Note that HTML attributes are case-insensitive and camelCased " +
             "props need to use their kebab-case equivalents when using in-DOM " +
@@ -4605,7 +4593,7 @@ Object.defineProperty(Vue$3.prototype, '$isServer', {
   get: isServerRendering
 });
 
-Vue$3.version = '2.2.6';
+Vue$3.version = '2.2.5';
 
 /*  */
 
@@ -49480,6 +49468,9 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
+//
+//
+//
 
 
 
@@ -49537,14 +49528,15 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
     },
 
     watch: {
+
         type: function type(newValue) {
             if (newValue) this.form.errors.clear('type');
         }
+
     },
 
     methods: _extends({}, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_vuex__["a" /* mapActions */])({
         create: 'metadata/create',
-        edit: 'metadata/edit',
         update: 'metadata/update'
     }), {
 
@@ -49552,11 +49544,15 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             this.$router.replace({ name: 'metadata' });
         },
 
-        updateForm: function updateForm() {
-            var _this2 = this;
-
+        checkType: function checkType() {
             this.form.type = typeof this.type.value != "undefined" ? this.type.value : '';
             this.form.enabled = this.form.enableSwitch == true ? 'Y' : 'N';
+        },
+
+        updateMetadata: function updateMetadata() {
+            var _this2 = this;
+
+            this.checkType();
 
             this.update({
                 payload: {
@@ -49575,11 +49571,10 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             });
         },
 
-        createForm: function createForm() {
+        createMetadata: function createMetadata() {
             var _this3 = this;
 
-            this.form.type = typeof this.type.value != "undefined" ? this.type.value : '';
-            this.form.enabled = this.form.enableSwitch == true ? 'Y' : 'N';
+            this.checkType();
 
             this.create({
                 payload: {
@@ -49601,19 +49596,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         submit: function submit() {
             this.loading = true;
 
-            if (this.$route.params.id != null) this.updateForm();else this.createForm();
-        },
-
-        setToDefault: function setToDefault() {
-            // Set to default
-            /*this.form.type = {
-                value: null,
-                name: 'Please select one...'
-            }
-            this.form.key = null
-            this.form.value = null
-            this.form.description = null
-            this.form.enable = true*/
+            if (this.$route.params.id != null) this.updateMetadata();else this.createMetadata();
         }
     })
 });
@@ -49624,6 +49607,11 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_localforage__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_localforage___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_localforage__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__(5);
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 //
 //
 //
@@ -49716,6 +49704,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 
 // TODO az oldalváltáskor elrakni az oldal számot egy localforge-ba majd ha vissza navigálunk
@@ -49723,15 +49726,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
+
         return {
             isLoaded: false,
             metadata: null,
-            searchText: '',
+            isSuccess: false,
             pagination: null,
             total_pages: null,
             current_page: null,
-            showSearchInput: false,
-            showSearchClosed: false,
+            reponseMessage: '',
+            issetPageNumber: false,
             axiosPagination: {
                 search: null,
                 page: null
@@ -49741,31 +49745,44 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     mounted: function mounted() {
         var _this = this;
 
-        axios.get('/api/v1/metadata').then(function (response) {
-            _this.metadata = response.data.data;
-            _this.pagination = response.data.pagination;
-            _this.total_pages = response.data.pagination.total_pages;
-            _this.current_page = response.data.pagination.current_page;
+        __WEBPACK_IMPORTED_MODULE_0_localforage___default.a.getItem('meta_page').then(function (page) {
+
+            if (page) {
+                _this.issetPageNumber = true;
+                _this.axiosPagination.page = page;
+            }
+
+            axios.get('/api/v1/metadata', {
+                params: _this.axiosPagination
+            }).then(function (response) {
+                _this.metadata = response.data.data;
+                _this.pagination = response.data.pagination;
+                _this.total_pages = response.data.pagination.total_pages;
+                _this.current_page = response.data.pagination.current_page;
+            });
         });
     },
 
 
     watch: {
+
         current_page: function current_page(newIndex) {
-            this.current_page = newIndex;
+            if (!this.issetPageNumber) {
+                __WEBPACK_IMPORTED_MODULE_0_localforage___default.a.setItem('meta_page', newIndex);
+            }
+
+            //this.current_page = newIndex
             this.axiosPagination.page = newIndex;
             this.getList();
             // get next page data...
-        },
-        searchText: function searchText(value) {
-            this.current_page = 1;
-            this.axiosPagination.page = 1;
-            this.axiosPagination.search = value;
-            value != '' ? this.showSearchClosed = true : this.showSearchClosed = false;
+            this.issetPageNumber = false;
         }
+
     },
 
-    methods: {
+    methods: _extends({}, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* mapActions */])({
+        destroy: 'metadata/destroy'
+    }), {
 
         getList: function getList() {
             var _this2 = this;
@@ -49773,20 +49790,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             axios.get('/api/v1/metadata', {
                 params: this.axiosPagination
             }).then(function (response) {
+                if (response.data.pagination.total_pages < _this2.axiosPagination.page) {
+                    _this2.axiosPagination.page = response.data.pagination.total_pages;
+                    _this2.getList();
+                }
                 _this2.metadata = response.data.data;
                 _this2.pagination = response.data.pagination;
                 _this2.total_pages = response.data.pagination.total_pages;
+                _this2.current_page = response.data.pagination.current_page;
                 _this2.isLoaded = true;
             }).catch(function (error) {
                 console.log(error);
             });
-        },
-
-        clearSearchText: function clearSearchText() {
-            // clear the search field
-            this.searchText = '';
-            // than reload the list
-            this.getList();
         },
 
         createMetadata: function createMetadata() {
@@ -49795,8 +49810,28 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
         edit: function edit(metadata) {
             this.$router.replace({ name: 'EditMetadata', params: { id: metadata } });
+        },
+
+        destroyMeta: function destroyMeta(metadata) {
+            var _this3 = this;
+
+            this.destroy({
+                id: metadata,
+                context: this
+            }).then(function (response) {
+                console.log(response);
+                _this3.reponseMessage = response.message;
+                _this3.isSuccess = true;
+            }).catch(function (error) {
+                console.log(error);
+            });
+        },
+
+        reloadList: function reloadList() {
+            this.isSuccess = false;
+            this.getList();
         }
-    }
+    })
 });
 
 /***/ }),
@@ -49965,7 +50000,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 title: 'System',
                 icon: 'settings applications',
                 group: '/system',
-                items: [{ title: 'Metadata', name: 'metadata', icon: 'list' }]
+                items: [{ title: 'Metadata', name: 'metadata', icon: 'list', active: true }]
             },
             //{ title: 'Link' },
             { divider: true }, { header: 'Modules' }, { title: 'Issue' }]
@@ -50390,8 +50425,8 @@ var Create = __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('create', __w
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "create", function() { return create; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "edit", function() { return edit; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "update", function() { return update; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "destroy", function() { return destroy; });
 
 
 var create = function create(_ref, _ref2) {
@@ -50409,14 +50444,14 @@ var create = function create(_ref, _ref2) {
     });
 };
 
-var edit = function edit(_ref3, _ref4) {
+var update = function update(_ref3, _ref4) {
     var dispatch = _ref3.dispatch;
     var payload = _ref4.payload,
         context = _ref4.context,
         error = _ref4.error;
 
     return new Promise(function (resolve, reject) {
-        axios.get('api/v1/metadata/' + payload.id).then(function (response) {
+        payload.form.patch('/api/v1/metadata/' + payload.id).then(function (response) {
             resolve(response);
         }).catch(function (error) {
             reject(error);
@@ -50424,15 +50459,15 @@ var edit = function edit(_ref3, _ref4) {
     });
 };
 
-var update = function update(_ref5, _ref6) {
+var destroy = function destroy(_ref5, _ref6) {
     var dispatch = _ref5.dispatch;
-    var payload = _ref6.payload,
+    var id = _ref6.id,
         context = _ref6.context,
         error = _ref6.error;
 
     return new Promise(function (resolve, reject) {
-        payload.form.patch('/api/v1/metadata/' + payload.id).then(function (response) {
-            resolve(response);
+        axios.delete('/api/v1/metadata/' + id).then(function (response) {
+            resolve(response.data);
         }).catch(function (error) {
             reject(error);
         });
@@ -54498,6 +54533,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "floating": "",
         "small": "",
         "dark": ""
+      },
+      nativeOn: {
+        "click": function($event) {
+          _vm.destroyMeta(item.id)
+        }
       }
     }, [_c('v-icon', {
       staticClass: "white--text"
@@ -54534,7 +54574,45 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.createMetadata($event)
       }
     }
-  }, [_c('v-icon', [_vm._v("add")])], 1)], 1)], 1) : _vm._e()], 1)
+  }, [_c('v-icon', [_vm._v("add")])], 1)], 1)], 1) : _vm._e(), _vm._v(" "), _c('v-modal', {
+    attrs: {
+      "bottom": ""
+    },
+    model: {
+      value: (_vm.isSuccess),
+      callback: function($$v) {
+        _vm.isSuccess = $$v
+      },
+      expression: "isSuccess"
+    }
+  }, [_c('v-card', {
+    staticClass: "secondary white--text"
+  }, [_c('v-card-text', {
+    staticClass: "subheading white--text"
+  }, [_c('v-row', [_c('v-col', {
+    attrs: {
+      "sm10": "",
+      "xs12": ""
+    },
+    domProps: {
+      "textContent": _vm._s(_vm.reponseMessage)
+    }
+  }), _vm._v(" "), _c('v-col', {
+    attrs: {
+      "sm2": "",
+      "xs12": ""
+    }
+  }, [_c('v-btn', {
+    attrs: {
+      "primary": "",
+      "dark": ""
+    },
+    nativeOn: {
+      "click": function($event) {
+        _vm.reloadList($event)
+      }
+    }
+  }, [_vm._v("Close")])], 1)], 1)], 1)], 1)], 1)], 1)
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -54566,6 +54644,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           "click": function($event) {
             _vm.navBarRedirect(subItem.name)
           }
+        },
+        model: {
+          value: (subItem.active),
+          callback: function($$v) {
+            subItem.active = $$v
+          },
+          expression: "subItem.active"
         }
       }, [_c('v-list-tile-title', {
         domProps: {
@@ -54715,7 +54800,7 @@ if (false) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(process) {/**
-  * vue-router v2.3.1
+  * vue-router v2.2.1
   * (c) 2017 Evan You
   * @license MIT
   */
@@ -56610,11 +56695,9 @@ var HTML5History = (function (History$$1) {
   HTML5History.prototype.push = function push (location, onComplete, onAbort) {
     var this$1 = this;
 
-    var ref = this;
-    var fromRoute = ref.current;
     this.transitionTo(location, function (route) {
       pushState(cleanPath(this$1.base + route.fullPath));
-      handleScroll(this$1.router, route, fromRoute, false);
+      handleScroll(this$1.router, route, this$1.current, false);
       onComplete && onComplete(route);
     }, onAbort);
   };
@@ -56622,11 +56705,9 @@ var HTML5History = (function (History$$1) {
   HTML5History.prototype.replace = function replace (location, onComplete, onAbort) {
     var this$1 = this;
 
-    var ref = this;
-    var fromRoute = ref.current;
     this.transitionTo(location, function (route) {
       replaceState(cleanPath(this$1.base + route.fullPath));
-      handleScroll(this$1.router, route, fromRoute, false);
+      handleScroll(this$1.router, route, this$1.current, false);
       onComplete && onComplete(route);
     }, onAbort);
   };
@@ -56988,7 +57069,7 @@ function createHref (base, fullPath, mode) {
 }
 
 VueRouter.install = install;
-VueRouter.version = '2.3.1';
+VueRouter.version = '2.2.1';
 
 if (inBrowser && window.Vue) {
   window.Vue.use(VueRouter);

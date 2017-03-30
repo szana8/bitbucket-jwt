@@ -50,7 +50,7 @@ class MetadataTableSeeder extends Seeder
         // Test data
         $faker = Factory::create();
 
-        for ( $i = 0; $i <= 10000; $i++ )
+        for ( $i = 0; $i <= 100; $i++ )
         {
             DB::table('metadata')->insert([
                 'type' => $faker->randomElement($array = array ('label','setting')),

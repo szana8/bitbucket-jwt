@@ -62,7 +62,7 @@
                                             <v-btn primary floating small dark v-on:click.native="edit(item.id)">
                                                 <v-icon class="white--text">edit</v-icon>
                                             </v-btn>
-                                            <v-btn error floating small dark>
+                                            <v-btn error floating small dark v-on:click.native="destroyMeta(item.id)">
                                                 <v-icon class="white--text">delete</v-icon>
                                             </v-btn>
                                         </td>
@@ -87,82 +87,112 @@
                 </v-btn>
             </v-col>
         </v-row>
+
+        <v-modal v-model="isSuccess" bottom>
+            <v-card class="secondary white--text">
+                <v-card-text class="subheading white--text">
+                    <v-row>
+                        <v-col sm10 xs12 v-text="reponseMessage"/>
+                        <v-col sm2 xs12>
+                            <v-btn primary dark v-on:click.native="reloadList">Close</v-btn>
+                        </v-col>
+                    </v-row>
+                </v-card-text>
+            </v-card>
+        </v-modal>
+
     </v-container>
 </template>
 
 <script>
-
+    import localforage from 'localforage'
+    import { mapActions } from 'vuex'
     // TODO az oldalváltáskor elrakni az oldal számot egy localforge-ba majd ha vissza navigálunk
     // TODO akkor az oldalszámot betölteni
 
     export default {
 
         data() {
+
             return {
                 isLoaded        : false,
                 metadata        : null,
-                searchText      : '',
+                isSuccess       : false,
                 pagination      : null,
                 total_pages     : null,
                 current_page    : null,
-                showSearchInput : false,
-                showSearchClosed: false,
+                reponseMessage  : '',
+                issetPageNumber : false,
                 axiosPagination : {
                     search: null,
                     page  : null
                 },
             }
+
         },
 
         mounted () {
-            axios.get('/api/v1/metadata').then(response =>
-            {
-                this.metadata = response.data.data
-                this.pagination = response.data.pagination
-                this.total_pages = response.data.pagination.total_pages
-                this.current_page = response.data.pagination.current_page
+            localforage.getItem('meta_page').then(page => {
+
+                if(page)
+                {
+                    this.issetPageNumber = true
+                    this.axiosPagination.page = page
+                }
+
+
+                axios.get('/api/v1/metadata', {
+                    params: this.axiosPagination
+                }).then(response =>
+                {
+                    this.metadata = response.data.data
+                    this.pagination = response.data.pagination
+                    this.total_pages = response.data.pagination.total_pages
+                    this.current_page = response.data.pagination.current_page
+                })
             })
         },
 
         watch: {
+
             current_page: function (newIndex)
             {
-                this.current_page = newIndex
+                if (! this.issetPageNumber) {
+                    localforage.setItem('meta_page', newIndex);
+                }
+
+                //this.current_page = newIndex
                 this.axiosPagination.page = newIndex
                 this.getList()
                 // get next page data...
-            },
-            searchText  : function (value)
-            {
-                this.current_page = 1
-                this.axiosPagination.page = 1
-                this.axiosPagination.search = value;
-                value != '' ? this.showSearchClosed = true : this.showSearchClosed = false
+                this.issetPageNumber = false
             }
+
         },
 
         methods: {
+            ...mapActions({
+                destroy: 'metadata/destroy'
+            }),
 
             getList: function ()
             {
                 axios.get('/api/v1/metadata', {
                     params: this.axiosPagination
                 }).then(response => {
+                    if (response.data.pagination.total_pages < this.axiosPagination.page)
+                    {
+                        this.axiosPagination.page = response.data.pagination.total_pages
+                        this.getList()
+                    }
                     this.metadata = response.data.data
                     this.pagination = response.data.pagination
                     this.total_pages = response.data.pagination.total_pages
+                    this.current_page = response.data.pagination.current_page
                     this.isLoaded = true
                 }).catch(error => {
                     console.log(error)
                 })
-            },
-
-            clearSearchText: function ()
-            {
-                // clear the search field
-                this.searchText = ''
-                // than reload the list
-                this.getList()
             },
 
             createMetadata: function()
@@ -170,8 +200,29 @@
                 this.$router.replace({ name: 'CreateMetadata' })
             },
 
-            edit: function(metadata) {
+            edit: function(metadata)
+            {
                 this.$router.replace({ name: 'EditMetadata', params: { id: metadata } })
+            },
+
+            destroyMeta: function(metadata)
+            {
+                this.destroy({
+                    id: metadata,
+                    context: this
+                }).then(response => {
+                    console.log(response)
+                    this.reponseMessage = response.message
+                    this.isSuccess = true
+                }).catch(error => {
+                    console.log(error)
+                })
+            },
+
+            reloadList: function()
+            {
+                this.isSuccess = false
+                this.getList()
             }
         }
     }
