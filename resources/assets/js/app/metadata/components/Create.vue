@@ -12,6 +12,9 @@
                 <v-card>
                     <v-card-row>
                         <v-card-title>
+                            <v-btn icon class="grey--text text--darken-2" v-on:click.native="backToMetadataMain">
+                                <v-icon>keyboard_arrow_left</v-icon>
+                            </v-btn>
                             <span>{{action}} Metadata</span>
                             <v-spacer></v-spacer>
                             <v-menu bottom left origin="top right" transition="v-scale-transition">
@@ -34,26 +37,45 @@
 
                                 <v-row>
                                     <v-col xs12>
-                                        <v-select v-bind:items="metadata_types" item-text="name" v-model="form.typeList"label="Select" single-line/>
+                                        <v-select v-bind:items="metadata_types" item-text="type" v-model="type" label="Select" />
+                                        <div class="input-group__details" style="margin-top:-30px;color:red;" v-if="form.errors.has('type')">
+                                            <div class="input-group__messages">
+                                                <div class="input-group__error" v-text="form.errors.get('type')" />
+                                            </div>
+                                        </div>
                                     </v-col>
                                 </v-row>
 
                                 <v-row>
                                     <v-col xs12>
-                                        <v-text-field label="Key" v-model="form.key" single-line name="key"/>
+                                        <v-text-field v-bind:class="{ 'input-group--error input-group--dirty': form.errors.has('key') }" label="Key" v-model="form.key" single-line name="key"/>
+                                        <div class="input-group__details" style="margin-top:-30px;color:red;" v-if="form.errors.has('key')">
+                                            <div class="input-group__messages">
+                                                <div class="input-group__error" v-text="form.errors.get('key')" />
+                                            </div>
+                                        </div>
                                     </v-col>
                                 </v-row>
 
                                 <v-row>
                                     <v-col xs12>
-                                        <v-text-field label="Value" v-model="form.value" single-line name="value"/>
+                                        <v-text-field v-bind:class="{ 'input-group--error input-group--dirty': form.errors.has('value') }" label="Value" v-model="form.value" single-line name="value"/>
+                                        <div class="input-group__details" style="margin-top:-30px;color:red;" v-if="form.errors.has('value')">
+                                            <div class="input-group__messages">
+                                                <div class="input-group__error" v-text="form.errors.get('value')" />
+                                            </div>
+                                        </div>
                                     </v-col>
                                 </v-row>
 
                                 <v-row>
                                     <v-col xs12>
-                                        <v-text-field label="Description" v-model="form.description" multi-line
-                                                      name="description"/>
+                                        <v-text-field v-bind:class="{ 'input-group--error input-group--dirty': form.errors.has('description') }" label="Description" v-model="form.description" multi-line name="description"/>
+                                        <div class="input-group__details" style="margin-top:-30px;color:red;" v-if="form.errors.has('description')">
+                                            <div class="input-group__messages">
+                                                <div class="input-group__error" v-text="form.errors.get('description')" />
+                                            </div>
+                                        </div>
                                     </v-col>
                                 </v-row>
 
@@ -68,20 +90,11 @@
                     </v-card-row>
 
                     <v-card-row actions>
-                        <v-btn flat class="primary--text darken-1" v-on:click.native="submit">Save</v-btn>
+                        <v-btn v-bind:loading="loading"  flat class="primary--text darken-1" v-on:click.native="submit">Save</v-btn>
                     </v-card-row>
 
                 </v-card>
             </v-col>
-        </v-row>
-        <v-row v-if="loader">
-
-            <v-col xs12="xs12" class="pt-5 text-xs-right">
-                <v-btn floating="floating" primary v-on:click.native="backToMetadataMain">
-                    <v-icon>reply</v-icon>
-                </v-btn>
-            </v-col>
-
         </v-row>
 
         <v-modal v-model="isSuccess" bottom>
@@ -108,21 +121,22 @@
         data() {
             return {
                 id: null,
+                type: {
+                    type: 'Please select one...',
+                    value: null
+                },
                 error: false,
                 action: '',
                 loader: false,
+                loading: false,
                 isSuccess: false,
                 reponseMessage: null,
                 metadata_types: [
-                    {'name': 'label', 'value': 'label'},
-                    {'name': 'setting', 'value': 'setting'}
+                    {'type': 'label', 'value': 'label'},
+                    {'type': 'setting', 'value': 'setting'}
                 ],
 
                 form: new Form({
-                    typeList: {
-                        name: 'Please select one...',
-                        value: null
-                    },
                     enableSwitch: true,
                     type: null,
                     key: null,
@@ -139,10 +153,7 @@
                 this.id = this.$route.params.id
                 axios.get('api/v1/metadata/' + this.$route.params.id).then(response => {
                     this.action = 'Edit'
-                    this.form.typeList = {
-                        value: response.data.data.type,
-                        name: response.data.data.type
-                    }
+                    this.type = {'type': response.data.data.type, 'value': response.data.data.type}
                     this.form.type = response.data.data.type
                     this.form.key = response.data.data.key
                     this.form.value = response.data.data.value
@@ -160,6 +171,13 @@
             }
         },
 
+        watch: {
+            type: function(newValue) {
+                if(newValue)
+                    this.form.errors.clear('type')
+            }
+        },
+
         methods: {
             ...mapActions({
                 create: 'metadata/create',
@@ -171,45 +189,55 @@
                 this.$router.replace({name: 'metadata'})
             },
 
+            updateForm: function() {
+                this.form.type = (typeof this.type.value != "undefined") ? this.type.value : ''
+                this.form.enabled = this.form.enableSwitch == true ? 'Y' : 'N'
+
+                this.update({
+                    payload: {
+                        errors: [],
+                        form: this.form,
+                        id: this.$route.params.id
+                    },
+                    context: this
+                }).then(response => {
+                    this.reponseMessage = response.message
+                    this.isSuccess = true
+                    this.loading = false
+                }).catch(error => {
+                    console.log(error)
+                    this.loading = false
+                })
+            },
+
+            createForm: function() {
+                this.form.type = (typeof this.type.value != "undefined") ? this.type.value : ''
+                this.form.enabled = this.form.enableSwitch == true ? 'Y' : 'N'
+
+                this.create({
+                    payload: {
+                        errors: [],
+                        form: this.form
+                    },
+                    context: this
+                }).then(response => {
+                    this.reponseMessage = response.message
+                    this.isSuccess = true
+                    this.setToDefault()
+                    this.loading = false
+                }).catch(error => {
+                    console.log(error)
+                    this.loading = false
+                })
+            },
+
             submit: function () {
+                this.loading = true
+
                 if (this.$route.params.id != null)
-                {
-                    this.form.type = (typeof this.form.typeList.value != "undefined") ? this.form.typeList.value : ''
-                    this.form.enabled = this.form.enableSwitch == true ? 'Y' : 'N'
-
-                    this.update({
-                        payload: {
-                            errors: [],
-                            form: this.form,
-                            id: this.$route.params.id
-                        },
-                        context: this
-                    }).then(response => {
-                        this.reponseMessage = response.message
-                        this.isSuccess = true
-                    }).catch(error => {
-                        console.log(error)
-                    })
-                }
+                    this.updateForm()
                 else
-                {
-                    this.form.type = (typeof this.form.typeList.value != "undefined") ? this.form.typeList.value : ''
-                    this.form.enabled = this.form.enableSwitch == true ? 'Y' : 'N'
-
-                    this.create({
-                        payload: {
-                            errors: [],
-                            form: this.form
-                        },
-                        context: this
-                    }).then(response => {
-                        this.reponseMessage = response.message
-                        this.isSuccess = true
-                        this.setToDefault()
-                    }).catch(error => {
-
-                    })
-                }
+                    this.createForm()
             },
 
             setToDefault: function () {

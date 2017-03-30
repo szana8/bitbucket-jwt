@@ -48296,6 +48296,12 @@ var app = new Vue({
     el: '#app',
     data: {
         globalSearchVariable: 'searchdata'
+    },
+    watch: {
+        '$route': function $route(to, from) {
+            console.log('From: ' + from.name);
+            console.log('TO: ' + to.name);
+        }
     }
 });
 
@@ -49461,6 +49467,19 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -49469,18 +49488,19 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
     data: function data() {
         return {
             id: null,
+            type: {
+                type: 'Please select one...',
+                value: null
+            },
             error: false,
             action: '',
             loader: false,
+            loading: false,
             isSuccess: false,
             reponseMessage: null,
-            metadata_types: [{ 'name': 'label', 'value': 'label' }, { 'name': 'setting', 'value': 'setting' }],
+            metadata_types: [{ 'type': 'label', 'value': 'label' }, { 'type': 'setting', 'value': 'setting' }],
 
             form: new Form({
-                typeList: {
-                    name: 'Please select one...',
-                    value: null
-                },
                 enableSwitch: true,
                 type: null,
                 key: null,
@@ -49499,10 +49519,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             this.id = this.$route.params.id;
             axios.get('api/v1/metadata/' + this.$route.params.id).then(function (response) {
                 _this.action = 'Edit';
-                _this.form.typeList = {
-                    value: response.data.data.type,
-                    name: response.data.data.type
-                };
+                _this.type = { 'type': response.data.data.type, 'value': response.data.data.type };
                 _this.form.type = response.data.data.type;
                 _this.form.key = response.data.data.key;
                 _this.form.value = response.data.data.value;
@@ -49519,6 +49536,12 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         }
     },
 
+    watch: {
+        type: function type(newValue) {
+            if (newValue) this.form.errors.clear('type');
+        }
+    },
+
     methods: _extends({}, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_vuex__["a" /* mapActions */])({
         create: 'metadata/create',
         edit: 'metadata/edit',
@@ -49529,42 +49552,56 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             this.$router.replace({ name: 'metadata' });
         },
 
-        submit: function submit() {
+        updateForm: function updateForm() {
             var _this2 = this;
 
-            if (this.$route.params.id != null) {
-                this.form.type = typeof this.form.typeList.value != "undefined" ? this.form.typeList.value : '';
-                this.form.enabled = this.form.enableSwitch == true ? 'Y' : 'N';
+            this.form.type = typeof this.type.value != "undefined" ? this.type.value : '';
+            this.form.enabled = this.form.enableSwitch == true ? 'Y' : 'N';
 
-                this.update({
-                    payload: {
-                        errors: [],
-                        form: this.form,
-                        id: this.$route.params.id
-                    },
-                    context: this
-                }).then(function (response) {
-                    _this2.reponseMessage = response.message;
-                    _this2.isSuccess = true;
-                }).catch(function (error) {
-                    console.log(error);
-                });
-            } else {
-                this.form.type = typeof this.form.typeList.value != "undefined" ? this.form.typeList.value : '';
-                this.form.enabled = this.form.enableSwitch == true ? 'Y' : 'N';
+            this.update({
+                payload: {
+                    errors: [],
+                    form: this.form,
+                    id: this.$route.params.id
+                },
+                context: this
+            }).then(function (response) {
+                _this2.reponseMessage = response.message;
+                _this2.isSuccess = true;
+                _this2.loading = false;
+            }).catch(function (error) {
+                console.log(error);
+                _this2.loading = false;
+            });
+        },
 
-                this.create({
-                    payload: {
-                        errors: [],
-                        form: this.form
-                    },
-                    context: this
-                }).then(function (response) {
-                    _this2.reponseMessage = response.message;
-                    _this2.isSuccess = true;
-                    _this2.setToDefault();
-                }).catch(function (error) {});
-            }
+        createForm: function createForm() {
+            var _this3 = this;
+
+            this.form.type = typeof this.type.value != "undefined" ? this.type.value : '';
+            this.form.enabled = this.form.enableSwitch == true ? 'Y' : 'N';
+
+            this.create({
+                payload: {
+                    errors: [],
+                    form: this.form
+                },
+                context: this
+            }).then(function (response) {
+                _this3.reponseMessage = response.message;
+                _this3.isSuccess = true;
+                _this3.setToDefault();
+                _this3.loading = false;
+            }).catch(function (error) {
+                console.log(error);
+                _this3.loading = false;
+            });
+        },
+
+        submit: function submit() {
+            this.loading = true;
+
+            if (this.$route.params.id != null) this.updateForm();else this.createForm();
         },
 
         setToDefault: function setToDefault() {
@@ -54013,7 +54050,17 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "xs12": "xs12"
     }
-  }, [_c('v-card', [_c('v-card-row', [_c('v-card-title', [_c('span', [_vm._v(_vm._s(_vm.action) + " Metadata")]), _vm._v(" "), _c('v-spacer'), _vm._v(" "), _c('v-menu', {
+  }, [_c('v-card', [_c('v-card-row', [_c('v-card-title', [_c('v-btn', {
+    staticClass: "grey--text text--darken-2",
+    attrs: {
+      "icon": ""
+    },
+    nativeOn: {
+      "click": function($event) {
+        _vm.backToMetadataMain($event)
+      }
+    }
+  }, [_c('v-icon', [_vm._v("keyboard_arrow_left")])], 1), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.action) + " Metadata")]), _vm._v(" "), _c('v-spacer'), _vm._v(" "), _c('v-menu', {
     attrs: {
       "bottom": "",
       "left": "",
@@ -54045,22 +54092,37 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('v-select', {
     attrs: {
       "items": _vm.metadata_types,
-      "item-text": "name",
-      "label": "Select",
-      "single-line": ""
+      "item-text": "type",
+      "label": "Select"
     },
     model: {
-      value: (_vm.form.typeList),
+      value: (_vm.type),
       callback: function($$v) {
-        _vm.form.typeList = $$v
+        _vm.type = $$v
       },
-      expression: "form.typeList"
+      expression: "type"
     }
-  })], 1)], 1), _vm._v(" "), _c('v-row', [_c('v-col', {
+  }), _vm._v(" "), (_vm.form.errors.has('type')) ? _c('div', {
+    staticClass: "input-group__details",
+    staticStyle: {
+      "margin-top": "-30px",
+      "color": "red"
+    }
+  }, [_c('div', {
+    staticClass: "input-group__messages"
+  }, [_c('div', {
+    staticClass: "input-group__error",
+    domProps: {
+      "textContent": _vm._s(_vm.form.errors.get('type'))
+    }
+  })])]) : _vm._e()], 1)], 1), _vm._v(" "), _c('v-row', [_c('v-col', {
     attrs: {
       "xs12": ""
     }
   }, [_c('v-text-field', {
+    class: {
+      'input-group--error input-group--dirty': _vm.form.errors.has('key')
+    },
     attrs: {
       "label": "Key",
       "single-line": "",
@@ -54073,11 +54135,27 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       },
       expression: "form.key"
     }
-  })], 1)], 1), _vm._v(" "), _c('v-row', [_c('v-col', {
+  }), _vm._v(" "), (_vm.form.errors.has('key')) ? _c('div', {
+    staticClass: "input-group__details",
+    staticStyle: {
+      "margin-top": "-30px",
+      "color": "red"
+    }
+  }, [_c('div', {
+    staticClass: "input-group__messages"
+  }, [_c('div', {
+    staticClass: "input-group__error",
+    domProps: {
+      "textContent": _vm._s(_vm.form.errors.get('key'))
+    }
+  })])]) : _vm._e()], 1)], 1), _vm._v(" "), _c('v-row', [_c('v-col', {
     attrs: {
       "xs12": ""
     }
   }, [_c('v-text-field', {
+    class: {
+      'input-group--error input-group--dirty': _vm.form.errors.has('value')
+    },
     attrs: {
       "label": "Value",
       "single-line": "",
@@ -54090,11 +54168,27 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       },
       expression: "form.value"
     }
-  })], 1)], 1), _vm._v(" "), _c('v-row', [_c('v-col', {
+  }), _vm._v(" "), (_vm.form.errors.has('value')) ? _c('div', {
+    staticClass: "input-group__details",
+    staticStyle: {
+      "margin-top": "-30px",
+      "color": "red"
+    }
+  }, [_c('div', {
+    staticClass: "input-group__messages"
+  }, [_c('div', {
+    staticClass: "input-group__error",
+    domProps: {
+      "textContent": _vm._s(_vm.form.errors.get('value'))
+    }
+  })])]) : _vm._e()], 1)], 1), _vm._v(" "), _c('v-row', [_c('v-col', {
     attrs: {
       "xs12": ""
     }
   }, [_c('v-text-field', {
+    class: {
+      'input-group--error input-group--dirty': _vm.form.errors.has('description')
+    },
     attrs: {
       "label": "Description",
       "multi-line": "",
@@ -54107,7 +54201,20 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       },
       expression: "form.description"
     }
-  })], 1)], 1), _vm._v(" "), _c('v-row', [_c('v-col', {
+  }), _vm._v(" "), (_vm.form.errors.has('description')) ? _c('div', {
+    staticClass: "input-group__details",
+    staticStyle: {
+      "margin-top": "-30px",
+      "color": "red"
+    }
+  }, [_c('div', {
+    staticClass: "input-group__messages"
+  }, [_c('div', {
+    staticClass: "input-group__error",
+    domProps: {
+      "textContent": _vm._s(_vm.form.errors.get('description'))
+    }
+  })])]) : _vm._e()], 1)], 1), _vm._v(" "), _c('v-row', [_c('v-col', {
     attrs: {
       "xs12": ""
     }
@@ -54131,6 +54238,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('v-btn', {
     staticClass: "primary--text darken-1",
     attrs: {
+      "loading": _vm.loading,
       "flat": ""
     },
     nativeOn: {
@@ -54138,22 +54246,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.submit($event)
       }
     }
-  }, [_vm._v("Save")])], 1)], 1)], 1)], 1) : _vm._e(), _vm._v(" "), (_vm.loader) ? _c('v-row', [_c('v-col', {
-    staticClass: "pt-5 text-xs-right",
-    attrs: {
-      "xs12": "xs12"
-    }
-  }, [_c('v-btn', {
-    attrs: {
-      "floating": "floating",
-      "primary": ""
-    },
-    nativeOn: {
-      "click": function($event) {
-        _vm.backToMetadataMain($event)
-      }
-    }
-  }, [_c('v-icon', [_vm._v("reply")])], 1)], 1)], 1) : _vm._e(), _vm._v(" "), _c('v-modal', {
+  }, [_vm._v("Save")])], 1)], 1)], 1)], 1) : _vm._e(), _vm._v(" "), _c('v-modal', {
     attrs: {
       "bottom": ""
     },

@@ -46,5 +46,11 @@ const app = new Vue({
     el: '#app',
     data: {
         globalSearchVariable: 'searchdata'
+    },
+    watch: {
+        '$route' (to, from) {
+            console.log('From: ' + from.name)
+            console.log('TO: ' + to.name)
+        }
     }
 });
