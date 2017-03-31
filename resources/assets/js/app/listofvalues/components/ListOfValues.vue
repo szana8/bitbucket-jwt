@@ -74,7 +74,7 @@
                                                 <v-btn primary floating small dark v-on:click.native="edit(item.id)">
                                                     <v-icon class="white--text">edit</v-icon>
                                                 </v-btn>
-                                                <v-btn error floating small dark v-on:click.native="destroyLov(item.id)">
+                                                <v-btn error floating small dark v-on:click.native="destroyListOfValue(item.id)">
                                                     <v-icon class="white--text">delete</v-icon>
                                                 </v-btn>
                                             </td>
@@ -100,6 +100,19 @@
             </v-col>
         </v-row>
 
+        <v-modal v-model="isSuccess" bottom>
+            <v-card class="secondary white--text">
+                <v-card-text class="subheading white--text">
+                    <v-row>
+                        <v-col sm10 xs12 v-text="reponseMessage"/>
+                        <v-col sm2 xs12>
+                            <v-btn primary dark v-on:click.native="reloadList">Close</v-btn>
+                        </v-col>
+                    </v-row>
+                </v-card-text>
+            </v-card>
+        </v-modal>
+
     </v-container>
 </template>
 
@@ -114,7 +127,7 @@
                 isSuccess       : false,
                 pagination      : null,
                 total_pages     : null,
-                lisofvalues     : null,
+                listofvalues     : null,
                 current_page    : null,
                 total_pages     : null,
                 current_page    : null,
@@ -158,11 +171,16 @@
 
         methods: {
 
+            ...mapActions({
+                destroy: 'listofvalues/destroy'
+            }),
+
             getList: function ()
             {
                 axios.get('/api/v1/ListOfValues', {
                     params: this.axiosPagination
                 }).then(response => {
+                    console.log(response)
                     if (response.data.pagination.total_pages < this.axiosPagination.page)
                     {
                         this.axiosPagination.page = response.data.pagination.total_pages
@@ -188,13 +206,22 @@
                 this.$router.replace({ name: 'EditListOfValue', params: { id: lov } })
             },
 
-            destroyMeta: function(lov)
+            destroyListOfValue: function(lov)
             {
-
+                this.destroy({
+                    id: lov,
+                    context: this
+                }).then(response => {
+                    this.reponseMessage = response.message
+                    this.isSuccess = true
+                }).catch(error => {
+                    console.log(error)
+                })
             },
 
             reloadList: function()
             {
+                console.log('asd')
                 this.isSuccess = false
                 this.getList()
             }

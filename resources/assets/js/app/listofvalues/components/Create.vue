@@ -153,7 +153,7 @@
 
                         <v-row>
                             <v-col xs12>
-                                <v-chip close v-for="item in form.lookups" v-model="item.chip" outline class="primary primary--text">{{item.value}}</v-chip>
+                                <v-chip close v-for="item in lookups" v-model="item.chip" class="primary white--text">{{item.value}}</v-chip>
                             </v-col>
                         </v-row>
 
@@ -163,6 +163,21 @@
 
             </v-col>
         </v-row>
+
+        <!-- Reponse -->
+        <v-modal v-model="isSuccess" bottom>
+            <v-card class="secondary white--text">
+                <v-card-text class="subheading white--text">
+                    <v-row>
+                        <v-col sm10 xs12 v-text="reponseMessage"/>
+                        <v-col sm2 xs12>
+                            <v-btn primary dark v-on:click.native="isSuccess = false">Close</v-btn>
+                        </v-col>
+                    </v-row>
+                </v-card-text>
+            </v-card>
+        </v-modal>
+        <!-- End Response -->
 
     </v-container>
 </template>
@@ -191,6 +206,7 @@
                     {'type': 'From Table', 'value': 1},
                     {'type': 'From List', 'value': 2 }
                 ],
+                lookups: [],
                 form: new Form({
                     datatype: null,
                     name: '',
@@ -205,7 +221,7 @@
         watch: {
             type: function(newValue) {
                 if(newValue)
-                    this.form.errors.clear('datatype')
+                    this.form.errors.clear('datatype');
 
                     this.form.datatype = newValue.value
             }
@@ -214,16 +230,36 @@
         mounted: function () {
             if (this.$route.params.id)
             {
-                this.id = this.$route.params.id
+                this.id = this.$route.params.id;
                 axios.get('api/v1/ListOfValues/' + this.$route.params.id).then(response => {
-                    this.action = 'Edit'
+                    this.action = 'Edit';
+                    console.log(response)
+                    this.form.name = response.data.data.name
+                    this.type = { 'type': response.data.data.datatypeName, 'value': response.data.data.datatype }
+                    this.form.datatype = response.data.data.datatype
+
+                    if (response.data.data.datatype == 1)
+                    {
+                        this.form.table_name = response.data.data.table_name
+                        this.form.column = response.data.data.column
+                        this.form.condition = response.data.data.condition
+                    }
+                    else
+                    {
+                        for (let item in response.data.data.lookups)
+                        {
+                            this.lookups.push({ value: response.data.data.lookups[item].value, chip: true });
+                        }
+
+                    }
+
                     this.loader = true
                 }).catch(error => {
                     console.log(error)
                 })
             }
             else {
-                this.action = 'Create'
+                this.action = 'Create';
                 this.loader = true
             }
         },
@@ -232,12 +268,33 @@
 
             ...mapActions({
                 create: 'listofvalues/create',
-                update: 'ListOfValues/update'
+                update: 'listofvalues/update'
             }),
 
             updateListOfValue: function()
             {
+                for(let item in this.lookups)
+                {
+                    if(this.lookups[item].chip != false)
+                        this.form.lookups.push({'value': this.lookups[item].value });
+                }
 
+
+                this.update({
+                    payload: {
+                        id: this.$route.params.id,
+                        errors: [],
+                        form: this.form
+                    },
+                    context: this
+                }).then(response => {
+                    this.reponseMessage = response.message;
+                    this.isSuccess = true;
+                    this.loading = false
+                }).catch(error => {
+                    console.log(error);
+                    this.loading = false
+                })
             },
 
             closeChip: function()
@@ -247,13 +304,13 @@
 
             createListOfValue: function()
             {
-                for(let item in this.form.lookups)
+                for(let item in this.lookups)
                 {
-                    if(this.form.lookups[item].chip == false)
-                        delete this.form.lookups[item];
+                    if(this.lookups[item].chip != false)
+                        this.form.lookups.push({'value': this.lookups[item].value });
                 }
 
-                /*
+
                 this.create({
                     payload: {
                         errors: [],
@@ -261,23 +318,22 @@
                     },
                     context: this
                 }).then(response => {
-                    console.log(response)
-                    //this.reponseMessage = response.message
-                    //this.isSuccess = true
-                    //this.setToDefault()
-                    //this.loading = false
-                }).catch(error => {
-                    console.log(error)
+                    this.reponseMessage = response.message;
+                    this.isSuccess = true;
+                    this.setToDefault();
                     this.loading = false
-                })*/
+                }).catch(error => {
+                    console.log(error);
+                    this.loading = false
+                })
             },
 
             submit: function()
             {
-                this.loading = true
+                this.loading = true;
 
                 if (this.$route.params.id != null)
-                    this.updateListOfValue()
+                    this.updateListOfValue();
                 else
                     this.createListOfValue()
             },
@@ -288,10 +344,26 @@
 
             addValueToList: function(event)
             {
-                this.form.errors.clear('lookups')
-                this.form.lookups.push({'value': this.list_value, 'chip': true})
+                this.form.errors.clear('lookups');
+                this.lookups.push({ value: this.list_value, chip: true });
                 this.list_value = ''
+            },
+
+            setToDefault: function()
+            {
+                this.form.datatype = null;
+                this.form.name = '';
+                this.form.table_name = '';
+                this.form.column = '';
+                this.form.condition = '';
+                this.form.lookups = [];
+                this.lookups = [];
+                this.type = {
+                    type: 'Please select one...',
+                    value: null
+                }
             }
+
         }
     }
 </script>

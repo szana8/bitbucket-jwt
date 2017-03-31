@@ -61,6 +61,8 @@ class ListOfValuesLookupsService
                 }
             }
 
+
+
             //Delete the removed attributes from the list.
             ListOfValuesLookups::whereNotIn('id', $destroy)->where('list_of_values_id', $id)->delete();
         });

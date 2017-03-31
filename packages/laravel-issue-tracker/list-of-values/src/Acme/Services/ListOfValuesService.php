@@ -73,7 +73,7 @@ class ListOfValuesService
     {
         if( $this->validator->isValidForUpdate($attributes) )
         {
-            if ( $attributes['old_datatype'] != $attributes['datatype'] )
+            if ( ListOfValues::find($id)->datatype != $attributes['datatype'] )
             {
                 // If the data type has been changed we have to drop the old values
 
@@ -89,6 +89,11 @@ class ListOfValuesService
 
             if ( $attributes['datatype'] == self::TYPE_QUERY )
                 return ListOfValues::find($id)->update($attributes);
+
+            foreach($attributes['lookups'] as $key => $lookup)
+            {
+                $attributes['lookups'][$key]['list_of_values_id'] = $id;
+            }
 
             return $this->listOfValuesLookupsService->update($attributes['lookups'], $id);
 
@@ -162,6 +167,11 @@ class ListOfValuesService
 
             //Get the dao of the given id
             $listOfValues = ListOfValues::find($id);
+
+            // Set these attributes to NULL to make sure we remove the necessary attributes
+            $attributes['table_name'] = NULL;
+            $attributes['column'] = NULL;
+            $attributes['condition'] = NULL;
 
             //First step is to update the ListOfValues dao
             $listOfValues->update($attributes);
