@@ -18,7 +18,16 @@ class ListOfValuesTransformer extends Transformer
      */
     public function transform($listOfValues)
     {
-        return $listOfValues;
+        return [
+            'id' => $listOfValues['id'],
+            'name' => $listOfValues['name'],
+            'datatype' => $listOfValues['datatype'],
+            'datatypeName' => $listOfValues['datatype'] == 1 ? 'From Table' : 'From List',
+            'table_name' => $listOfValues['table_name'],
+            'column' => $listOfValues['column'],
+            'condition' => $listOfValues['condition'],
+            'lookups' => $listOfValues['lookups']
+        ];
     }
 
 }

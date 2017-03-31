@@ -10,10 +10,6 @@ class LovValuesTableSeeder extends Seeder {
      */
     protected $_lovValues = [
         [
-            "lov_id"    => "User List",
-            "value" => "Action",
-        ],
-        [
             "lov_id"    => "SQL",
             "value" => "AND",
         ],

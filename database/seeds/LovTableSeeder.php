@@ -11,22 +11,22 @@ class LovTableSeeder extends Seeder
     protected $_lovs = [
         [
             "name"         => "User List",
-            "datatype"         => 2,
-            "table" => NULL,
-            "column"  => NULL,
-            "condition" => NULL
+            "datatype"         => 1,
+            "table_name" => 'users with profiles',
+            "column"  => 'email, name and bla bla bla bla',
+            "condition" => 'where profiles exists and bla bla bla bla'
         ],
         [
             "name"         => "SQL",
             "datatype"         => 2,
-            "table" => NULL,
+            "table_name" => NULL,
             "column"  => NULL,
             "condition" => NULL
         ],
         [
             "name"         => "Operations",
             "datatype"         => 2,
-            "table" => NULL,
+            "table_name" => NULL,
             "column"  => NULL,
             "condition" => NULL
         ],

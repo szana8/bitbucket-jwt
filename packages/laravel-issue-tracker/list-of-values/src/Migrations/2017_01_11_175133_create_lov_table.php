@@ -22,7 +22,7 @@ class CreateLovTable extends Migration
             $table->increments('id');
             $table->string('name', 45)->unique();
             $table->integer('datatype')->index();
-            $table->string('table', 45)->nullable()->default(NULL)->index();
+            $table->string('table_name', 45)->nullable()->default(NULL)->index();
             $table->string('column', 45)->nullable()->default(NULL)->index();
             $table->string('condition', 600)->nullable()->default(NULL);
             $table->timestamps();

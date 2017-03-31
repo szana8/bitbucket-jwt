@@ -17,9 +17,9 @@ class ListOfValuesValidator extends Validator
         'make' => [
             'name' => 'required|unique:list_of_values',
             'datatype' => 'required',
-            'table' => 'required_if:type,1',
-            'column' => 'required_if:type,1',
-            'lookups' => 'required_if:type,2'
+            'table_name' => 'required_if:datatype,1',
+            'column' => 'required_if:datatype,1',
+            'lookups' => 'required_if:datatype,2'
         ],
 
         'update' => [
@@ -38,7 +38,7 @@ class ListOfValuesValidator extends Validator
      * Custom messages for the validation.
      */
     protected static $messages = [
-        'table.required_if' => 'The :attribute field is required when type is database',
+        'table_name.required_if' => 'The :attribute field is required when type is database',
         'column.required_if' => 'The :attribute field is required when type is database'
     ];
 

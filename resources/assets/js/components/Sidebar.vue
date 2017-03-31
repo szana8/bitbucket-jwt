@@ -12,7 +12,7 @@
                         </v-list-tile>
                     </v-list-item>
                     <v-list-item v-for="subItem in item.items">
-                        <v-list-tile v-model="subItem.active" v-on:click.native="navBarRedirect(subItem.name)">
+                        <v-list-tile v-on:click.native="navBarRedirect(subItem.name)">
                             <v-list-tile-title v-text="subItem.title"   />
                         </v-list-tile>
                     </v-list-item>
@@ -26,28 +26,6 @@
                 </v-list-item>
             </template>
         </v-list>
-        <!--
-        <v-list dense>
-            <template>
-                <v-subheader>Settings</v-subheader>
-                <v-divider light />
-                <v-list-group>
-                    <v-list-item>
-                        <v-list-tile>
-                            <v-list-tile-title>System</v-list-tile-title>
-                            <v-list-tile-action>
-                                <v-icon>keyboard_arrow_down</v-icon>
-                            </v-list-tile-action>
-                        </v-list-tile>
-
-                        <v-list-tile v-on:click.native="navBarRedirect('metadata')">
-                            <v-list-tile-title>Metadata</v-list-tile-title>
-                        </v-list-tile>
-                    </v-list-item>
-                </v-list-group>
-            </template>
-        </v-list>
-        -->
     </v-sidebar>
 </template>
 
@@ -64,7 +42,8 @@
                         icon: 'settings applications',
                         group: '/system',
                         items: [
-                            { title: 'Metadata', name: 'metadata', icon: 'list', active: true },
+                            { title: 'Metadata', name: 'metadata', icon: 'list', active: false },
+                            { title: 'List Of Values', name: 'listofvalues', icon: 'list', active: false },
                         ]
                     },
                     //{ title: 'Link' },

@@ -88,7 +88,7 @@ class ListOfValuesController extends ApiController
         {
             $this->listOfValuesService->make(Input::all());
 
-            return $this->respondCreated('List Of Value successfully created!');
+            return $this->respondCreated('List Of Value created!');
         }
         catch ( ValidationException $e)
         {
@@ -110,7 +110,7 @@ class ListOfValuesController extends ApiController
             // Store the original input of the request and then replace the input with your request instances input.
             $this->listOfValuesService->update(Input::all(), $id);
 
-            return $this->respondCreated('List of Value successfully updated!');
+            return $this->respondCreated('List of Value updated!');
         }
         catch ( ValidationException $e )
         {
@@ -130,7 +130,7 @@ class ListOfValuesController extends ApiController
         {
             $this->listOfValuesService->destroy($id);
 
-            return $this->respondCreated('List of Value successfully destroyed!');
+            return $this->respondCreated('List of Value destroyed!');
         }
         catch ( ValidationException $e )
         {

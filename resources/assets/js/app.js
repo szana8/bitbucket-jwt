@@ -45,7 +45,7 @@ const app = new Vue({
     store: store,
     el: '#app',
     data: {
-        globalSearchVariable: 'searchdata'
+
     },
     watch: {
         '$route' (to, from) {

@@ -2,7 +2,7 @@
     <v-toolbar class="primary" top-toolbar left-fixed-sidebar sidebar-under-toolbar>
         <v-toolbar-side-icon v-on:click.native="navBarRedirect('home')" />
 
-        <v-toolbar-title>Laravel Issue Tracker</v-toolbar-title>
+        <v-toolbar-title></v-toolbar-title>
 
         <v-toolbar-items v-if="!user.authenticated">
                 <v-toolbar-item v-on:click.native="navBarRedirect('login')">Login</v-toolbar-item>

@@ -1,6 +1,7 @@
 <?php
-namespace App\Modules\ListOfValues\Events;
+namespace LaravelIssueTracker\ListOfValues\Events;
 
+use Illuminate\Queue\SerializesModels;
 use LaravelIssueTracker\ListOfValues\Models\ListOfValues;
 
 /**

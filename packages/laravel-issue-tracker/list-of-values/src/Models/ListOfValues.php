@@ -2,9 +2,9 @@
 namespace LaravelIssueTracker\ListOfValues\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Modules\ListOfValues\Events\ListOfValueWasUpdated;
-use App\Modules\ListOfValues\Events\ListOfValueWasCreated;
-use App\Modules\ListOfValues\Events\ListOfValueWasDestroyed;
+use LaravelIssueTracker\ListOfValues\Events\ListOfValueWasCreated;
+use LaravelIssueTracker\ListOfValues\Events\ListOfValueWasDestroyed;
+use LaravelIssueTracker\ListOfValues\Events\ListOfValueWasUpdated;
 
 /**
  * Class ListOfValues
@@ -19,7 +19,7 @@ class ListOfValues extends Model
     protected $fillable = [
         'name',
         'datatype',
-        'table',
+        'table_name',
         'column',
         'condition',
     ];
