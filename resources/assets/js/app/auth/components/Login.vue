@@ -16,12 +16,29 @@
                         <form @submit.stop.prevent="submit" @keydown="form.errors.clear($event.target.name)">
                             <v-row>
                                 <v-col xs12>
-                                    <v-text-field label="Email" v-model="form.email" name="email"></v-text-field>
+                                    <v-text-field label="Email"
+                                                  v-bind:class="{ 'input-group--error input-group--dirty': form.errors.has('email') }"
+                                                  v-model="form.email"
+                                                  name="email" />
+                                    <div class="input-group__details" style="margin-top:-30px;color:red;" v-if="form.errors.has('email')">
+                                        <div class="input-group__messages">
+                                            <div class="input-group__error" v-text="form.errors.get('email')" />
+                                        </div>
+                                    </div>
                                 </v-col>
                             </v-row>
                             <v-row>
                                 <v-col xs12>
-                                    <v-text-field type="password" label="Password" :rules="[passwordValidationError]" v-model="form.password" name="password"></v-text-field>
+                                    <v-text-field type="password"
+                                                  v-bind:class="{ 'input-group--error input-group--dirty': form.errors.has('password') }"
+                                                  label="Password"
+                                                  v-model="form.password"
+                                                  name="password" />
+                                    <div class="input-group__details" style="margin-top:-30px;color:red;" v-if="form.errors.has('password')">
+                                        <div class="input-group__messages">
+                                            <div class="input-group__error" v-text="form.errors.get('password')" />
+                                        </div>
+                                    </div>
                                 </v-col>
                             </v-row>
                         </form>
@@ -54,13 +71,7 @@
         },
 
         computed: {
-            passwordValidationError: function() {
-                if(this.form.errors.has('password')) {
-                    return this.form.errors.get('password')
-                }
 
-                return;
-            }
         },
 
         methods: {
@@ -76,15 +87,6 @@
                     context: this
                 }).then(() =>
                 {
-                    /*localforage.getItem('intended').then((name) => {
-                     if ( isEmpty(name) ) {
-                     this.$router.replace({ name: 'home' })
-                     return
-                     }
-
-                     this.$router.replace({ name: name })
-                     })*/
-
                     this.$router.replace({name: 'home'})
                 }).catch(error =>
                 {

@@ -3,6 +3,7 @@ import auth from './auth/routes'
 import home from './home/routes'
 import metadata from './metadata/routes'
 import listofvalues from './listofvalues/routes'
+import user from './user/routes'
 import errors from './errors/routes'
 
-export default [...home, ...auth, ...metadata, ...listofvalues, ...errors]
+export default [...home, ...auth, ...metadata, ...listofvalues, ...user, ...errors]

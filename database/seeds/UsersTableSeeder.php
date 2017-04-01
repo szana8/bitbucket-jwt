@@ -26,5 +26,6 @@ class UsersTableSeeder extends Seeder
             'type' => 'database',
             'name' => 'Administrator'
         ]);
+
     }
 }

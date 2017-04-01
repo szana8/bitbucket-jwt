@@ -53,8 +53,8 @@ class UserController extends ApiController
     {
         $user = User::with('profiles')->paginate($this->limit);
 
-        return $this->respond([
-            'data' => $this->userTransformer->transformCollection($user->all())
+        return $this->responsWithPaginaton($user, [
+            'data' => $this->userTransformer->transformCollection($user->all()),
         ]);
 
     }

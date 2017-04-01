@@ -1,10 +1,13 @@
 <template>
     <v-container fluid>
+        <!-- Loader -->
         <v-row v-if="! isLoaded">
             <v-col xs12="xs12" class="text-xs-center mt-5">
                 <v-progress-circular indeterminate class="primary--text"/>
             </v-col>
         </v-row>
+        <!-- End Loader -->
+
         <v-row v-if="isLoaded">
             <v-col xs12="xs12">
                 <v-container>
@@ -13,7 +16,7 @@
                             <v-card>
                                 <v-card-row>
                                     <v-card-title>
-                                        <span>Metadata</span>
+                                        <span>Users</span>
                                         <v-spacer></v-spacer>
                                         <div>
                                             <v-menu bottom left origin="top right" transition="v-scale-transition">
@@ -39,67 +42,38 @@
                         <v-col xs12="xs12">
                             <table>
                                 <thead>
-                                <tr>
-                                    <th>Type</th>
-                                    <th>Key</th>
-                                    <th>Value</th>
-                                    <th>Description</th>
-                                    <th>Enabled</th>
                                     <th></th>
-                                </tr>
+                                    <th>Email</th>
+                                    <th>Name</th>
+                                    <th>Roles</th>
+                                    <th></th>
                                 </thead>
                                 <tbody>
-                                <template v-for="item in metadata">
-                                    <tr>
-                                        <td v-text="item.type"></td>
-                                        <td v-text="item.key"></td>
-                                        <td v-text="item.value"></td>
-                                        <td v-text="item.description"></td>
-                                        <td>
-                                            <v-switch input-value="true" v-bind:value="item.enabled == 'Y' ? 'true' : 'false' " primary light />
-                                        </td>
-                                        <td>
-                                            <v-btn primary floating small dark v-on:click.native="edit(item.id)">
-                                                <v-icon class="white--text">edit</v-icon>
-                                            </v-btn>
-                                            <v-btn error floating small dark v-on:click.native="destroyMeta(item.id)">
-                                                <v-icon class="white--text">delete</v-icon>
-                                            </v-btn>
-                                        </td>
-                                    </tr>
-                                </template>
+                                    <template v-for="user in users">
+                                        <tr>
+                                            <td>
+                                            </td>
+                                            <td v-text="user.email" />
+                                            <td v-text="user.profile[0].name" />
+                                            <td></td>
+                                            <td>
+                                                <v-btn primary floating small dark v-on:click.native="edit(item.id)">
+                                                    <v-icon class="white--text">edit</v-icon>
+                                                </v-btn>
+                                                <v-btn error floating small dark v-on:click.native="destroyUser(item.id)">
+                                                    <v-icon class="white--text">delete</v-icon>
+                                                </v-btn>
+                                            </td>
+                                        </tr>
+                                    </template>
                                 </tbody>
                             </table>
                         </v-col>
                     </v-row>
-                    <v-row>
-                        <v-col xs12="xs12" class="mt-3">
-                            <v-pagination v-bind:length.number="total_pages" circle v-model="current_page" />
-                        </v-col>
-                    </v-row>
+
                 </v-container>
             </v-col>
         </v-row>
-        <v-row v-if="isLoaded">
-            <v-col xs12="xs12" class="pt-5 text-xs-right">
-                <v-btn floating="floating" error v-on:click.native="createMetadata">
-                    <v-icon>add</v-icon>
-                </v-btn>
-            </v-col>
-        </v-row>
-
-        <v-modal v-model="isSuccess" bottom>
-            <v-card class="secondary white--text">
-                <v-card-text class="subheading white--text">
-                    <v-row>
-                        <v-col sm10 xs12 v-text="reponseMessage"/>
-                        <v-col sm2 xs12>
-                            <v-btn primary dark v-on:click.native="reloadList">Close</v-btn>
-                        </v-col>
-                    </v-row>
-                </v-card-text>
-            </v-card>
-        </v-modal>
 
     </v-container>
 </template>
@@ -109,12 +83,11 @@
     import { mapActions } from 'vuex'
 
     export default {
-
-        data() {
+        data () {
 
             return {
                 isLoaded        : false,
-                metadata        : null,
+                users           : null,
                 isSuccess       : false,
                 pagination      : null,
                 total_pages     : null,
@@ -161,13 +134,10 @@
         },
 
         methods: {
-            ...mapActions({
-                destroy: 'metadata/destroy'
-            }),
 
-            getList: function ()
+            getList: function()
             {
-                axios.get('/api/v1/metadata', {
+                axios.get('/api/v1/users', {
                     params: this.axiosPagination
                 }).then(response => {
                     if (response.data.pagination.total_pages < this.axiosPagination.page)
@@ -175,7 +145,7 @@
                         this.axiosPagination.page = response.data.pagination.total_pages
                         this.getList()
                     }
-                    this.metadata = response.data.data
+                    this.users = response.data.data
                     this.pagination = response.data.pagination
                     this.total_pages = response.data.pagination.total_pages
                     this.current_page = response.data.pagination.current_page
@@ -183,37 +153,9 @@
                 }).catch(error => {
                     console.log(error)
                 })
-            },
-
-            createMetadata: function()
-            {
-                this.$router.replace({ name: 'CreateMetadata' })
-            },
-
-            edit: function(metadata)
-            {
-                this.$router.replace({ name: 'EditMetadata', params: { id: metadata } })
-            },
-
-            destroyMeta: function(metadata)
-            {
-                this.destroy({
-                    id: metadata,
-                    context: this
-                }).then(response => {
-                    console.log(response)
-                    this.reponseMessage = response.message
-                    this.isSuccess = true
-                }).catch(error => {
-                    console.log(error)
-                })
-            },
-
-            reloadList: function()
-            {
-                this.isSuccess = false
-                this.getList()
             }
+
         }
+
     }
 </script>
