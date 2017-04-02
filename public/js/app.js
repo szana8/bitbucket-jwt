@@ -55910,7 +55910,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "top-toolbar": ""
     }
-  }, [_c('navigation'), _vm._v(" "), _c('main', [(_vm.user.authenticated) ? _c('sidebar') : _vm._e(), _vm._v(" "), _c('v-content', [_c('router-view')], 1)], 1)], 1)
+  }, [_c('navigation'), _vm._v(" "), _c('main', [(_vm.user.authenticated) ? _c('sidebar') : _vm._e(), _vm._v(" "), _c('v-content', {
+    staticStyle: {
+      "overflow": "hidden"
+    }
+  }, [_c('router-view')], 1)], 1)], 1)
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -58809,6 +58813,91 @@ module.exports = __webpack_require__(19);
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_localforage__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_localforage___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_localforage__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__(3);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -58897,22 +58986,141 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 
+
+
+
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
-            isLoaded: true,
+            roles: null,
+            permissions: null,
+            isRolesLoaded: false,
+            isPermissionsLoaded: false,
             isSuccess: false,
-            pagination: null,
-            total_pages: null,
-            current_page: null,
+            pagination: {
+                roles: null,
+                permission: null
+            },
+            total_pages: {
+                roles: null,
+                permissions: null
+            },
+            roles_current_page: null,
+            permissions_current_page: null,
             reponseMessage: '',
-            issetPageNumber: false,
+            issetPageNumber: {
+                roles: null,
+                permissions: null
+            },
             axiosPagination: {
-                search: null,
-                page: null
+                roles: {
+                    search: null,
+                    page: null
+                },
+                permissions: {
+                    search: null,
+                    page: null
+                }
             }
         };
+    },
+    mounted: function mounted() {
+        var _this = this;
+
+        __WEBPACK_IMPORTED_MODULE_0_localforage___default.a.getItem('roles_page').then(function (page) {
+            if (page) {
+                _this.issetPageNumber.roles = true;
+                _this.axiosPagination.roles.page = page;
+                _this.roles_current_page = page;
+            } else {
+                _this.roles_current_page = 1;
+            }
+        });
+
+        __WEBPACK_IMPORTED_MODULE_0_localforage___default.a.getItem('permissions_page').then(function (page) {
+            if (page) {
+                _this.issetPageNumber.permissions = true;
+                _this.axiosPagination.permissions.page = page;
+                _this.permissions_current_page = page;
+            } else {
+                _this.permissions_current_page = 1;
+            }
+        });
+    },
+
+
+    watch: {
+
+        roles_current_page: function roles_current_page(newIndex) {
+            if (!this.issetPageNumber.roles) {
+                __WEBPACK_IMPORTED_MODULE_0_localforage___default.a.setItem('roles_page', newIndex);
+            }
+
+            this.axiosPagination.roles.page = newIndex;
+            this.getRolesList();
+            // get next page data...
+            this.issetPageNumber.roles = false;
+        },
+
+        permissions_current_page: function permissions_current_page(newIndex) {
+            if (!this.issetPageNumber.permissions) {
+                __WEBPACK_IMPORTED_MODULE_0_localforage___default.a.setItem('permissions_page', newIndex);
+            }
+
+            this.axiosPagination.permissions.page = newIndex;
+            this.getPermissionsList();
+            // get next page data...
+            this.issetPageNumber.permissions = false;
+        }
+
+    },
+
+    methods: {
+
+        getRolesList: function getRolesList() {
+            var _this2 = this;
+
+            axios.get('/api/v1/roles', {
+                params: this.axiosPagination.roles
+            }).then(function (response) {
+                if (response.data.pagination.total_pages < _this2.axiosPagination.roles.page) {
+                    _this2.axiosPagination.roles.page = response.data.pagination.total_pages;
+                    _this2.getRolesList();
+                }
+
+                _this2.roles = response.data.data;
+                _this2.pagination.roles = response.data.pagination;
+                _this2.total_pages.roles = response.data.pagination.total_pages;
+                _this2.roles_current_page = response.data.pagination.current_page;
+                _this2.isRolesLoaded = true;
+            }).catch(function (error) {
+                console.log(error);
+            });
+        },
+
+        getPermissionsList: function getPermissionsList() {
+            var _this3 = this;
+
+            axios.get('/api/v1/permissions', {
+                params: this.axiosPagination.permissions
+            }).then(function (response) {
+                if (response.data.pagination.total_pages < _this3.axiosPagination.permissions.page) {
+                    _this3.axiosPagination.permissions.page = response.data.pagination.total_pages;
+                    _this3.getPermissionsList();
+                }
+
+                _this3.permissions = response.data.data;
+                _this3.pagination.permissions = response.data.pagination;
+                _this3.total_pages.permissions = response.data.pagination.total_pages;
+                _this3.permissions_current_page = response.data.pagination.current_page;
+                _this3.isPermissionsLoaded = true;
+            }).catch(function (error) {
+                console.log(error);
+            });
+        }
+
     }
+
 });
 
 /***/ }),
@@ -58987,7 +59195,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "fluid": ""
     }
-  }, [(!_vm.isLoaded) ? _c('v-row', [_c('v-col', {
+  }, [(!_vm.isRolesLoaded) ? _c('v-row', [_c('v-col', {
     staticClass: "text-xs-center mt-5",
     attrs: {
       "xs12": "xs12"
@@ -58997,7 +59205,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "indeterminate": ""
     }
-  })], 1)], 1) : _vm._e(), _vm._v(" "), (_vm.isLoaded) ? _c('v-row', [_c('v-col', {
+  })], 1)], 1) : _vm._e(), _vm._v(" "), (_vm.isRolesLoaded) ? _c('v-row', [_c('v-col', {
     attrs: {
       "xs12": "xs12"
     }
@@ -59025,31 +59233,25 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "xs12": "xs12"
     }
-  }, [_c('table', [_c('thead', [_c('tr', [_c('th', [_vm._v("Type")]), _vm._v(" "), _c('th', [_vm._v("Key")]), _vm._v(" "), _c('th', [_vm._v("Value")]), _vm._v(" "), _c('th', [_vm._v("Description")]), _vm._v(" "), _c('th', [_vm._v("Enabled")]), _vm._v(" "), _c('th')])]), _vm._v(" "), _c('tbody', [_vm._l((_vm.metadata), function(item) {
+  }, [_c('table', [_c('thead', [_c('tr', [_c('th', [_vm._v("Name")]), _vm._v(" "), _c('th', [_vm._v("Display Name")]), _vm._v(" "), _c('th', [_vm._v("Description")]), _vm._v(" "), _c('th', [_vm._v("Permissions")]), _vm._v(" "), _c('th')])]), _vm._v(" "), _c('tbody', [_vm._l((_vm.roles), function(item) {
     return [_c('tr', [_c('td', {
       domProps: {
-        "textContent": _vm._s(item.type)
+        "textContent": _vm._s(item.name)
       }
     }), _vm._v(" "), _c('td', {
       domProps: {
-        "textContent": _vm._s(item.key)
-      }
-    }), _vm._v(" "), _c('td', {
-      domProps: {
-        "textContent": _vm._s(item.value)
+        "textContent": _vm._s(item.display_name)
       }
     }), _vm._v(" "), _c('td', {
       domProps: {
         "textContent": _vm._s(item.description)
       }
-    }), _vm._v(" "), _c('td', [_c('v-switch', {
+    }), _vm._v(" "), _c('td', [_c('v-btn', {
       attrs: {
-        "input-value": "true",
-        "value": item.enabled == 'Y' ? 'true' : 'false',
-        "primary": "",
-        "light": ""
-      }
-    })], 1), _vm._v(" "), _c('td', [_c('v-btn', {
+        "secondary": ""
+      },
+      slot: "activator"
+    }, [_vm._v("Show")])], 1), _vm._v(" "), _c('td', [_c('v-btn', {
       attrs: {
         "primary": "",
         "floating": "",
@@ -59078,7 +59280,123 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }, [_c('v-icon', {
       staticClass: "white--text"
     }, [_vm._v("delete")])], 1)], 1)])]
-  })], 2)])])], 1)], 1)], 1)], 1) : _vm._e()], 1)
+  })], 2)])])], 1), _vm._v(" "), _c('v-row', [_c('v-col', {
+    staticClass: "mt-3",
+    attrs: {
+      "xs12": "xs12"
+    }
+  }, [_c('v-pagination', {
+    attrs: {
+      "length": _vm.total_pages.roles,
+      "circle": ""
+    },
+    model: {
+      value: (_vm.roles_current_page),
+      callback: function($$v) {
+        _vm.roles_current_page = $$v
+      },
+      expression: "roles_current_page"
+    }
+  })], 1)], 1)], 1)], 1)], 1) : _vm._e(), _vm._v(" "), (!_vm.isPermissionsLoaded) ? _c('v-row', [_c('v-col', {
+    staticClass: "text-xs-center mt-5",
+    attrs: {
+      "xs12": "xs12"
+    }
+  }, [_c('v-progress-circular', {
+    staticClass: "primary--text",
+    attrs: {
+      "indeterminate": ""
+    }
+  })], 1)], 1) : _vm._e(), _vm._v(" "), (_vm.isPermissionsLoaded) ? _c('v-row', {
+    staticClass: "mt-5"
+  }, [_c('v-col', {
+    attrs: {
+      "xs12": "xs12"
+    }
+  }, [_c('v-container', [_c('v-row', {
+    staticClass: "mb-3"
+  }, [_c('v-col', {
+    attrs: {
+      "xs12": "xs12"
+    }
+  }, [_c('v-card', [_c('v-card-row', [_c('v-card-title', [_c('span', [_vm._v("Permissions")]), _vm._v(" "), _c('v-spacer'), _vm._v(" "), _c('div', [_c('v-menu', {
+    attrs: {
+      "bottom": "",
+      "left": "",
+      "origin": "top right",
+      "transition": "v-scale-transition"
+    }
+  }, [_c('v-btn', {
+    staticClass: "grey--text text--darken-2",
+    attrs: {
+      "icon": "",
+      "dark": ""
+    },
+    slot: "activator"
+  }, [_c('v-icon', [_vm._v("more_vert")])], 1), _vm._v(" "), _c('v-list', [_c('v-list-item', [_c('v-list-tile', [_c('v-list-tile-title', [_vm._v("Export List")])], 1)], 1)], 1)], 1)], 1)], 1)], 1)], 1)], 1)], 1), _vm._v(" "), _c('v-row', [_c('v-col', {
+    attrs: {
+      "xs12": "xs12"
+    }
+  }, [_c('table', [_c('thead', [_c('tr', [_c('th', [_vm._v("Name")]), _vm._v(" "), _c('th', [_vm._v("Display Name")]), _vm._v(" "), _c('th', [_vm._v("Description")]), _vm._v(" "), _c('th')])]), _vm._v(" "), _c('tbody', [_vm._l((_vm.permissions), function(item) {
+    return [_c('tr', [_c('td', {
+      domProps: {
+        "textContent": _vm._s(item.name)
+      }
+    }), _vm._v(" "), _c('td', {
+      domProps: {
+        "textContent": _vm._s(item.display_name)
+      }
+    }), _vm._v(" "), _c('td', {
+      domProps: {
+        "textContent": _vm._s(item.description)
+      }
+    }), _vm._v(" "), _c('td', [_c('v-btn', {
+      attrs: {
+        "primary": "",
+        "floating": "",
+        "small": "",
+        "dark": ""
+      },
+      nativeOn: {
+        "click": function($event) {
+          _vm.edit(item.id)
+        }
+      }
+    }, [_c('v-icon', {
+      staticClass: "white--text"
+    }, [_vm._v("edit")])], 1), _vm._v(" "), _c('v-btn', {
+      attrs: {
+        "error": "",
+        "floating": "",
+        "small": "",
+        "dark": ""
+      },
+      nativeOn: {
+        "click": function($event) {
+          _vm.destroyMeta(item.id)
+        }
+      }
+    }, [_c('v-icon', {
+      staticClass: "white--text"
+    }, [_vm._v("delete")])], 1)], 1)])]
+  })], 2)])])], 1), _vm._v(" "), _c('v-row', [_c('v-col', {
+    staticClass: "mt-3",
+    attrs: {
+      "xs12": "xs12"
+    }
+  }, [_c('v-pagination', {
+    attrs: {
+      "length": _vm.total_pages.permissions,
+      "circle": ""
+    },
+    model: {
+      value: (_vm.permissions_current_page),
+      callback: function($$v) {
+        _vm.permissions_current_page = $$v
+      },
+      expression: "permissions_current_page"
+    }
+  })], 1)], 1)], 1)], 1)], 1) : _vm._e()], 1)
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {

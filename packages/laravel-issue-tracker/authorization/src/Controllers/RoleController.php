@@ -23,6 +23,11 @@ class RoleController extends ApiController {
     private $roleCreatorService;
 
     /**
+     * @var int
+     */
+    protected $limit = 8;
+
+    /**
      * AuthorizationController constructor.
      * @param RoleTransformer $roleTransformer
      * @param RoleCreatorService $roleCreatorService
@@ -41,7 +46,7 @@ class RoleController extends ApiController {
      */
     public function index()
     {
-        $role = Role::searchInDefaultColumns(Request::get('search'))->paginate($this->limit);
+        $role = Role::with('perms')->searchInDefaultColumns(Request::get('search'))->paginate($this->limit);
 
         return $this->responsWithPaginaton($role, [
             'data' => $this->roleTransformer->transformCollection($role->all()),

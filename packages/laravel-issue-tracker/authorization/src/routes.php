@@ -13,7 +13,7 @@
 
 Route::group(['prefix' => 'api/v1', 'middleware' => 'jwt.auth'], function() {
 
-    Route::resource('role', '\LaravelIssueTracker\Authorization\Controllers\RoleController');
-    Route::resource('permission', '\LaravelIssueTracker\Authorization\Controllers\PermissionController');
+    Route::resource('roles', '\LaravelIssueTracker\Authorization\Controllers\RoleController');
+    Route::resource('permissions', '\LaravelIssueTracker\Authorization\Controllers\PermissionController');
 
 });

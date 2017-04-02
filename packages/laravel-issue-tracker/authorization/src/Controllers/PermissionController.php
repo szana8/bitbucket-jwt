@@ -22,6 +22,11 @@ class PermissionController extends ApiController {
     private $permissionCreatorServices;
 
     /**
+     * @var int
+     */
+    protected $limit = 8;
+
+    /**
      * AuthorizationController constructor.
      * @param PermissionTransformer $permissionTransformer
      * @param PermissionCreatorServices $permissionCreatorServices
@@ -31,7 +36,6 @@ class PermissionController extends ApiController {
         $this->permissionTransformer = $permissionTransformer;
         $this->permissionCreatorServices = $permissionCreatorServices;
     }
-
 
     /**
      * Display the list of the resource.
@@ -45,6 +49,30 @@ class PermissionController extends ApiController {
         return $this->responsWithPaginaton($permission, [
             'data' => $this->permissionTransformer->transformCollection($permission->all()),
         ]);
+    }
+
+    function autoload($pin_ClassName)
+    {
+        $loc_Directory = explode("\\", $pin_ClassName);
+        $loc_Location = '';
+
+        for($loc_Cycle=0;$loc_Cycle<=count($loc_Directory)-2;$loc_Cycle++) {
+            $loc_Location .= '/' . $loc_Directory[$loc_Cycle];
+        }
+
+        if($loc_Directory[0] == 'modules')
+            $loc_Location .= '/library/'. end($loc_Directory);
+        elseif($loc_Directory[0] == 'WebServices')
+            $loc_Location .= '/' . end($loc_Directory) . '/' .  end($loc_Directory);
+        else
+            $loc_Location .= '/'. end($loc_Directory);
+
+        $loc_File = BASEPATH . $loc_Location . '.php';
+
+        if(strlen($loc_File) <= 260) {
+            if(is_file($loc_File))
+                require_once $loc_File;
+        }
     }
 
     /**

@@ -5,7 +5,7 @@
         <main>
             <sidebar v-if="user.authenticated"></sidebar>
 
-            <v-content>
+            <v-content style="overflow: hidden">
                 <router-view></router-view>
             </v-content>
         </main>
