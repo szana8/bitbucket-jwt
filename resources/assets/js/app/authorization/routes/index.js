@@ -6,6 +6,7 @@ export default [
         path: '/authorization',
         component: Authorization,
         name: 'authorization',
+        namespace: 'setting',
         meta: {
             needsAuth: true
         }

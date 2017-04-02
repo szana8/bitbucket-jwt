@@ -93,7 +93,7 @@
         <!-- End Loader -->
 
 
-        <v-row v-if="isPermissionsLoaded" class="mt-5">
+        <v-row v-if="isPermissionsLoaded" class="mt-5 pb-5">
             <v-col xs12="xs12">
                 <v-container>
                     <v-row class="mb-3">
@@ -209,6 +209,9 @@
         },
 
         mounted () {
+
+            console.log(this.$router)
+
             localforage.getItem('roles_page').then(page => {
                 if (page) {
                     this.issetPageNumber.roles = true

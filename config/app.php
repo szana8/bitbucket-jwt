@@ -174,6 +174,7 @@ return [
         Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class,
         JeroenG\Packager\PackagerServiceProvider::class,
         Klaravel\Ntrust\NtrustServiceProvider::class,
+        Barryvdh\Debugbar\ServiceProvider::class,
         /*
          * Application Service Providers...
          */
@@ -249,6 +250,7 @@ return [
         'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
         'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
         'Ntrust' => Klaravel\Ntrust\NtrustFacade::class,
+        'Debugbar' => Barryvdh\Debugbar\Facade::class,
     ],
 
 ];

@@ -30582,12 +30582,13 @@ router.beforeEach(__WEBPACK_IMPORTED_MODULE_3__beforeEach__["a" /* default */]);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_auth_vuex__ = __webpack_require__(52);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_metadata_vuex__ = __webpack_require__(71);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_listofvalues_vuex__ = __webpack_require__(64);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_vuetify__ = __webpack_require__(17);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_vuetify___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_vuetify__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_vuetify_dist_vuetify_min_css__ = __webpack_require__(86);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_vuetify_dist_vuetify_min_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_vuetify_dist_vuetify_min_css__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_vuetify_dist_vuetify_js__ = __webpack_require__(17);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_vuetify_dist_vuetify_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_vuetify_dist_vuetify_js__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__app_authorization_vuex__ = __webpack_require__(122);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_vuetify__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_vuetify___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_vuetify__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_vuetify_dist_vuetify_min_css__ = __webpack_require__(86);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_vuetify_dist_vuetify_min_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_vuetify_dist_vuetify_min_css__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_vuetify_dist_vuetify_js__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_vuetify_dist_vuetify_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_vuetify_dist_vuetify_js__);
 
 
 
@@ -30598,14 +30599,17 @@ router.beforeEach(__WEBPACK_IMPORTED_MODULE_3__beforeEach__["a" /* default */]);
 
 
 
-__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_5_vuetify___default.a);
+
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_6_vuetify___default.a);
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex__["b" /* default */]);
 
 /* harmony default export */ __webpack_exports__["a"] = (new __WEBPACK_IMPORTED_MODULE_1_vuex__["b" /* default */].Store({
     modules: {
+        namepsace: 'setting',
         auth: __WEBPACK_IMPORTED_MODULE_2__app_auth_vuex__["a" /* default */],
         metadata: __WEBPACK_IMPORTED_MODULE_3__app_metadata_vuex__["a" /* default */],
-        listofvalues: __WEBPACK_IMPORTED_MODULE_4__app_listofvalues_vuex__["a" /* default */]
+        listofvalues: __WEBPACK_IMPORTED_MODULE_4__app_listofvalues_vuex__["a" /* default */],
+        authorization: __WEBPACK_IMPORTED_MODULE_5__app_authorization_vuex__["a" /* default */]
     }
 }));
 
@@ -50725,23 +50729,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
-        return {
-            itemGroup: [{ header: 'Settings', icon: 'settings' }, {
-                title: 'System',
-                icon: 'settings applications',
-                group: '/system',
-                items: [{ title: 'Metadata', name: 'metadata', icon: 'list', active: false }, { title: 'List Of Values', name: 'listofvalues', icon: 'list', active: false }, { title: 'User', name: 'user', icon: 'list', active: false }, { title: 'Authorization', name: 'authorization', icon: 'list', active: false }]
-            },
-            //{ title: 'Link' },
-            { divider: true }, { header: 'Modules' }, { title: 'Issue' }]
-        };
+        return {};
     },
 
 
-    methods: {
-        navBarRedirect: function navBarRedirect(page) {
-            console.log(page);
-            this.$router.replace({ name: page });
+    computed: {
+        itemGroup: function itemGroup() {
+            return [{ header: 'Settings', icon: 'settings' }, {
+                title: 'System',
+                icon: 'settings applications',
+                group: '/',
+                items: [{ title: 'Metadata', href: '/metadata', icon: 'list' }, { title: 'List Of Values', href: '/list-of-values', icon: 'list' }, { title: 'User', href: '/user', icon: 'list' }, { title: 'Authorization', href: '/authorization', icon: 'list' }]
+            },
+            //{ title: 'Link' },
+            { divider: true }, { header: 'Modules' }, { title: 'Issue' }];
         }
     }
 });
@@ -55010,7 +55011,7 @@ module.exports = Component.exports
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('v-toolbar', {
-    staticClass: "primary",
+    staticClass: "blue-grey darken-3",
     attrs: {
       "top-toolbar": "",
       "left-fixed-sidebar": "",
@@ -55855,23 +55856,39 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('v-sidebar', [_c('v-list', {
+  return _c('v-sidebar', {
+    staticClass: "blue-grey darken-3",
+    attrs: {
+      "close-on-click": false
+    }
+  }, [_c('v-list', {
     attrs: {
       "dense": ""
     }
   }, [_vm._l((_vm.itemGroup), function(item) {
-    return [(item.items) ? _c('v-list-group', [_c('v-list-item', {
+    return [(item.items) ? _c('v-list-group', {
+      key: item.title,
+      attrs: {
+        "group": item.group
+      }
+    }, [_c('v-list-item', {
       slot: "item"
-    }, [_c('v-list-tile', [_c('v-list-tile-title', {
+    }, [_c('v-list-tile', {
+      attrs: {
+        "ripple": ""
+      }
+    }, [_c('v-list-tile-title', {
       domProps: {
         "textContent": _vm._s(item.title)
       }
     }), _vm._v(" "), _c('v-list-tile-action', [_c('v-icon', [_vm._v("keyboard_arrow_down")])], 1)], 1)], 1), _vm._v(" "), _vm._l((item.items), function(subItem) {
-      return _c('v-list-item', [_c('v-list-tile', {
-        nativeOn: {
-          "click": function($event) {
-            _vm.navBarRedirect(subItem.name)
-          }
+      return _c('v-list-item', {
+        key: subItem.title
+      }, [_c('v-list-tile', {
+        attrs: {
+          "ripple": "",
+          "router": "",
+          "href": subItem.href
         }
       }, [_c('v-list-tile-title', {
         domProps: {
@@ -59027,6 +59044,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     mounted: function mounted() {
         var _this = this;
 
+        console.log(this.$router);
+
         __WEBPACK_IMPORTED_MODULE_0_localforage___default.a.getItem('roles_page').then(function (page) {
             if (page) {
                 _this.issetPageNumber.roles = true;
@@ -59147,6 +59166,7 @@ var Authorization = __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('autho
     path: '/authorization',
     component: __WEBPACK_IMPORTED_MODULE_0__components__["a" /* Authorization */],
     name: 'authorization',
+    namespace: 'setting',
     meta: {
         needsAuth: true
     }
@@ -59308,7 +59328,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "indeterminate": ""
     }
   })], 1)], 1) : _vm._e(), _vm._v(" "), (_vm.isPermissionsLoaded) ? _c('v-row', {
-    staticClass: "mt-5"
+    staticClass: "mt-5 pb-5"
   }, [_c('v-col', {
     attrs: {
       "xs12": "xs12"
@@ -59405,6 +59425,78 @@ if (false) {
      require("vue-hot-reload-api").rerender("data-v-853793b4", module.exports)
   }
 }
+
+/***/ }),
+/* 120 */
+/***/ (function(module, exports) {
+
+
+
+/***/ }),
+/* 121 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "authorization", function() { return authorization; });
+/**
+ *
+ * @param state
+ */
+var authorization = function authorization(state) {
+  return state.authorization;
+};
+
+/***/ }),
+/* 122 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__state__ = __webpack_require__(124);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mutations__ = __webpack_require__(123);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__actions__ = __webpack_require__(120);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__actions___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__actions__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__getters__ = __webpack_require__(121);
+
+
+
+
+
+/**
+ *
+ */
+/* harmony default export */ __webpack_exports__["a"] = ({
+    namespaced: true,
+    state: __WEBPACK_IMPORTED_MODULE_0__state__["a" /* default */],
+    mutations: __WEBPACK_IMPORTED_MODULE_1__mutations__,
+    actions: __WEBPACK_IMPORTED_MODULE_2__actions__,
+    getters: __WEBPACK_IMPORTED_MODULE_3__getters__
+});
+
+/***/ }),
+/* 123 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_localforage__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_localforage___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_localforage__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_lodash__);
+
+
+
+/***/ }),
+/* 124 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/**
+ *
+ */
+/* harmony default export */ __webpack_exports__["a"] = ({
+    authorization: {}
+});
 
 /***/ })
 /******/ ]);

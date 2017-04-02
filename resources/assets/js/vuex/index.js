@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import auth from '../app/auth/vuex'
 import metadata from '../app/metadata/vuex'
 import listofvalues from '../app/listofvalues/vuex'
+import authorization from '../app/authorization/vuex'
 
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
@@ -13,8 +14,10 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     modules: {
+        namepsace: 'setting',
         auth: auth,
         metadata: metadata,
-        listofvalues: listofvalues
+        listofvalues: listofvalues,
+        authorization: authorization,
     }
 })
