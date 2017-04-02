@@ -40,7 +40,7 @@ class PermissionController extends ApiController {
      */
     public function index()
     {
-        $permission = Permission::searchInDefaultColumns(Request::get('search'))->orderBy('key', 'asc')->paginate($this->limit);
+        $permission = Permission::searchInDefaultColumns(Request::get('search'))->paginate($this->limit);
 
         return $this->responsWithPaginaton($permission, [
             'data' => $this->permissionTransformer->transformCollection($permission->all()),

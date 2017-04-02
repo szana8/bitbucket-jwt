@@ -172,9 +172,8 @@ return [
          * 3rd party Service Providers for API
          */
         Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class,
-        Zizaco\Entrust\EntrustServiceProvider::class,
         JeroenG\Packager\PackagerServiceProvider::class,
-
+        Klaravel\Ntrust\NtrustServiceProvider::class,
         /*
          * Application Service Providers...
          */
@@ -249,7 +248,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
         'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
-        'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
+        'Ntrust' => Klaravel\Ntrust\NtrustFacade::class,
     ],
 
 ];

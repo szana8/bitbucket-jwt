@@ -2,10 +2,18 @@
 
 namespace LaravelIssueTracker\Authorization\Models;
 
-use Zizaco\Entrust\EntrustRole;
+use Illuminate\Database\Eloquent\Model;
+use Klaravel\Ntrust\Traits\NtrustRoleTrait;
 
-class Role extends EntrustRole
+class Role extends Model
 {
+
+    use NtrustRoleTrait;
+
+    /*
+     * Role profile to get value from ntrust config file.
+     */
+    protected $roleProfile = 'user';
 
     /**
      * @param $query
@@ -14,7 +22,12 @@ class Role extends EntrustRole
      */
     public function scopeSearchInDefaultColumns($query, $search = null)
     {
-        return $query;
+        if ( ! $search )
+            return $query;
+
+        return $query->where('name', 'like', '%' . $search . '%')
+            ->orWhere('display_name', 'like', '%' . $search . '%')
+            ->orWhere('description', 'like', '%' . $search . '%');
     }
 
 }

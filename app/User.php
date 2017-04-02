@@ -4,12 +4,17 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Klaravel\Ntrust\Traits\NtrustUserTrait;
 use LaravelIssueTracker\User\Models\User as LaravelIssueUser;
-use Zizaco\Entrust\Traits\EntrustUserTrait;
 
 class User extends Authenticatable
 {
-    use Notifiable, LaravelIssueUser, EntrustUserTrait;
+    use Notifiable, LaravelIssueUser, NtrustUserTrait;
+
+    /*
+     * Role profile to get value from ntrust config file.
+     */
+    protected $roleProfile = 'user';
 
     /**
      * The attributes that are mass assignable.

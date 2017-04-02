@@ -58,8 +58,8 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
 
         'jwt.auth' => \Tymon\JWTAuth\Middleware\GetUserFromToken::class,
-        'role' => \Zizaco\Entrust\Middleware\EntrustRole::class,
-        'permission' => \Zizaco\Entrust\Middleware\EntrustPermission::class,
-        'ability' => \Zizaco\Entrust\Middleware\EntrustAbility::class,
+        'role' => \Klaravel\Ntrust\Middleware\NtrustRole::class,
+        'permission' => \Klaravel\Ntrust\Middleware\NtrustPermission::class,
+        'ability' => \Klaravel\Ntrust\Middleware\NtrustAbility::class,
     ];
 }

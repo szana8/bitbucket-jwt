@@ -41,7 +41,7 @@ class RoleController extends ApiController {
      */
     public function index()
     {
-        $role = Role::searchInDefaultColumns(Request::get('search'))->orderBy('key', 'asc')->paginate($this->limit);
+        $role = Role::searchInDefaultColumns(Request::get('search'))->paginate($this->limit);
 
         return $this->responsWithPaginaton($role, [
             'data' => $this->roleTransformer->transformCollection($role->all()),

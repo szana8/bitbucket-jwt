@@ -9,7 +9,7 @@
         "laravel/framework": "5.4.*",
         "laravel/tinker": "~1.0",
         "tymon/jwt-auth": "^0.5.10",
-        "zizaco/entrust": "5.2.x-dev",
+        "klaravel/ntrust": "1.0.*",
         "laravel/socialite": "^2.0",
         "alexsoft/laravel-socialite-bitbucket": "^1.0"
     },

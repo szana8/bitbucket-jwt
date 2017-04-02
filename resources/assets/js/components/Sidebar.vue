@@ -45,6 +45,7 @@
                             { title: 'Metadata', name: 'metadata', icon: 'list', active: false },
                             { title: 'List Of Values', name: 'listofvalues', icon: 'list', active: false },
                             { title: 'User', name: 'user', icon: 'list', active: false },
+                            { title: 'Authorization', name: 'authorization', icon: 'list', active: false },
                         ]
                     },
                     //{ title: 'Link' },

@@ -2,11 +2,11 @@
 
 namespace LaravelIssueTracker\Metadata\Controllers;
 
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Request;
 use LaravelIssueTracker\Metadata\Models\Metadata;
 use LaravelIssueTracker\Core\Controller\ApiController;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use LaravelIssueTracker\Core\Acme\Validators\ValidationException;
 use LaravelIssueTracker\Metadata\Acme\Services\MetadataCreatorService;
 use LaravelIssueTracker\Metadata\Acme\Transformers\MetadataTransformer;
