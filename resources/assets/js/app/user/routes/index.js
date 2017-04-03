@@ -2,7 +2,7 @@ import { User } from '../components'
 
 export default [
     {
-        path: '/user',
+        path: '/system/user',
         component: User,
         name: 'user',
         meta: {

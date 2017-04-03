@@ -3,7 +3,7 @@ import { ListOfValues, Create } from '../components'
 export default [
     
     {
-        path: '/list-of-values',
+        path: '/system/list-of-values',
         component: ListOfValues,
         name: 'listofvalues',
         meta: {
@@ -12,7 +12,7 @@ export default [
     },
 
     {
-        path: '/list-of-values/create',
+        path: '/system/list-of-values/create',
         component: Create,
         name: 'CreateListOfValue',
         meta: {
@@ -21,7 +21,7 @@ export default [
     },
 
     {
-        path: '/list-of-values/:id/edit',
+        path: '/system/list-of-values/:id/edit',
         component: Create,
         name: 'EditListOfValue',
         meta: {

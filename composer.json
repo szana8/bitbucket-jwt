@@ -26,8 +26,8 @@
             "database"
         ],
         "psr-4": {
+            "LaravelIssueTracker\\InventoryOrganization\\": "packages/laravel-issue-tracker/inventory-organization/src",
             "LaravelIssueTracker\\Authorization\\": "packages/laravel-issue-tracker/authorization/src",
-            "App\\": "app/",
             "LaravelIssueTracker\\Watcher\\": "packages/laravel-issue-tracker/watcher/src",
             "LaravelIssueTracker\\Fileattachment\\": "packages/laravel-issue-tracker/fileattachment/src",
             "LaravelIssueTracker\\Issue\\": "packages/laravel-issue-tracker/issue/src",
@@ -36,7 +36,8 @@
             "LaravelIssueTracker\\Core\\": "packages/laravel-issue-tracker/core/src",
             "LaravelIssueTracker\\Metadata\\": "packages/laravel-issue-tracker/metadata/src",
             "LaravelIssueTracker\\User\\": "packages/laravel-issue-tracker/user/src",
-            "LaravelIssueTracker\\ListOfValues\\": "packages/laravel-issue-tracker/list-of-values/src"
+            "LaravelIssueTracker\\ListOfValues\\": "packages/laravel-issue-tracker/list-of-values/src",
+            "App\\": "app/"
         }
     },
     "autoload-dev": {

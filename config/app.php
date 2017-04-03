@@ -184,20 +184,20 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
-        \LaravelIssueTracker\Authorization\AuthorizationServiceProvider::class,
-
         /*
          * Laravel Issue Packages...
         */
         LaravelIssueTracker\Core\CoreServiceProvider::class,
-        LaravelIssueTracker\Metadata\MetadataServiceProvider::class,
-        LaravelIssueTracker\Authentication\AuthenticationServiceProvider::class,
-        LaravelIssueTracker\ListOfValues\ListOfValuesServiceProvider::class,
-        LaravelIssueTracker\Project\ProjectServiceProvider::class,
         LaravelIssueTracker\Issue\IssueServiceProvider::class,
-        LaravelIssueTracker\Fileattachment\FileattachmentServiceProvider::class,
-        LaravelIssueTracker\Watcher\WatcherServiceProvider::class,
         \LaravelIssueTracker\User\UserServiceProvider::class,
+        LaravelIssueTracker\Watcher\WatcherServiceProvider::class,
+        LaravelIssueTracker\Project\ProjectServiceProvider::class,
+        LaravelIssueTracker\Metadata\MetadataServiceProvider::class,
+        LaravelIssueTracker\ListOfValues\ListOfValuesServiceProvider::class,
+        LaravelIssueTracker\Authorization\AuthorizationServiceProvider::class,
+        LaravelIssueTracker\Authentication\AuthenticationServiceProvider::class,
+        LaravelIssueTracker\Fileattachment\FileattachmentServiceProvider::class,
+        \LaravelIssueTracker\InventoryOrganization\InventoryOrganizationServiceProvider::class,
 
     ],
 

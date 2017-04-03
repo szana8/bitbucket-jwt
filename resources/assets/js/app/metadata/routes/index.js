@@ -2,7 +2,7 @@ import { Metadata, Create } from '../components'
 
 export default [
     {
-        path: '/metadata',
+        path: '/system/metadata',
         component: Metadata,
         name: 'metadata',
         meta: {
@@ -11,7 +11,7 @@ export default [
     },
 
     {
-        path: '/metadata/create',
+        path: '/system/metadata/create',
         component: Create,
         name: 'CreateMetadata',
         meta: {
@@ -20,7 +20,7 @@ export default [
     },
 
     {
-        path: '/metadata/:id/edit',
+        path: '/system/metadata/:id/edit',
         component: Create,
         name: 'EditMetadata',
         meta: {

@@ -46,12 +46,12 @@
                     {
                         title: 'System',
                         icon: 'settings applications',
-                        group: '/',
+                        group: '/system',
                         items: [
-                            { title: 'Metadata', href: '/metadata', icon: 'list' },
-                            { title: 'List Of Values', href: '/list-of-values', icon: 'list' },
-                            { title: 'User', href: '/user', icon: 'list' },
-                            { title: 'Authorization', href: '/authorization', icon: 'list' },
+                            { title: 'Metadata', href: '/system/metadata', icon: 'list' },
+                            { title: 'List Of Values', href: '/system/list-of-values', icon: 'list' },
+                            { title: 'User', href: '/system/user', icon: 'list' },
+                            { title: 'Authorization', href: '/system/authorization', icon: 'list' },
                         ]
                     },
                     //{ title: 'Link' },
