@@ -56,7 +56,7 @@
                     },
                     //{ title: 'Link' },
                     { divider: true },
-                    { header: 'Modules' },
+                    { header: 'Inventory Management' },
                     { title: 'Issue' }
                 ]
             }

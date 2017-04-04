@@ -193,6 +193,7 @@ return [
         LaravelIssueTracker\Watcher\WatcherServiceProvider::class,
         LaravelIssueTracker\Project\ProjectServiceProvider::class,
         LaravelIssueTracker\Metadata\MetadataServiceProvider::class,
+        LaravelIssueTracker\Locations\LocationsServiceProvider::class,
         LaravelIssueTracker\ListOfValues\ListOfValuesServiceProvider::class,
         LaravelIssueTracker\Authorization\AuthorizationServiceProvider::class,
         LaravelIssueTracker\Authentication\AuthenticationServiceProvider::class,
