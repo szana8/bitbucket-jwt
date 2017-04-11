@@ -19,7 +19,7 @@
         "barryvdh/laravel-ide-helper": "^2.2",
         "fzaninotto/faker": "~1.4",
         "mockery/mockery": "0.9.*",
-        "phpunit/phpunit": "~5.7"
+        "phpunit/phpunit": "~6.0"
     },
     "autoload": {
         "classmap": [
@@ -43,7 +43,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "laravel-issue-tracker\\locations\\": "packages/laravel-issue-tracker/locations/src",
+            "LaravelIssueTracker\\Metadata\\": "packages/laravel-issue-tracker/metadata/tests/",
             "Tests\\": "tests/"
         }
     },

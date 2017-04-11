@@ -1,11 +1,10 @@
 <?php
 
-namespace LaravelIssueTracker\InventoryOrganization\Acme\Transformers;
+namespace LaravelIssueTracker\Locations\Acme\Transformers;
 
 use LaravelIssueTracker\Core\Acme\Transformers\Transformer;
 
-class InventoryOrganizationTransformer extends Transformer
-{
+class LocationTransformer extends Transformer {
 
     /**
      * Abstract function for the transformation, need to be implement in the child class.

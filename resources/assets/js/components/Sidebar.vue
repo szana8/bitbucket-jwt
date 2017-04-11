@@ -1,5 +1,5 @@
 <template>
-    <v-sidebar class="blue-grey darken-3" v-bind:close-on-click="false">
+    <v-sidebar v-bind:close-on-click="false">
         <v-list dense>
             <template v-for="item in itemGroup">
                 <v-list-group v-if="item.items" v-bind:group="item.group" v-bind:key="item.title">
@@ -13,7 +13,7 @@
                     </v-list-item>
                     <v-list-item v-for="subItem in item.items" v-bind:key="subItem.title" >
                         <v-list-tile ripple router :href="subItem.href">
-                            <v-list-tile-title v-text="subItem.title" />
+                            <v-list-tile-title v-html="subItem.title.bold()" />
                         </v-list-tile>
                     </v-list-item>
                 </v-list-group>
@@ -56,8 +56,17 @@
                     },
                     //{ title: 'Link' },
                     { divider: true },
+                    { header: 'Setup' },
+                    {
+                        title: 'Organizations',
+                        icon: 'settings applications',
+                        group: '/setup/organizations',
+                        items: [
+                            { title: 'Locations', href: '/setup/organizations/locations', icon: 'list' },
+                        ]
+                    },
                     { header: 'Inventory Management' },
-                    { title: 'Issue' }
+                    { title: 'Item Inventory' }
                 ]
             }
         }

@@ -13,7 +13,7 @@ class CreateInventoryOrganizationTable extends Migration
      */
     public function up()
     {
-        Schema::create('inventory_organization', function (Blueprint $table) {
+        Schema::create('inventory_organizations', function (Blueprint $table) {
             //$table->engine = 'InnoDB';
 
             $table->increments('id');
@@ -23,7 +23,7 @@ class CreateInventoryOrganizationTable extends Migration
             $table->softDeletes();
         });
 
-        Schema::table('inventory_organization', function($table) {
+        Schema::table('inventory_organizations', function($table) {
             $table->integer('location_id')->after('id')->unsigned();
             $table->foreign('location_id')->references('id')->on('locations')->onDelete('cascade');
         });
@@ -36,10 +36,10 @@ class CreateInventoryOrganizationTable extends Migration
      */
     public function down()
     {
-        Schema::table('inventory_organization', function($table) {
-            $table->dropForeign('inventory_organization_location_id_foreign');
+        Schema::table('inventory_organizations', function($table) {
+            $table->dropForeign('inventory_organizations_location_id_foreign');
         });
 
-        Schema::dropIfExists('inventory_organization');
+        Schema::dropIfExists('inventory_organizations');
     }
 }

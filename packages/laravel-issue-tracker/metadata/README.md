@@ -24,7 +24,23 @@ Via Composer
 $ composer require laravel-issue-tracker/metadata
 ```
 
+### Configuration
+
+After installing the Socialite library, register the `LaravelIssueTracker\Metadata\MetadataServiceProviderr` in your `config/app.php` configuration file:
+
+```php
+'providers' => [
+    // Other service providers...
+    LaravelIssueTracker\Metadata\MetadataServiceProvider::class,
+],
+```
+
 ## Usage
+
+You can use the standard RESTful URLs to get the list of the metadata or add a new one to the database.
+There are two type of metadata exists in the api. The first is `label` and the other one is `setting`.
+
+You can use these URLs for the different functionalitites:
 
 ``` php
 GET http://yourapplicationurl/api/v1/metadata

@@ -44,7 +44,7 @@ class CreateSubInventoriesTable extends Migration
 
         Schema::table('subinventories', function($table) {
             $table->integer('organization_id')->after('id')->unsigned();
-            $table->foreign('organization_id')->references('id')->on('inventory_organization')->onDelete('cascade');
+            $table->foreign('organization_id')->references('id')->on('inventory_organizations')->onDelete('cascade');
 
             $table->integer('location_id')->after('id')->unsigned();
             $table->foreign('location_id')->references('id')->on('locations')->onDelete('cascade');

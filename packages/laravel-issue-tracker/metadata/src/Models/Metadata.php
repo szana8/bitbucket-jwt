@@ -55,8 +55,8 @@ class Metadata extends Model {
             return $query;
 
         return $query->where('type', 'like', '%' . $search . '%')
-                      ->orWhere('key', 'like', '%' . $search . '%')
-                      ->orWhere('value', 'like', '%' . $search . '%');
+            ->orWhere('key', 'like', '%' . $search . '%')
+            ->orWhere('value', 'like', '%' . $search . '%');
     }
 
 }

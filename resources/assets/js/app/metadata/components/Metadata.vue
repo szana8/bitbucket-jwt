@@ -8,70 +8,55 @@
         <v-row v-if="isLoaded">
             <v-col xs12="xs12">
                 <v-container>
-                    <v-row class="mb-3">
+                    <v-row>
                         <v-col xs12="xs12">
+
                             <v-card>
                                 <v-card-row>
                                     <v-card-title>
                                         <span>Metadata</span>
                                         <v-spacer></v-spacer>
-                                        <div>
-                                            <v-menu bottom left origin="top right" transition="v-scale-transition">
-                                                <v-btn icon dark slot="activator" class="grey--text text--darken-2">
-                                                    <v-icon>more_vert</v-icon>
-                                                </v-btn>
-                                                <v-list>
-                                                    <v-list-item>
-                                                        <v-list-tile>
-                                                            <v-list-tile-title>Export List</v-list-tile-title>
-                                                        </v-list-tile>
-                                                    </v-list-item>
-                                                </v-list>
-                                            </v-menu>
-                                        </div>
+                                        <v-text-field append-icon="search" label="Search" v-model="search" v-on:keyup.native.enter="searchMeta" single-line hide-details></v-text-field>
                                     </v-card-title>
                                 </v-card-row>
+                                <table>
+                                    <thead>
+                                    <tr>
+                                        <th>Type</th>
+                                        <th>Key</th>
+                                        <th>Value</th>
+                                        <th>Description</th>
+                                        <th>Enabled</th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <template v-for="item in metadata">
+                                        <tr>
+                                            <td v-text="item.type"></td>
+                                            <td v-text="item.key"></td>
+                                            <td v-text="item.value"></td>
+                                            <td v-text="item.description"></td>
+                                            <td>
+                                                <v-switch input-value="true" v-bind:value="item.enabled == 'Y' ? 'true' : 'false' " primary light />
+                                            </td>
+                                            <td>
+                                                <v-btn primary floating small dark v-on:click.native="edit(item.id)">
+                                                    <v-icon class="white--text">edit</v-icon>
+                                                </v-btn>
+                                                <v-btn error floating small dark v-on:click.native="destroyMeta(item.id)">
+                                                    <v-icon class="white--text">delete</v-icon>
+                                                </v-btn>
+                                            </td>
+                                        </tr>
+                                    </template>
+                                    </tbody>
+                                </table>
                             </v-card>
+
                         </v-col>
                     </v-row>
 
-                    <v-row>
-                        <v-col xs12="xs12">
-                            <table>
-                                <thead>
-                                <tr>
-                                    <th>Type</th>
-                                    <th>Key</th>
-                                    <th>Value</th>
-                                    <th>Description</th>
-                                    <th>Enabled</th>
-                                    <th></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <template v-for="item in metadata">
-                                    <tr>
-                                        <td v-text="item.type"></td>
-                                        <td v-text="item.key"></td>
-                                        <td v-text="item.value"></td>
-                                        <td v-text="item.description"></td>
-                                        <td>
-                                            <v-switch input-value="true" v-bind:value="item.enabled == 'Y' ? 'true' : 'false' " primary light />
-                                        </td>
-                                        <td>
-                                            <v-btn primary floating small dark v-on:click.native="edit(item.id)">
-                                                <v-icon class="white--text">edit</v-icon>
-                                            </v-btn>
-                                            <v-btn error floating small dark v-on:click.native="destroyMeta(item.id)">
-                                                <v-icon class="white--text">delete</v-icon>
-                                            </v-btn>
-                                        </td>
-                                    </tr>
-                                </template>
-                                </tbody>
-                            </table>
-                        </v-col>
-                    </v-row>
                     <v-row>
                         <v-col xs12="xs12" class="mt-3">
                             <v-pagination v-bind:length.number="total_pages" circle v-model="current_page" />
@@ -113,6 +98,7 @@
         data() {
 
             return {
+                search: '',
                 isLoaded        : false,
                 metadata        : null,
                 isSuccess       : false,
@@ -212,6 +198,13 @@
             reloadList: function()
             {
                 this.isSuccess = false
+                this.getList()
+            },
+
+            searchMeta: function()
+            {
+                this.axiosPagination.search = this.search
+                this.current_page = 1
                 this.getList()
             }
         }

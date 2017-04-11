@@ -13,6 +13,6 @@
 
 Route::group(['prefix' => 'api/v1', 'middleware' => 'jwt.auth'], function() {
 
-    Route::resource('inventory-organizations', '\LaravelIssueTracker\InventoryOrganizations\Controllers\InventoryOrganizationController');
+    Route::resource('inventory-organizations', '\LaravelIssueTracker\InventoryOrganization\Controllers\InventoryOrganizationController');
 
 });

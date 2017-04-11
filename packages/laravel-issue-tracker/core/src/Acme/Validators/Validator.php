@@ -1,7 +1,7 @@
 <?php
 namespace LaravelIssueTracker\Core\Acme\Validators;
 
-use Illuminate\Support\Facades\Validator as LaravelIssueTrackerValidator;
+use Illuminate\Support\Facades\Validator as ValidatorFacade;
 
 /**
  * Abstract class for the form attribute validation. All of the API validation class has to be
@@ -65,7 +65,7 @@ abstract class Validator {
      */
     protected function isValid(array $attributes, $option = "default")
     {
-        $validator = LaravelIssueTrackerValidator::make($attributes, static::$rules[$option], static::$messages);
+        $validator = ValidatorFacade::make($attributes, static::$rules[$option], static::$messages);
 
         if( $validator->fails() )
         {
