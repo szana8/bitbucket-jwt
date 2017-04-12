@@ -1,6 +1,6 @@
 {
-    "name": "laravel-issue-tracker/list-of-values",
-    "type": "library",
+    "name": "szana8/list-of-values",
+    "type": "project",
     "description": ":package_description",
     "keywords": [
         "laravel-issue-tracker",
@@ -8,14 +8,6 @@
     ],
     "homepage": "https://github.com/laravel-issue-tracker/list-of-values",
     "license": "MIT",
-    "authors": [
-        {
-            "name": ":author_name",
-            "email": ":author_email",
-            "homepage": ":author_website",
-            "role": "Developer"
-        }
-    ],
     "require": {
         "illuminate/support": "~5.1",
         "php" : "~5.6|~7.0"

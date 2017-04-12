@@ -1,6 +1,7 @@
 # laravel-issue-core
 
-
+This is the core library for the Laravel Issue Tracker components. 
+Contains the main interfaces, abstract classes and any other common classes.
 ## Install
 
 Via Composer
