@@ -13,6 +13,7 @@ import 'vuetify/dist/vuetify.min.js'
 Vue.use(Vuetify)
 Vue.use(Vuex)
 
+/*
 import * as VueGoogleMaps from 'vue2-google-maps';
 Vue.use(VueGoogleMaps, {
     load: {
@@ -21,6 +22,7 @@ Vue.use(VueGoogleMaps, {
         // libraries: 'places', //// If you need to use place input
     }
 });
+*/
 
 export default new Vuex.Store({
     modules: {

@@ -1,10 +1,8 @@
 <template>
     <v-container fluid>
-        <v-row v-if="! isLoaded">
-            <v-col xs12="xs12" class="text-xs-center mt-5">
-                <v-progress-circular indeterminate class="primary--text"/>
-            </v-col>
-        </v-row>
+
+        <loader v-if="! isLoaded"></loader>
+
         <v-row v-if="isLoaded">
             <v-col xs12="xs12">
                 <v-container>

@@ -9,37 +9,19 @@
         <v-row v-if="isLoaded">
             <v-col xs12="xs12">
                 <v-container>
-                    <v-row class="mb-3">
+                    <v-row>
                         <v-col xs12="xs12">
                             <v-card>
                                 <v-card-row>
                                     <v-card-title>
-                                        <span>Lis Of Values</span>
+                                        <span>List Of Values</span>
                                         <v-spacer></v-spacer>
-                                        <div>
-                                            <v-menu bottom left origin="top right" transition="v-scale-transition">
-                                                <v-btn icon dark slot="activator" class="grey--text text--darken-2">
-                                                    <v-icon>more_vert</v-icon>
-                                                </v-btn>
-                                                <v-list>
-                                                    <v-list-item>
-                                                        <v-list-tile>
-                                                            <v-list-tile-title>Export List</v-list-tile-title>
-                                                        </v-list-tile>
-                                                    </v-list-item>
-                                                </v-list>
-                                            </v-menu>
-                                        </div>
+                                        <v-text-field append-icon="search" label="Search" v-model="search" v-on:keyup.native.enter="searchMeta" single-line hide-details></v-text-field>
                                     </v-card-title>
                                 </v-card-row>
-                            </v-card>
-                        </v-col>
-                    </v-row>
 
-                    <v-row>
-                        <v-col xs12="xs12">
-                            <table>
-                                <thead>
+                                <table>
+                                    <thead>
                                     <tr>
                                         <th>Name</th>
                                         <th>Datatype</th>
@@ -49,8 +31,8 @@
                                         <th>Values</th>
                                         <th></th>
                                     </tr>
-                                </thead>
-                                <tbody>
+                                    </thead>
+                                    <tbody>
                                     <template v-for="item in listofvalues">
                                         <tr>
                                             <td v-text="item.name" />
@@ -80,10 +62,13 @@
                                             </td>
                                         </tr>
                                     </template>
-                                </tbody>
-                            </table>
+                                    </tbody>
+                                </table>
+
+                            </v-card>
                         </v-col>
                     </v-row>
+
                     <v-row>
                         <v-col xs12="xs12" class="mt-3">
                             <v-pagination v-bind:length.number="total_pages" circle v-model="current_page" />

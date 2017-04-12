@@ -30,6 +30,7 @@ window.Form = Form;
 Vue.component('app', require('./components/App.vue'));
 Vue.component('navigation', require('./components/Navigation.vue'));
 Vue.component('sidebar', require('./components/Sidebar.vue'));
+Vue.component('loader', require('./components/Loader.vue'));
 
 store.dispatch('auth/setToken').then(() => {
     store.dispatch('auth/fetchUser').catch(() => {

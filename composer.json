@@ -6,13 +6,17 @@
     "type": "project",
     "require": {
         "php": ">=5.6.4",
-        "alexsoft/laravel-socialite-bitbucket": "^1.0",
         "barryvdh/laravel-debugbar": "^2.3",
         "klaravel/ntrust": "1.0.*",
         "laravel/framework": "5.4.*",
-        "laravel/socialite": "^2.0",
         "laravel/tinker": "~1.0",
-        "tymon/jwt-auth": "^0.5.10"
+        "tymon/jwt-auth": "^0.5.10",
+
+        "szana8/api-core": "^1.0.0",
+        "szana8/metadata": "^1.0.0",
+        "szana8/list-of-values": "^1.0.0",
+        "szana8/authentication": "^1.0.0",
+        "szana8/user": "dev-master"
     },
     "require-dev": {
         "jeroen-g/laravel-packager": "^1.5",
@@ -33,17 +37,11 @@
             "LaravelIssueTracker\\Fileattachment\\": "packages/laravel-issue-tracker/fileattachment/src",
             "LaravelIssueTracker\\Issue\\": "packages/laravel-issue-tracker/issue/src",
             "LaravelIssueTracker\\Project\\": "packages/laravel-issue-tracker/project/src",
-            "LaravelIssueTracker\\Authentication\\": "packages/laravel-issue-tracker/authentication/src",
-            "LaravelIssueTracker\\Core\\": "packages/laravel-issue-tracker/core/src",
-            "LaravelIssueTracker\\Metadata\\": "packages/laravel-issue-tracker/metadata/src",
-            "LaravelIssueTracker\\User\\": "packages/laravel-issue-tracker/user/src",
-            "LaravelIssueTracker\\ListOfValues\\": "packages/laravel-issue-tracker/list-of-values/src",
             "App\\": "app/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "LaravelIssueTracker\\Metadata\\": "packages/laravel-issue-tracker/metadata/tests/",
             "Tests\\": "tests/"
         }
     },
