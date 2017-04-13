@@ -1,6 +1,9 @@
 <template>
-    <v-app top-toolbar>
-        <navigation></navigation>
+    <v-app left-fixed-sidebar top-fixed-toolbar>
+        <header>
+            <navigation></navigation>
+        </header>
+
 
         <main>
             <sidebar v-if="user.authenticated"></sidebar>

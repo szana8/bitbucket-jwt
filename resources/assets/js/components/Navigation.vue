@@ -1,10 +1,12 @@
 <template>
-    <v-toolbar class="primary" top-toolbar left-fixed-sidebar>
+    <v-toolbar class="indigo" fixed>
         <v-toolbar-side-icon v-on:click.native="navBarRedirect('home')" />
 
         <v-toolbar-title></v-toolbar-title>
 
-        <v-toolbar-items v-if="!user.authenticated">
+        <v-text-field prepend-icon="search" label="Search..." hide-details single-line dark></v-text-field>
+
+        <v-toolbar-items v-if="! user.authenticated">
                 <v-toolbar-item v-on:click.native="navBarRedirect('login')">Login</v-toolbar-item>
                 <v-toolbar-item v-on:click.native="navBarRedirect('register')">Register</v-toolbar-item>
         </v-toolbar-items>

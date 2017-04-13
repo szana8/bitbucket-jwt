@@ -1,5 +1,5 @@
 <template>
-    <v-sidebar v-bind:close-on-click="false">
+    <v-sidebar class="blue-grey darken-2" fixed>
         <v-list dense>
             <template v-for="item in itemGroup">
                 <v-list-group v-if="item.items" v-bind:group="item.group" v-bind:key="item.title">
