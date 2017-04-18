@@ -1,5 +1,5 @@
 <template>
-    <v-toolbar class="indigo" fixed>
+    <v-toolbar class="primary" fixed>
         <v-toolbar-side-icon v-on:click.native="navBarRedirect('home')" />
 
         <v-toolbar-title></v-toolbar-title>

@@ -1,6 +1,15 @@
 <template>
-    <v-sidebar class="blue-grey darken-2" fixed>
+    <v-sidebar fixed>
         <v-list dense>
+            <v-list-tile avatar class="mt-5">
+                <v-list-tile-avatar>
+                    <img src="https://vuetifyjs.com/public/doc-images/lists/1.jpg"/>
+                </v-list-tile-avatar>
+                <v-list-tile-content>
+                    <v-list-tile-title>aliconnors@example.com</v-list-tile-title>
+                </v-list-tile-content>
+            </v-list-tile>
+            <v-divider class="mt-5" light />
             <template v-for="item in itemGroup">
                 <v-list-group v-if="item.items" v-bind:group="item.group" v-bind:key="item.title">
                     <v-list-item slot="item">

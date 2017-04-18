@@ -16,7 +16,7 @@
                                     <v-card-title>
                                         <span>List Of Values</span>
                                         <v-spacer></v-spacer>
-                                        <v-text-field append-icon="search" label="Search" v-model="search" v-on:keyup.native.enter="searchMeta" single-line hide-details></v-text-field>
+                                        <v-text-field append-icon="search" label="Search" v-model="search" v-on:keyup.native.enter="searchLov" single-line hide-details></v-text-field>
                                     </v-card-title>
                                 </v-card-row>
 
@@ -29,7 +29,7 @@
                                         <th>Column</th>
                                         <th>Condition</th>
                                         <th>Values</th>
-                                        <th></th>
+                                        <th width="80px"></th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -53,16 +53,29 @@
                                                 </v-menu>
                                             </td>
                                             <td>
-                                                <v-btn primary floating small dark v-on:click.native="edit(item.id)">
-                                                    <v-icon class="white--text">edit</v-icon>
-                                                </v-btn>
-                                                <v-btn error floating small dark v-on:click.native="destroyListOfValue(item.id)">
-                                                    <v-icon class="white--text">delete</v-icon>
-                                                </v-btn>
+                                                <v-row>
+                                                    <v-col xs6="xs6" sm4="sm2">
+                                                        <v-btn primary flat dark v-on:click.native="edit(item.id)">
+                                                            <v-icon>edit</v-icon>
+                                                        </v-btn>
+                                                    </v-col>
+                                                    <v-col xs6="xs6" sm4="sm2">
+                                                        <v-btn error flat dark v-on:click.native="destroyListOfValue(item.id)">
+                                                            <v-icon>delete</v-icon>
+                                                        </v-btn>
+                                                    </v-col>
+                                                </v-row>
                                             </td>
                                         </tr>
                                     </template>
                                     </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="7" class="text-xs-right pr-4">
+                                                Total number of records: {{ total_count }}
+                                            </td>
+                                        </tr>
+                                    </tfoot>
                                 </table>
 
                             </v-card>
@@ -108,6 +121,7 @@
     export default {
         data() {
             return {
+                search: '',
                 isLoaded: false,
                 isSuccess       : false,
                 pagination      : null,
@@ -116,6 +130,7 @@
                 current_page    : null,
                 total_pages     : null,
                 current_page    : null,
+                total_count: null,
                 reponseMessage  : '',
                 issetPageNumber : false,
                 axiosPagination : {
@@ -175,6 +190,7 @@
                     this.pagination = response.data.pagination
                     this.total_pages = response.data.pagination.total_pages
                     this.current_page = response.data.pagination.current_page
+                    this.total_count = response.data.pagination.total_count
                     this.isLoaded = true
                 }).catch(error => {
                     console.log(error)
@@ -208,6 +224,13 @@
             {
                 console.log('asd')
                 this.isSuccess = false
+                this.getList()
+            },
+
+            searchLov: function()
+            {
+                this.axiosPagination.search = this.search
+                this.current_page = 1
                 this.getList()
             }
         }

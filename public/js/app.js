@@ -42809,6 +42809,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -42818,13 +42831,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         var _ref;
 
         return _ref = {
+            search: '',
             isLoaded: false,
             isSuccess: false,
             pagination: null,
             total_pages: null,
             listofvalues: null,
             current_page: null
-        }, _defineProperty(_ref, 'total_pages', null), _defineProperty(_ref, 'current_page', null), _defineProperty(_ref, 'reponseMessage', ''), _defineProperty(_ref, 'issetPageNumber', false), _defineProperty(_ref, 'axiosPagination', {
+        }, _defineProperty(_ref, 'total_pages', null), _defineProperty(_ref, 'current_page', null), _defineProperty(_ref, 'total_count', null), _defineProperty(_ref, 'reponseMessage', ''), _defineProperty(_ref, 'issetPageNumber', false), _defineProperty(_ref, 'axiosPagination', {
             search: null,
             page: null
         }), _ref;
@@ -42876,6 +42890,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 _this2.pagination = response.data.pagination;
                 _this2.total_pages = response.data.pagination.total_pages;
                 _this2.current_page = response.data.pagination.current_page;
+                _this2.total_count = response.data.pagination.total_count;
                 _this2.isLoaded = true;
             }).catch(function (error) {
                 console.log(error);
@@ -42907,6 +42922,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         reloadList: function reloadList() {
             console.log('asd');
             this.isSuccess = false;
+            this.getList();
+        },
+
+        searchLov: function searchLov() {
+            this.axiosPagination.search = this.search;
+            this.current_page = 1;
             this.getList();
         }
     })
@@ -43522,6 +43543,19 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -43537,6 +43571,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             pagination: null,
             total_pages: null,
             current_page: null,
+            total_count: null,
             reponseMessage: '',
             issetPageNumber: false,
             axiosPagination: {
@@ -43593,6 +43628,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
                 _this2.pagination = response.data.pagination;
                 _this2.total_pages = response.data.pagination.total_pages;
                 _this2.current_page = response.data.pagination.current_page;
+                _this2.total_count = response.data.pagination.total_count;
                 _this2.isLoaded = true;
             }).catch(function (error) {
                 console.log(error);
@@ -43928,6 +43964,15 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -48852,7 +48897,7 @@ if (false) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('v-toolbar', {
-    staticClass: "indigo",
+    staticClass: "primary",
     attrs: {
       "fixed": ""
     }
@@ -48969,7 +49014,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     nativeOn: {
       "keyup": function($event) {
         if (!('button' in $event) && _vm._k($event.keyCode, "enter", 13)) { return null; }
-        _vm.searchMeta($event)
+        _vm.searchLov($event)
       }
     },
     model: {
@@ -48979,7 +49024,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       },
       expression: "search"
     }
-  })], 1)], 1), _vm._v(" "), _c('table', [_c('thead', [_c('tr', [_c('th', [_vm._v("Name")]), _vm._v(" "), _c('th', [_vm._v("Datatype")]), _vm._v(" "), _c('th', [_vm._v("Table")]), _vm._v(" "), _c('th', [_vm._v("Column")]), _vm._v(" "), _c('th', [_vm._v("Condition")]), _vm._v(" "), _c('th', [_vm._v("Values")]), _vm._v(" "), _c('th')])]), _vm._v(" "), _c('tbody', [_vm._l((_vm.listofvalues), function(item) {
+  })], 1)], 1), _vm._v(" "), _c('table', [_c('thead', [_c('tr', [_c('th', [_vm._v("Name")]), _vm._v(" "), _c('th', [_vm._v("Datatype")]), _vm._v(" "), _c('th', [_vm._v("Table")]), _vm._v(" "), _c('th', [_vm._v("Column")]), _vm._v(" "), _c('th', [_vm._v("Condition")]), _vm._v(" "), _c('th', [_vm._v("Values")]), _vm._v(" "), _c('th', {
+    attrs: {
+      "width": "80px"
+    }
+  })])]), _vm._v(" "), _c('tbody', [_vm._l((_vm.listofvalues), function(item) {
     return [_c('tr', [_c('td', {
       domProps: {
         "textContent": _vm._s(item.name)
@@ -49018,11 +49067,15 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           "textContent": _vm._s(values.value)
         }
       })], 1)], 1)
-    }))], 1) : _vm._e()], 1), _vm._v(" "), _c('td', [_c('v-btn', {
+    }))], 1) : _vm._e()], 1), _vm._v(" "), _c('td', [_c('v-row', [_c('v-col', {
+      attrs: {
+        "xs6": "xs6",
+        "sm4": "sm2"
+      }
+    }, [_c('v-btn', {
       attrs: {
         "primary": "",
-        "floating": "",
-        "small": "",
+        "flat": "",
         "dark": ""
       },
       nativeOn: {
@@ -49030,13 +49083,15 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           _vm.edit(item.id)
         }
       }
-    }, [_c('v-icon', {
-      staticClass: "white--text"
-    }, [_vm._v("edit")])], 1), _vm._v(" "), _c('v-btn', {
+    }, [_c('v-icon', [_vm._v("edit")])], 1)], 1), _vm._v(" "), _c('v-col', {
+      attrs: {
+        "xs6": "xs6",
+        "sm4": "sm2"
+      }
+    }, [_c('v-btn', {
       attrs: {
         "error": "",
-        "floating": "",
-        "small": "",
+        "flat": "",
         "dark": ""
       },
       nativeOn: {
@@ -49044,10 +49099,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           _vm.destroyListOfValue(item.id)
         }
       }
-    }, [_c('v-icon', {
-      staticClass: "white--text"
-    }, [_vm._v("delete")])], 1)], 1)])]
-  })], 2)])], 1)], 1)], 1), _vm._v(" "), _c('v-row', [_c('v-col', {
+    }, [_c('v-icon', [_vm._v("delete")])], 1)], 1)], 1)], 1)])]
+  })], 2), _vm._v(" "), _c('tfoot', [_c('tr', [_c('td', {
+    staticClass: "text-xs-right pr-4",
+    attrs: {
+      "colspan": "7"
+    }
+  }, [_vm._v("\n                                            Total number of records: " + _vm._s(_vm.total_count) + "\n                                        ")])])])], 1)], 1)], 1)], 1), _vm._v(" "), _c('v-row', [_c('v-col', {
     staticClass: "mt-3",
     attrs: {
       "xs12": "xs12"
@@ -49555,7 +49613,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       },
       expression: "search"
     }
-  })], 1)], 1), _vm._v(" "), _c('table', [_c('thead', [_c('tr', [_c('th', [_vm._v("Type")]), _vm._v(" "), _c('th', [_vm._v("Key")]), _vm._v(" "), _c('th', [_vm._v("Value")]), _vm._v(" "), _c('th', [_vm._v("Description")]), _vm._v(" "), _c('th', [_vm._v("Enabled")]), _vm._v(" "), _c('th')])]), _vm._v(" "), _c('tbody', [_vm._l((_vm.metadata), function(item) {
+  })], 1)], 1), _vm._v(" "), _c('table', [_c('thead', [_c('tr', [_c('th', [_vm._v("Type")]), _vm._v(" "), _c('th', [_vm._v("Key")]), _vm._v(" "), _c('th', [_vm._v("Value")]), _vm._v(" "), _c('th', [_vm._v("Description")]), _vm._v(" "), _c('th', [_vm._v("Enabled")]), _vm._v(" "), _c('th', {
+    attrs: {
+      "width": "80px"
+    }
+  })])]), _vm._v(" "), _c('tbody', [_vm._l((_vm.metadata), function(item) {
     return [_c('tr', [_c('td', {
       domProps: {
         "textContent": _vm._s(item.type)
@@ -49579,36 +49641,43 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "primary": "",
         "light": ""
       }
-    })], 1), _vm._v(" "), _c('td', [_c('v-btn', {
+    })], 1), _vm._v(" "), _c('td', [_c('v-row', [_c('v-col', {
+      attrs: {
+        "xs6": "xs6",
+        "sm4": "sm2"
+      }
+    }, [_c('v-btn', {
       attrs: {
         "primary": "",
-        "floating": "",
-        "small": "",
-        "dark": ""
+        "flat": ""
       },
       nativeOn: {
         "click": function($event) {
           _vm.edit(item.id)
         }
       }
-    }, [_c('v-icon', {
-      staticClass: "white--text"
-    }, [_vm._v("edit")])], 1), _vm._v(" "), _c('v-btn', {
+    }, [_c('v-icon', [_vm._v("edit")])], 1)], 1), _vm._v(" "), _c('v-col', {
+      attrs: {
+        "xs6": "xs6",
+        "sm4": "sm2"
+      }
+    }, [_c('v-btn', {
       attrs: {
         "error": "",
-        "floating": "",
-        "small": "",
-        "dark": ""
+        "flat": ""
       },
       nativeOn: {
         "click": function($event) {
           _vm.destroyMeta(item.id)
         }
       }
-    }, [_c('v-icon', {
-      staticClass: "white--text"
-    }, [_vm._v("delete")])], 1)], 1)])]
-  })], 2)])], 1)], 1)], 1), _vm._v(" "), _c('v-row', [_c('v-col', {
+    }, [_c('v-icon', [_vm._v("delete")])], 1)], 1)], 1)], 1)])]
+  })], 2), _vm._v(" "), _c('tfoot', [_c('tr', [_c('td', {
+    staticClass: "text-xs-right pr-4",
+    attrs: {
+      "colspan": "7"
+    }
+  }, [_vm._v("\n                                            Total number of records: " + _vm._s(_vm.total_count) + "\n                                        ")])])])], 1)], 1)], 1)], 1), _vm._v(" "), _c('v-row', [_c('v-col', {
     staticClass: "mt-3",
     attrs: {
       "xs12": "xs12"
@@ -49694,7 +49763,6 @@ if (false) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('v-sidebar', {
-    staticClass: "blue-grey darken-2",
     attrs: {
       "fixed": ""
     }
@@ -49702,7 +49770,21 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "dense": ""
     }
-  }, [_vm._l((_vm.itemGroup), function(item) {
+  }, [_c('v-list-tile', {
+    staticClass: "mt-5",
+    attrs: {
+      "avatar": ""
+    }
+  }, [_c('v-list-tile-avatar', [_c('img', {
+    attrs: {
+      "src": "https://vuetifyjs.com/public/doc-images/lists/1.jpg"
+    }
+  })]), _vm._v(" "), _c('v-list-tile-content', [_c('v-list-tile-title', [_vm._v("aliconnors@example.com")])], 1)], 1), _vm._v(" "), _c('v-divider', {
+    staticClass: "mt-5",
+    attrs: {
+      "light": ""
+    }
+  }), _vm._v(" "), _vm._l((_vm.itemGroup), function(item) {
     return [(item.items) ? _c('v-list-group', {
       key: item.title,
       attrs: {
@@ -49767,7 +49849,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_c('header', [_c('navigation')], 1), _vm._v(" "), _c('main', [(_vm.user.authenticated) ? _c('sidebar') : _vm._e(), _vm._v(" "), _c('v-content', {
     staticStyle: {
-      "overflow": "hidden"
+      "overflow": "hidden",
+      "margin-top": "50px",
+      "padding-bottom": "50px"
     }
   }, [_c('router-view')], 1)], 1)])
 },staticRenderFns: []}

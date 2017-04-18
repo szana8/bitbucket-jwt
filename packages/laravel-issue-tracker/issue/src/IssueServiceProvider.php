@@ -19,10 +19,6 @@ class IssueServiceProvider extends ServiceProvider
         $this->loadMigrationsFrom(__DIR__.'/migrations');
 
         $this->loadRoutesFrom(__DIR__.'/routes.php');
-
-        if( ! $this->app->routesAreCached() ) {
-            require __DIR__.'/routes.php';
-        }
     }
 
     /**

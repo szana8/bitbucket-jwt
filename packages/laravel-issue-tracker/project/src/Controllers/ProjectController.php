@@ -59,7 +59,6 @@ class ProjectController extends ApiController
     public function store()
     {
         try {
-            //$this->authorize('store');
             $this->projectCreatorService->make(Input::all());
             return $this->respondCreated('Project successfully created!');
         }

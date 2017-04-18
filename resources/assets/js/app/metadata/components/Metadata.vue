@@ -25,7 +25,7 @@
                                         <th>Value</th>
                                         <th>Description</th>
                                         <th>Enabled</th>
-                                        <th></th>
+                                        <th width="80px"></th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -39,16 +39,29 @@
                                                 <v-switch input-value="true" v-bind:value="item.enabled == 'Y' ? 'true' : 'false' " primary light />
                                             </td>
                                             <td>
-                                                <v-btn primary floating small dark v-on:click.native="edit(item.id)">
-                                                    <v-icon class="white--text">edit</v-icon>
-                                                </v-btn>
-                                                <v-btn error floating small dark v-on:click.native="destroyMeta(item.id)">
-                                                    <v-icon class="white--text">delete</v-icon>
-                                                </v-btn>
+                                                <v-row>
+                                                    <v-col xs6="xs6" sm4="sm2">
+                                                        <v-btn primary flat v-on:click.native="edit(item.id)">
+                                                            <v-icon>edit</v-icon>
+                                                        </v-btn>
+                                                    </v-col>
+                                                    <v-col xs6="xs6" sm4="sm2">
+                                                        <v-btn error flat v-on:click.native="destroyMeta(item.id)">
+                                                            <v-icon>delete</v-icon>
+                                                        </v-btn>
+                                                    </v-col>
+                                                </v-row>
                                             </td>
                                         </tr>
                                     </template>
                                     </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="7" class="text-xs-right pr-4">
+                                                Total number of records: {{ total_count }}
+                                            </td>
+                                        </tr>
+                                    </tfoot>
                                 </table>
                             </v-card>
 
@@ -103,6 +116,7 @@
                 pagination      : null,
                 total_pages     : null,
                 current_page    : null,
+                total_count: null,
                 reponseMessage  : '',
                 issetPageNumber : false,
                 axiosPagination : {
@@ -163,6 +177,7 @@
                     this.pagination = response.data.pagination
                     this.total_pages = response.data.pagination.total_pages
                     this.current_page = response.data.pagination.current_page
+                    this.total_count = response.data.pagination.total_count
                     this.isLoaded = true
                 }).catch(error => {
                     console.log(error)

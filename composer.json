@@ -12,10 +12,10 @@
         "laravel/tinker": "~1.0",
         "tymon/jwt-auth": "^0.5.10",
 
-        "szana8/api-core": "^1.0.0",
-        "szana8/metadata": "^1.0.0",
-        "szana8/list-of-values": "^1.0.0",
-        "szana8/authentication": "^1.0.0",
+        "szana8/api-core": "1.*",
+        "szana8/metadata": "1.*",
+        "szana8/list-of-values": "1.*",
+        "szana8/authentication": "1.*",
         "szana8/user": "dev-master"
     },
     "require-dev": {

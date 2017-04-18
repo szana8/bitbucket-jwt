@@ -8,7 +8,7 @@
         <main>
             <sidebar v-if="user.authenticated"></sidebar>
 
-            <v-content style="overflow: hidden">
+            <v-content style="overflow: hidden; margin-top: 50px;padding-bottom:50px;">
                 <router-view></router-view>
             </v-content>
         </main>
