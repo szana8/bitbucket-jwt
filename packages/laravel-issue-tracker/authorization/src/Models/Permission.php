@@ -23,6 +23,11 @@ class Permission extends Model
      */
     public function scopeSearchInDefaultColumns($query, $search = null)
     {
-        return $query;
+        if ( ! $search )
+            return $query;
+
+        return $query->where('name', 'like', '%' . $search . '%')
+                    ->orWhere('display_name', 'like', '%' . $search . '%')
+                    ->orWhere('description', 'like', '%' . $search . '%');
     }
 }

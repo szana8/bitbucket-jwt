@@ -10,14 +10,14 @@ class Location extends Model {
 
     public function scopeSearchInDefaultColumns($query, $search = null)
     {
-        return $query;
-
         if ( ! $search )
             return $query;
 
-        /*return $query->where('type', 'like', '%' . $search . '%')
-            ->orWhere('key', 'like', '%' . $search . '%')
-            ->orWhere('value', 'like', '%' . $search . '%');*/
+        return $query->where('location_code', 'like', '%' . $search . '%')
+                    ->orWhere('description', 'like', '%' . $search . '%')
+                    ->orWhere('address_line_1', 'like', '%' . $search . '%')
+                    ->orWhere('town_or_city', 'like', '%' . $search . '%')
+                    ->orWhere('country', 'like', '%' . $search . '%');
     }
 
 }

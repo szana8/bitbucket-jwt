@@ -1,112 +1,83 @@
 <template>
-    <v-container fluid="fluid">
-        <v-row v-if="! isLoaded">
-            <v-col xs12="xs12" class="text-xs-center mt-5">
-                <v-progress-circular indeterminate class="primary--text"/>
-            </v-col>
-        </v-row>
-        <v-row v-if="isLoaded">
-            <v-col xs12="xs12">
-                <v-container>
-                    <v-row class="mb-3">
-                        <v-col xs12="xs12">
-                            <v-card>
-                                <v-card-row>
-                                    <v-card-title>
-                                        <span>Locations</span>
-                                        <v-spacer></v-spacer>
-                                        <div>
-                                            <v-menu bottom left origin="top right" transition="v-scale-transition">
-                                                <v-btn icon dark slot="activator" class="grey--text text--darken-2">
-                                                    <v-icon>more_vert</v-icon>
-                                                </v-btn>
-                                                <v-list>
-                                                    <v-list-item>
-                                                        <v-list-tile>
-                                                            <v-list-tile-title>Export List</v-list-tile-title>
-                                                        </v-list-tile>
-                                                    </v-list-item>
-                                                </v-list>
-                                            </v-menu>
-                                        </div>
-                                    </v-card-title>
-                                </v-card-row>
-                            </v-card>
-                        </v-col>
-                    </v-row>
+    <v-container fluid>
 
-                    <v-row>
-                        <v-col xs12="xs12">
-                            <table>
-                                <thead>
-                                <tr>
-                                    <th>Code</th>
-                                    <th>Description</th>
-                                    <th>Address Line</th>
-                                    <th>Town or City</th>
-                                    <th>Country</th>
-                                    <th>Postal Code</th>
-                                    <th>Region</th>
-                                    <th>Phone number</th>
-                                    <th></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <template v-for="location in locations">
-                                    <tr>
-                                        <td v-text="location.location_code"></td>
-                                        <td v-text="location.description.substring(1, 25)"></td>
-                                        <td v-text="location.address_line_1.substring(1,25)"></td>
-                                        <td v-text="location.town_or_city"></td>
-                                        <td v-text="location.country"></td>
-                                        <td v-text="location.postal_code"></td>
-                                        <td v-text="location.region"></td>
-                                        <td v-text="location.phone_number"></td>
-                                        <td>
-                                            <v-btn primary floating small dark v-on:click.native="show(location.id)">
-                                                <v-icon class="white--text">remove_red_eye</v-icon>
-                                            </v-btn>
-                                            <v-btn primary floating small dark v-on:click.native="edit(location.id)">
-                                                <v-icon class="white--text">edit</v-icon>
-                                            </v-btn>
-                                            <v-btn error floating small dark v-on:click.native="destroyMeta(location.id)">
-                                                <v-icon class="white--text">delete</v-icon>
-                                            </v-btn>
-                                        </td>
-                                    </tr>
-                                </template>
-                                </tbody>
-                            </table>
-                        </v-col>
-                    </v-row>
-                    <v-row>
-                        <v-col xs12="xs12" class="mt-3">
-                            <v-pagination v-bind:length.number="total_pages" circle v-model="current_page" />
-                        </v-col>
-                    </v-row>
-                </v-container>
-            </v-col>
-        </v-row>
+        <loader v-if="! isLoaded"></loader>
+
         <v-row v-if="isLoaded">
-            <v-col xs12="xs12" class="pt-5 text-xs-right">
-                <v-btn floating="floating" error v-on:click.native="createMetadata">
-                    <v-icon>add</v-icon>
-                </v-btn>
+
+            <v-col xl12="xl12" xs12="xs12">
+                <v-card>
+                    <v-card-row>
+                        <v-card-title>
+                            <span>Locations</span>
+                            <v-spacer></v-spacer>
+                            <v-text-field append-icon="search" label="Search" v-model="search" v-on:keyup.native.enter="searchLocation" single-line hide-details></v-text-field>
+                        </v-card-title>
+                    </v-card-row>
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Code</th>
+                            <th>Description</th>
+                            <th>Address Line</th>
+                            <th>Town or City</th>
+                            <th>Country</th>
+                            <th>Postal Code</th>
+                            <th>Region</th>
+                            <th>Phone number</th>
+                            <th width="200px"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <template v-for="location in locations">
+                            <tr>
+                                <td v-text="location.location_code"></td>
+                                <td v-text="location.description.substring(1, 25)"></td>
+                                <td v-text="location.address_line_1.substring(1,25)"></td>
+                                <td v-text="location.town_or_city"></td>
+                                <td v-text="location.country"></td>
+                                <td v-text="location.postal_code"></td>
+                                <td v-text="location.region"></td>
+                                <td v-text="location.phone_number"></td>
+                                <td>
+                                    <v-row>
+                                        <v-col xs4="xs4">
+                                            <v-btn primary flat v-on:click.native="show(item.id)">
+                                                <v-icon>remove_red_eye</v-icon>
+                                            </v-btn>
+                                        </v-col>
+                                        <v-col xs4="xs4">
+                                            <v-btn primary flat v-on:click.native="edit(item.id)">
+                                                <v-icon>edit</v-icon>
+                                            </v-btn>
+                                        </v-col>
+                                        <v-col xs4="xs4">
+                                            <v-btn error flat v-on:click.native="destroyLocation(item.id)">
+                                                <v-icon>delete</v-icon>
+                                            </v-btn>
+                                        </v-col>
+                                    </v-row>
+                                </td>
+                            </tr>
+                        </template>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="9" class="text-xs-right pr-4">
+                                    Total number of records: {{ total_count }}
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </v-card>
             </v-col>
         </v-row>
 
-        <v-modal v-model="isSuccess" bottom>
-            <v-card class="secondary white--text">
-                <v-card-text class="subheading white--text">
-                    <v-row>
-                        <v-col sm10 xs12 v-text="reponseMessage"/>
-                        <v-col sm2 xs12>
-                            <v-btn primary dark v-on:click.native="reloadList">Close</v-btn>
-                        </v-col>
-                    </v-row>
-                </v-card-text>
-            </v-card>
-        </v-modal>
+        <v-row>
+            <v-col xs12="xs12" class="mt-3">
+                <v-pagination v-bind:length.number="total_pages" circle v-model="current_page" />
+            </v-col>
+        </v-row>
 
     </v-container>
 </template>
@@ -120,11 +91,13 @@
         data() {
 
             return {
+                search: '',
                 isLoaded        : false,
                 locations        : null,
                 isSuccess       : false,
                 pagination      : null,
                 total_pages     : null,
+                total_count     : null,
                 current_page    : null,
                 reponseMessage  : '',
                 issetPageNumber : false,
@@ -186,6 +159,7 @@
                     this.pagination = response.data.pagination
                     this.total_pages = response.data.pagination.total_pages
                     this.current_page = response.data.pagination.current_page
+                    this.total_count = response.data.pagination.total_count
                     this.isLoaded = true
                 }).catch(error => {
                     console.log(error)
@@ -200,6 +174,12 @@
             reloadList: function()
             {
                 this.isSuccess = false
+                this.getList()
+            },
+
+            searchLocation: function() {
+                this.axiosPagination.search = this.search
+                this.current_page = 1
                 this.getList()
             }
         }

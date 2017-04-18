@@ -6,7 +6,7 @@
                     <img src="https://vuetifyjs.com/public/doc-images/lists/1.jpg"/>
                 </v-list-tile-avatar>
                 <v-list-tile-content>
-                    <v-list-tile-title>aliconnors@example.com</v-list-tile-title>
+                    <v-list-tile-title>{{ user.data.email }}</v-list-tile-title>
                 </v-list-tile-content>
             </v-list-tile>
             <v-divider class="mt-5" light />
@@ -39,45 +39,46 @@
 </template>
 
 <script>
-
+    import { mapGetters, mapActions } from 'vuex'
 
     export default {
-        data () {
+        data() {
             return {
-
+                itemGroup: [
+                        { header: 'Settings', icon: 'settings' },
+                        {
+                            title: 'System',
+                            icon: 'settings applications',
+                            group: '/system',
+                            items: [
+                                { title: 'Metadata', href: '/system/metadata', icon: 'list' },
+                                { title: 'List Of Values', href: '/system/list-of-values', icon: 'list' },
+                                { title: 'User', href: '/system/user', icon: 'list' },
+                                { title: 'Authorization', href: '/system/authorization', icon: 'list' },
+                            ]
+                        },
+                        //{ title: 'Link' },
+                        { divider: true },
+                        { header: 'Setup' },
+                        {
+                            title: 'Organizations',
+                            icon: 'settings applications',
+                            group: '/setup/organizations',
+                            items: [
+                                { title: 'Locations', href: '/setup/organizations/locations', icon: 'list' },
+                            ]
+                        },
+                        {
+                            title: 'Project',
+                            icon: 'settings applications',
+                        },
+                        { header: 'Inventory Management' },
+                        { title: 'Item Inventory' }
+                    ]
             }
         },
-
-        computed: {
-            itemGroup: function() {
-                return [
-                    { header: 'Settings', icon: 'settings' },
-                    {
-                        title: 'System',
-                        icon: 'settings applications',
-                        group: '/system',
-                        items: [
-                            { title: 'Metadata', href: '/system/metadata', icon: 'list' },
-                            { title: 'List Of Values', href: '/system/list-of-values', icon: 'list' },
-                            { title: 'User', href: '/system/user', icon: 'list' },
-                            { title: 'Authorization', href: '/system/authorization', icon: 'list' },
-                        ]
-                    },
-                    //{ title: 'Link' },
-                    { divider: true },
-                    { header: 'Setup' },
-                    {
-                        title: 'Organizations',
-                        icon: 'settings applications',
-                        group: '/setup/organizations',
-                        items: [
-                            { title: 'Locations', href: '/setup/organizations/locations', icon: 'list' },
-                        ]
-                    },
-                    { header: 'Inventory Management' },
-                    { title: 'Item Inventory' }
-                ]
-            }
-        }
+        computed: mapGetters({
+            user: 'auth/user'
+        })
     }
 </script>

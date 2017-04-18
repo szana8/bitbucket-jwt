@@ -14,8 +14,6 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        $faker = Factory::create();
-
         DB::table('users')->insert([
             'email'             => 'admin@localhost.com',
             'password'          => Hash::make('password'),
@@ -26,6 +24,22 @@ class UsersTableSeeder extends Seeder
             'type' => 'database',
             'name' => 'Administrator'
         ]);
+
+        $faker = Factory::create();
+
+        for($i=0; $i<= 100; $i++)
+        {
+            $user = DB::table('users')->insertGetId([
+                'email'             => $faker->email,
+                'password'          => Hash::make('password'),
+            ]);
+
+            DB::table('profiles')->insert([
+                'user_id' => $user,
+                'type' => 'database',
+                'name' => $faker->name
+            ]);
+        }
 
     }
 }

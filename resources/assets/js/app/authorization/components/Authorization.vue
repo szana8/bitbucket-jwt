@@ -19,59 +19,54 @@
                                     <v-card-title>
                                         <span>Roles</span>
                                         <v-spacer></v-spacer>
-                                        <div>
-                                            <v-menu bottom left origin="top right" transition="v-scale-transition">
-                                                <v-btn icon dark slot="activator" class="grey--text text--darken-2">
-                                                    <v-icon>more_vert</v-icon>
-                                                </v-btn>
-                                                <v-list>
-                                                    <v-list-item>
-                                                        <v-list-tile>
-                                                            <v-list-tile-title>Export List</v-list-tile-title>
-                                                        </v-list-tile>
-                                                    </v-list-item>
-                                                </v-list>
-                                            </v-menu>
-                                        </div>
+                                        <v-text-field append-icon="search" label="Search" v-model="searchRole" v-on:keyup.native.enter="searchForRole" single-line hide-details></v-text-field>
                                     </v-card-title>
                                 </v-card-row>
-                            </v-card>
-                        </v-col>
-                    </v-row>
-
-                    <v-row>
-                        <v-col xs12="xs12">
-                            <table>
-                                <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Display Name</th>
-                                    <th>Description</th>
-                                    <th>Permissions</th>
-                                    <th></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <template v-for="item in roles">
+                                <table>
+                                    <thead>
                                     <tr>
-                                        <td v-text="item.name"></td>
-                                        <td v-text="item.display_name"></td>
-                                        <td v-text="item.description"></td>
-                                        <td>
-                                            <v-btn slot="activator" secondary>Show</v-btn>
-                                        </td>
-                                        <td>
-                                            <v-btn primary floating small dark v-on:click.native="edit(item.id)">
-                                                <v-icon class="white--text">edit</v-icon>
-                                            </v-btn>
-                                            <v-btn error floating small dark v-on:click.native="destroyMeta(item.id)">
-                                                <v-icon class="white--text">delete</v-icon>
-                                            </v-btn>
-                                        </td>
+                                        <th>Name</th>
+                                        <th>Display Name</th>
+                                        <th>Description</th>
+                                        <th>Permissions</th>
+                                        <th width="80px"></th>
                                     </tr>
-                                </template>
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                    <template v-for="item in roles">
+                                        <tr>
+                                            <td v-text="item.name"></td>
+                                            <td v-text="item.display_name"></td>
+                                            <td v-text="item.description"></td>
+                                            <td>
+                                                <v-btn slot="activator" secondary>Show</v-btn>
+                                            </td>
+                                            <td>
+                                                <v-row>
+                                                    <v-col xs6="xs6" sm4="sm2">
+                                                        <v-btn primary flat v-on:click.native="edit(item.id)">
+                                                            <v-icon>edit</v-icon>
+                                                        </v-btn>
+                                                    </v-col>
+                                                    <v-col xs6="xs6" sm4="sm2">
+                                                        <v-btn error flat v-on:click.native="destroyRole(item.id)">
+                                                            <v-icon>delete</v-icon>
+                                                        </v-btn>
+                                                    </v-col>
+                                                </v-row>
+                                            </td>
+                                        </tr>
+                                    </template>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="5" class="text-xs-right pr-4">
+                                                Total number of roles: {{ total_count.roles }}
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </v-card>
                         </v-col>
                     </v-row>
                     <v-row>
@@ -103,55 +98,50 @@
                                     <v-card-title>
                                         <span>Permissions</span>
                                         <v-spacer></v-spacer>
-                                        <div>
-                                            <v-menu bottom left origin="top right" transition="v-scale-transition">
-                                                <v-btn icon dark slot="activator" class="grey--text text--darken-2">
-                                                    <v-icon>more_vert</v-icon>
-                                                </v-btn>
-                                                <v-list>
-                                                    <v-list-item>
-                                                        <v-list-tile>
-                                                            <v-list-tile-title>Export List</v-list-tile-title>
-                                                        </v-list-tile>
-                                                    </v-list-item>
-                                                </v-list>
-                                            </v-menu>
-                                        </div>
+                                        <v-text-field append-icon="search" label="Search" v-model="searchPermission" v-on:keyup.native.enter="searchForPermission" single-line hide-details></v-text-field>
                                     </v-card-title>
                                 </v-card-row>
-                            </v-card>
-                        </v-col>
-                    </v-row>
-
-                    <v-row>
-                        <v-col xs12="xs12">
-                            <table>
-                                <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Display Name</th>
-                                    <th>Description</th>
-                                    <th></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <template v-for="item in permissions">
+                                <table>
+                                    <thead>
                                     <tr>
-                                        <td v-text="item.name"></td>
-                                        <td v-text="item.display_name"></td>
-                                        <td v-text="item.description"></td>
-                                        <td>
-                                            <v-btn primary floating small dark v-on:click.native="edit(item.id)">
-                                                <v-icon class="white--text">edit</v-icon>
-                                            </v-btn>
-                                            <v-btn error floating small dark v-on:click.native="destroyMeta(item.id)">
-                                                <v-icon class="white--text">delete</v-icon>
-                                            </v-btn>
-                                        </td>
+                                        <th>Name</th>
+                                        <th>Display Name</th>
+                                        <th>Description</th>
+                                        <th width="80px"></th>
                                     </tr>
-                                </template>
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                    <template v-for="item in permissions">
+                                        <tr>
+                                            <td v-text="item.name"></td>
+                                            <td v-text="item.display_name"></td>
+                                            <td v-text="item.description"></td>
+                                            <td>
+                                                <v-row>
+                                                    <v-col xs6="xs6" sm4="sm2">
+                                                        <v-btn primary flat v-on:click.native="edit(item.id)">
+                                                            <v-icon>edit</v-icon>
+                                                        </v-btn>
+                                                    </v-col>
+                                                    <v-col xs6="xs6" sm4="sm2">
+                                                        <v-btn error flat v-on:click.native="destroyPermission(item.id)">
+                                                            <v-icon>delete</v-icon>
+                                                        </v-btn>
+                                                    </v-col>
+                                                </v-row>
+                                            </td>
+                                        </tr>
+                                    </template>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="4" class="text-xs-right pr-4">
+                                                Total number of permissions: {{ total_count.permissions }}
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </v-card>
                         </v-col>
                     </v-row>
                     <v-row>
@@ -176,10 +166,16 @@
         data() {
             return {
                 roles: null,
+                searchRole: '',
+                searchPermission: '',
                 permissions: null,
                 isRolesLoaded: false,
                 isPermissionsLoaded: false,
                 isSuccess: false,
+                total_count: {
+                    roles: null,
+                    permissions: null
+                },
                 pagination: {
                     roles: null,
                     permission: null
@@ -277,6 +273,7 @@
                     this.pagination.roles = response.data.pagination
                     this.total_pages.roles = response.data.pagination.total_pages
                     this.roles_current_page = response.data.pagination.current_page
+                    this.total_count.roles = response.data.pagination.total_count
                     this.isRolesLoaded = true
                 }).catch(error => {
                     console.log(error)
@@ -296,11 +293,24 @@
                     this.pagination.permissions = response.data.pagination
                     this.total_pages.permissions = response.data.pagination.total_pages
                     this.permissions_current_page = response.data.pagination.current_page
+                    this.total_count.permissions = response.data.pagination.total_count
                     this.isPermissionsLoaded = true
                 }).catch(error => {
                     console.log(error)
                 })
             },
+
+            searchForRole: function() {
+                this.axiosPagination.roles.search = this.searchRole
+                this.roles_current_page = 1
+                this.getRolesList()
+            },
+
+            searchForPermission: function() {
+                this.axiosPagination.permissions.search = this.searchPermission
+                this.permissions_current_page = 1
+                this.getPermissionsList()
+            }
 
         }
 
