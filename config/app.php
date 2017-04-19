@@ -184,6 +184,8 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        laravel-issue-tracker\avatar\avatarServiceProvider::class,
+
         /*
          * Laravel Issue Packages...
         */
