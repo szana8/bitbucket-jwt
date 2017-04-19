@@ -1,11 +1,13 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import auth from '../app/auth/vuex'
+import users from '../app/users/vuex'
 import metadata from '../app/metadata/vuex'
+import locations from '../app/locations/vuex'
 import listofvalues from '../app/listofvalues/vuex'
 import authorization from '../app/authorization/vuex'
-import locations from '../app/locations/vuex'
 
+// Vuetify
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
 import 'vuetify/dist/vuetify.min.js'
@@ -31,5 +33,6 @@ export default new Vuex.Store({
         listofvalues: listofvalues,
         authorization: authorization,
         locations: locations,
+        users: users
     }
 })
