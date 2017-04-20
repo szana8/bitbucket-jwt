@@ -193,13 +193,14 @@ return [
         LaravelIssueTracker\Avatar\AvatarServiceProvider::class,
         LaravelIssueTracker\Watcher\WatcherServiceProvider::class,
         LaravelIssueTracker\Project\ProjectServiceProvider::class,
+        LaravelIssueTracker\Workflow\WorkflowServiceProvider::class,
         LaravelIssueTracker\Metadata\MetadataServiceProvider::class,
         LaravelIssueTracker\Locations\LocationsServiceProvider::class,
         LaravelIssueTracker\ListOfValues\ListOfValuesServiceProvider::class,
         LaravelIssueTracker\Authorization\AuthorizationServiceProvider::class,
         LaravelIssueTracker\Authentication\AuthenticationServiceProvider::class,
         LaravelIssueTracker\Fileattachment\FileattachmentServiceProvider::class,
-        \LaravelIssueTracker\InventoryOrganization\InventoryOrganizationServiceProvider::class,
+        LaravelIssueTracker\InventoryOrganization\InventoryOrganizationServiceProvider::class,
 
     ],
 

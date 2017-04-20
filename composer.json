@@ -30,6 +30,7 @@
             "database"
         ],
         "psr-4": {
+            "LaravelIssueTracker\\Workflow\\": "packages/laravel-issue-tracker/workflow/src",
             "LaravelIssueTracker\\Avatar\\": "packages/laravel-issue-tracker/avatar/src",
             "LaravelIssueTracker\\Locations\\": "packages/laravel-issue-tracker/locations/src",
             "LaravelIssueTracker\\InventoryOrganization\\": "packages/laravel-issue-tracker/inventory-organization/src",

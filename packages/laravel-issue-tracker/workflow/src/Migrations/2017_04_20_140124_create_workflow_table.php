@@ -15,6 +15,7 @@ class CreateWorkflowTable extends Migration
     {
         Schema::create('workflow', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('name');
             $table->json('descriptor');
         });
     }
