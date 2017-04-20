@@ -2,7 +2,8 @@
 
 namespace LaravelIssueTracker\Avatar\Models;
 
+use Illuminate\Database\Eloquent\Model;
 
-class Avatar {
+class Avatar extends Model {
 
 }

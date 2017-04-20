@@ -184,14 +184,13 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
-        laravel-issue-tracker\avatar\avatarServiceProvider::class,
-
         /*
          * Laravel Issue Packages...
         */
         LaravelIssueTracker\Core\CoreServiceProvider::class,
         LaravelIssueTracker\Issue\IssueServiceProvider::class,
         \LaravelIssueTracker\User\UserServiceProvider::class,
+        LaravelIssueTracker\Avatar\AvatarServiceProvider::class,
         LaravelIssueTracker\Watcher\WatcherServiceProvider::class,
         LaravelIssueTracker\Project\ProjectServiceProvider::class,
         LaravelIssueTracker\Metadata\MetadataServiceProvider::class,

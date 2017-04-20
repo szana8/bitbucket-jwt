@@ -30,7 +30,7 @@
             "database"
         ],
         "psr-4": {
-            "laravel-issue-tracker\\avatar\\": "packages/laravel-issue-tracker/avatar/src",
+            "LaravelIssueTracker\\Avatar\\": "packages/laravel-issue-tracker/avatar/src",
             "LaravelIssueTracker\\Locations\\": "packages/laravel-issue-tracker/locations/src",
             "LaravelIssueTracker\\InventoryOrganization\\": "packages/laravel-issue-tracker/inventory-organization/src",
             "LaravelIssueTracker\\Authorization\\": "packages/laravel-issue-tracker/authorization/src",
@@ -43,7 +43,6 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "laravel-issue-tracker\\avatar\\": "packages/laravel-issue-tracker/avatar/src",
             "Tests\\": "tests/"
         }
     },

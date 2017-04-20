@@ -55,6 +55,8 @@
                                 { title: 'List Of Values', href: '/system/list-of-values', icon: 'list' },
                                 { title: 'User', href: '/system/user', icon: 'list' },
                                 { title: 'Authorization', href: '/system/authorization', icon: 'list' },
+                                { title: 'Avatar', href: '/system/avatar', icon: 'list' },
+                                { title: 'Project', href: '/system/project', icon: 'list' },
                             ]
                         },
                         //{ title: 'Link' },
