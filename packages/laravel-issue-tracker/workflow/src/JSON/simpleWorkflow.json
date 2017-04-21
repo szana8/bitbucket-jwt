@@ -1,0 +1,72 @@
+{
+    "workflow" :
+    {
+        "name" : "Simple Issue Tracker Workflow",
+        "description" : "The default workflow",
+        "initial-actions" :
+        {
+            "action" :
+            {
+                "id": 1,
+                "name": "Create Issue",
+                "validators":
+                {
+                    "validator":
+                    [
+                        {
+                            "permission" : "create-issue",
+                            "class": "Namepace\\PermissionValidatorName" // Itt a handle-t hívjuk
+                        }
+                    ]
+                },
+                "results":
+                {
+                    "unconditional-result":
+                    {
+                        "status": "Open",
+                        "step": 1,
+                        "post-functions":
+                        {
+                            "function":
+                            {
+                                "type": "class",
+                                "name": "Namespace\\PostFunctionName" // Itt a handle-t hívjuk
+                            },
+                            "function":
+                            {
+                                "type": "event",
+                                "name": "EventName"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "common-actions":
+        {
+            "action":
+            {
+                "id": 2,
+                "name": "Close Issue",
+                "restrict-to":
+                {
+                    "conditions":
+                    {
+                        "type": "AND",
+                        "condition":
+                        [
+                            {
+                                "permission": "resolve-issue",
+                                "class": "Namespace\\PermissionCondition"
+                            },
+                            {
+                                "permission": "close-issue",
+                                "class": "Namespace\\PermissionCondition"
+                            }
+                        ]
+                    }
+                }
+            }
+        }
+    }
+}

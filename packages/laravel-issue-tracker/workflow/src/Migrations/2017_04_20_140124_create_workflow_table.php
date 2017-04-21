@@ -15,8 +15,10 @@ class CreateWorkflowTable extends Migration
     {
         Schema::create('workflow', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
+            $table->string('name', 50);
+            $table->string('description', 150);
             $table->json('descriptor');
+            $table->timestamps();
         });
     }
 
@@ -27,6 +29,6 @@ class CreateWorkflowTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('workflow');
     }
 }
