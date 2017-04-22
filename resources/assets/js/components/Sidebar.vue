@@ -57,6 +57,7 @@
                                 { title: 'Authorization', href: '/system/authorization', icon: 'list' },
                                 { title: 'Avatar', href: '/system/avatar', icon: 'list' },
                                 { title: 'Project', href: '/system/project', icon: 'list' },
+                                { title: 'Workflow', href: '/system/workflow', icon: 'list' },
                             ]
                         },
                         //{ title: 'Link' },

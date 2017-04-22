@@ -5,6 +5,7 @@ import users from './users/routes'
 import avatar from './avatar/routes'
 import errors from './errors/routes'
 import project from './project/routes'
+import workflow from './workflow/routes'
 import metadata from './metadata/routes'
 import locations from './locations/routes'
 import listofvalues from './listofvalues/routes'
@@ -19,5 +20,6 @@ export default [...home,
                 ...locations,
                 ...avatar,
                 ...project,
+                ...workflow,
                 ...errors
                 ]

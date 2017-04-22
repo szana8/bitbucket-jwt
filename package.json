@@ -16,10 +16,11 @@
     "laravel-mix": "^0.8.3",
     "lodash": "^4.17.4",
     "vue": "^2.1.10",
-    "vuetify": "^0.10.*",
+    "vuetify": "^0.11.*",
     "webpack": "^2.3.2"
   },
   "dependencies": {
+    "gojs": "^1.7.7",
     "loadash": "0.0.1",
     "localforage": "^1.5.0",
     "lodash": "^4.17.4",

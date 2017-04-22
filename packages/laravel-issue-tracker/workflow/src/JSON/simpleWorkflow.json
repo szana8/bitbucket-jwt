@@ -51,17 +51,62 @@
                 "restrict-to":
                 {
                     "conditions":
+                    [
+                        "AND",
+                        {
+                            "permission": "resolve-issue",
+                            "class": "Namespace\\PermissionCondition"
+                        },
+                        {
+                            "permission": "close-issue",
+                            "class": "Namespace\\PermissionCondition"
+                        }
+                    ]
+                },
+                "results":
+                {
+                    "unconditional-result":
                     {
-                        "type": "AND",
-                        "condition":
+                        "post-functions":
                         [
                             {
-                                "permission": "resolve-issue",
-                                "class": "Namespace\\PermissionCondition"
+                                "type": "class",
+                                "class": "Namespace\\FunctionName"
                             },
                             {
-                                "permission": "close-issue",
-                                "class": "Namespace\\PermissionCondition"
+                                "type": "event",
+                                "class": "Namespace\\EventClass"
+                            }
+                        ]
+                    }
+                }
+            },
+            "action":
+            {
+                "id": 3,
+                "name": "Reopen Issue",
+                "restrict-to":
+                {
+                    "conditions":
+                    [
+                        {
+                            "class": "Namespace\\ClassName"
+                        }
+                    ]
+                },
+                "results":
+                {
+                    "unconditional-result":
+                    {
+                        "post-functions":
+                        [
+                            {
+                                "type": "class",
+                                "class": "Namespace\\FunctionName"
+                            },
+                            {
+                                "type": "event",
+                                "class": "Namespace\\EventClass"
                             }
                         ]
                     }

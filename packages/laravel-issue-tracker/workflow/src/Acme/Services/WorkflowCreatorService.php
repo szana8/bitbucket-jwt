@@ -3,26 +3,41 @@
 namespace LaravelIssueTracker\Workflow\Acme\Services;
 
 use LaravelIssueTracker\Core\Acme\Services\ApiService;
+use LaravelIssueTracker\Core\Acme\Validators\ValidationException;
+use LaravelIssueTracker\Workflow\Acme\Validators\WorkflowValidator;
+use LaravelIssueTracker\Workflow\Models\Workflow;
 
 class WorkflowCreatorService extends ApiService {
 
     /**
-     * ApiServiceInterface constructor.
-     * @param ApiValidatorInterface $validator
+     * @var WorkflowValidator
      */
-    public function __construct($validator)
+    private $validator;
+
+    /**
+     * ApiServiceInterface constructor.
+     * @param WorkflowValidator $validator
+     */
+    public function __construct(WorkflowValidator $validator)
     {
 
+        $this->validator = $validator;
     }
 
     /**
      * Store a newly created resource in storage.
      * @param $requestArray
      * @return mixed
+     * @throws ValidationException
      */
     public function make($requestArray)
     {
-        // TODO: Implement make() method.
+        if( $this->validator->isValidForInsert($requestArray) )
+        {
+            return Workflow::create($requestArray);
+        }
+
+        throw new ValidationException('Workflow validation failed', $this->validator->getErrors());
     }
 
     /**
@@ -30,19 +45,31 @@ class WorkflowCreatorService extends ApiService {
      * @param $requestArray
      * @param $id
      * @return mixed
+     * @throws ValidationException
      */
     public function update($requestArray, $id)
     {
-        // TODO: Implement update() method.
+        if( $this->validator->isValidForUpdate($requestArray) )
+        {
+            return Workflow::findOrFail($id)->update($requestArray);
+        }
+
+        throw new ValidationException('Workflow validation failed', $this->validator->getErrors());
     }
 
     /**
      * Remove the specified resource from storage.
      * @param $id
      * @return mixed
+     * @throws ValidationException
      */
     public function destroy($id)
     {
-        // TODO: Implement destroy() method.
+        if( Workflow::find($id)->exists() )
+        {
+            return Workflow::destroy($id);
+        }
+
+        throw new ValidationException('Workflow does not exists', '');
     }
 }
