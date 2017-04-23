@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import auth from '../app/auth/vuex'
 import users from '../app/users/vuex'
 import metadata from '../app/metadata/vuex'
+import workflow from '../app/workflow/vuex'
 import locations from '../app/locations/vuex'
 import listofvalues from '../app/listofvalues/vuex'
 import authorization from '../app/authorization/vuex'
@@ -33,6 +34,7 @@ export default new Vuex.Store({
         listofvalues: listofvalues,
         authorization: authorization,
         locations: locations,
-        users: users
+        users: users,
+        workflow: workflow
     }
 })
